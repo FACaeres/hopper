@@ -6,6 +6,7 @@ algoritmo "04_media"
 var
    n1, n2, n3, n4, media : real
 inicio
+      //Efetua a leitura das 4 notas bimestrais
       escreval("Digite a nota do 1 bimestre: ")
       leia(n1)
       escreval("Digite a nota do 2 bimestre: ")
@@ -15,6 +16,7 @@ inicio
       escreval("Digite a nota do 4 bimestre: ")
       leia(n4)
       
+      //Calculo para obtenção da média
       media <- (n1+n2+n3+n4)/4
       
       escreval("Média do aluno: ", media)
