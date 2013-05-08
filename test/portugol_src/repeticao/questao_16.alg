@@ -1,6 +1,6 @@
-algoritmo "AlgoritmoFibonacci"
+algoritmo "FibMaior500"
 var
-cont, n, num, atual, ant : inteiro
+cont, num, atual, ant : inteiro
 inicio
       cont <- 0
       escreval ("Gerando série Fibonacci até valor maior que 500...")
