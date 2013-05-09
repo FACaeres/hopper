@@ -87,7 +87,6 @@ T_BRANCO			[ \t\r]*
 {T_CRONOMETRO}			{printf("T_CRONOMETRO:\t%s\n", yytext);}
 {T_DE}				{printf("T_DE:\t%s\n", yytext);}
 {T_DEBUG}			{printf("T_DEBUG:\t%s\n", yytext);}
-{T_E}				{printf("T_E:\t%s\n", yytext);}
 {T_ECO}				{printf("T_ECO:\t%s\n", yytext);}
 {T_ENQUANTO}			{printf("T_ENQUANTO:\t%s\n", yytext);}
 {T_ENTAO}			{printf("T_ENTAO:\t%s\n", yytext);}
@@ -114,10 +113,7 @@ T_BRANCO			[ \t\r]*
 {T_LOGICO}			{printf("T_LOGICO:\t%s\n", yytext);}
 {T_MAIUSC}			{printf("T_MAIUSC:\t%s\n", yytext);}
 {T_MINUSC}			{printf("T_MINUSC:\t%s\n", yytext);}
-{T_MOD}				{printf("T_MOD:\t%s\n", yytext);}
-{T_NAO}				{printf("T_NAO:\t%s\n", yytext);}
 {T_NUMPCARAC}			{printf("T_NUMPCARAC:\t%s\n", yytext);}
-{T_OU}				{printf("T_OU:\t%s\n", yytext);}
 {T_OUTROCASO}			{printf("T_OUTROCASO:\t%s\n", yytext);}
 {T_PARA}			{printf("T_PARA:\t%s\n", yytext);}
 {T_PASSO}			{printf("T_PASSO:\t%s\n", yytext);}
@@ -133,12 +129,31 @@ T_BRANCO			[ \t\r]*
 {T_VAR}				{printf("T_VAR:\t%s\n", yytext);}
 {T_VETOR}			{printf("T_VETOR:\t%s\n", yytext);}
 {T_VERDADEIRO}			{printf("T_VERDADEIRO:\t%s\n", yytext);}
-{T_XOU}				{printf("T_XOU:\t%s\n", yytext);}
 {T_COMENTARIO_UL}               {printf("T_COMENTARIO_UL:\t%s\n",yytext);} 
 {T_COMENTARIO_ML}               {printf("T_COMENTARIO_ML:\t%s\n",yytext);} 
+"+"                  		{printf("T_OPERADOR_SOMA:\t%s\n", yytext);}
+"-"                  		{printf("T_OPERADOR_SUBTRACAO:\t%s\n", yytext);}
+"*"                  		{printf("T_OPERADOR_MULTIPLICACAO:\t%s\n", yytext);}
+"/"                  		{printf("T_OPERADOR_DIVISAO:\t%s\n", yytext);}
+"\\"                  		{printf("T_OPERADOR_DIVISAO_INT:\t%s\n", yytext);}
+"\^"                  		{printf("T_OPERADOR_EXPONENCIACAO:\t%s\n", yytext);}
+"%"                  		{printf("T_OPERADOR_DIVISAO_RESTO:\t%s\n", yytext);}
+{T_MOD}				{printf("T_OPERADOR_DIVISAO_RESTO:\t%s\n", yytext);}
+"="                  		{printf("T_OPERADOR_IGUAL:\t%s\n", yytext);}
+"<>"                 		{printf("T_OPERADOR_DIFERENTE:\t%s\n", yytext);}
+"<"                  		{printf("T_OPERADOR_MENOR:\t%s\n", yytext);}
+">"                  		{printf("T_OPERADOR_MAIOR:\t%s\n", yytext);}
+"<="               	  	{printf("T_OPERADOR_MENOR_IGUAL:\t%s\n", yytext);}
+">="                		{printf("T_OPERADOR_MAIOR_IGUAL:\t%s\n", yytext);}
+"("                  		{printf("T_PARENTESE_ESQ:\t%s\n", yytext);}
+")"                  		{printf("T_PARENTESE_DIR:\t%s\n", yytext);}
+"<-"                		{printf("T_OPERADOR_ATRIBUICAO:\t%s\n", yytext);}
+{T_E}				{printf("T_OP_LOGICO_E:\t%s\n", yytext);}
+{T_XOU}				{printf("T_OP_LOGICO_XOU:\t%s\n", yytext);}
+{T_NAO}				{printf("T_OP_LOGICO_NAO:\t%s\n", yytext);}
+{T_OU}				{printf("T_OP_LOGICO_OU:\t%s\n", yytext);}
 
 {T_IDENTIFICADOR}		{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
-
 {T_BRANCO}			{}
 .				{printf("Token inválido:\t%s\n", yytext);}
 %%
