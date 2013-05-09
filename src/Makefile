@@ -18,6 +18,7 @@ teste: compile
 
 clean:
 	@ echo Cleaning...
+	@ rm -rf *.o
 	@ rm -rf *.c
 	@ rm -rf *.*~ 
 	@ rm -rf *~
