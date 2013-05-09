@@ -65,6 +65,8 @@ T_VERDADEIRO			(V|v)(E|e)(R|r)(D|d)(A|a)(D|e)(I|i)(R|r)(O|o)
 T_XOU				(X|x)(O|o)(U|u)
 T_COMENTARIO_UL 		"//".*(\n)?
 T_COMENTARIO_ML 		\{(.*|\n)[^\}]*\}
+T_NUMERO_INTEIRO		[0-9]+
+T_NUMERO_REAL			[0-9]+\.[0-9]+
 T_IDENTIFICADOR			[aA-zZ][aA-zZ0-9]*
 T_STRING			\".*\"
 T_BRANCO			[ \t\r]*
@@ -148,6 +150,10 @@ T_BRANCO			[ \t\r]*
 "("                  		{printf("T_PARENTESE_ESQ:\t%s\n", yytext);}
 ")"                  		{printf("T_PARENTESE_DIR:\t%s\n", yytext);}
 "<-"                		{printf("T_OPERADOR_ATRIBUICAO:\t%s\n", yytext);}
+","				{printf("T_IDENT_SEPARADOR:\t%s\n", yytext);}
+":"				{printf("T_TIPO_ATRIBUIDOR:\t%s\n", yytext);}
+{T_NUMERO_INTEIRO}              {printf("T_NUMERO_INTEIRO:\t%s\n", yytext);}
+{T_NUMERO_REAL}                 {printf("T_NUMERO_REAL:\t%s\n", yytext);}
 {T_E}				{printf("T_OP_LOGICO_E:\t%s\n", yytext);}
 {T_XOU}				{printf("T_OP_LOGICO_XOU:\t%s\n", yytext);}
 {T_NAO}				{printf("T_OP_LOGICO_NAO:\t%s\n", yytext);}
@@ -155,7 +161,7 @@ T_BRANCO			[ \t\r]*
 
 {T_IDENTIFICADOR}		{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 {T_BRANCO}			{}
-.				{printf("Token inválido:\t%s\n", yytext);}
+.				{printf("Token Desconhecido: ['%s']\n",yytext);}
 %%
 
 main(int argc, char *argv[])
