@@ -63,8 +63,9 @@ T_VAR				(V|v)(A|a)(R|r)
 T_VETOR				(V|v)(E|e)(T|t)(O|o)(R|r)
 T_VERDADEIRO			(V|v)(E|e)(R|r)(D|d)(A|a)(D|e)(I|i)(R|r)(O|o)
 T_XOU				(X|x)(O|o)(U|u)
-
-T_IDENTIFICADOR			[aA-zZ][aA0-zZ9]*
+T_COMENTARIO_UL 		"//".*(\n)?
+T_COMENTARIO_ML 		\{(.*|\n)[^\}]*\}
+T_IDENTIFICADOR			[aA-zZ][aA-zZ0-9]*
 T_STRING			\".*\"
 T_BRANCO			[ \t\r]*
 
@@ -133,6 +134,8 @@ T_BRANCO			[ \t\r]*
 {T_VETOR}			{printf("T_VETOR:\t%s\n", yytext);}
 {T_VERDADEIRO}			{printf("T_VERDADEIRO:\t%s\n", yytext);}
 {T_XOU}				{printf("T_XOU:\t%s\n", yytext);}
+{T_COMENTARIO_UL}               {printf("T_COMENTARIO_UL:\t%s\n",yytext);} 
+{T_COMENTARIO_ML}               {printf("T_COMENTARIO_ML:\t%s\n",yytext);} 
 
 {T_IDENTIFICADOR}		{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 
