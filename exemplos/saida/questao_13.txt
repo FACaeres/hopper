@@ -1,0 +1,51 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"questao_03"
+T_COMENTARIO_UL:	// Descricao : Programa que verifica se uma letra digitada é "F" ou "M". 
+
+T_COMENTARIO_UL:	//			   Conforme a letra, escreve: F - Feminino, M - Masculino, Sexo Inválido.
+
+T_COMENTARIO_UL:	// Autor : Darlisson Jesus
+
+T_COMENTARIO_UL:	// Data : 5/7/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	sexo_letra
+T_TIPO_ATRIBUIDOR:	:
+T_IDENTIFICADOR:	caracter
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Faz a leitura da letra.
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe seu sexo, F para feminino ou M para masculino: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	sexo_letra
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	// Faz a decisao da mensagem a ser mostrada. 
+
+T_COMENTARIO_UL:	// O portugol nao e case sensitive, entao 'M' == 'm'.	
+
+T_ESCOLHA:	escolha
+T_IDENTIFICADOR:	sexo_Letra
+T_CASO:	caso
+T_STRING:	"M"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Seu sexo = M - masculino"
+T_PARENTESE_DIR:	)
+T_CASO:	caso
+T_STRING:	"F"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Seu sexo = F - feminino"
+T_PARENTESE_DIR:	)
+T_OUTROCASO:	outrocaso
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Sexo invalido"
+T_PARENTESE_DIR:	)
+T_FIMESCOLHA:	fimescolha
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

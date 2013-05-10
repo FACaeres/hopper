@@ -1,0 +1,102 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"questao_05"
+T_COMENTARIO_UL:	// Descricao : Programa faz a leitura de duas notas parciais de um aluno e
+
+T_COMENTARIO_UL:	//             calcula e mostra a média alcançada pelo aluno.
+
+T_COMENTARIO_UL:	// Autor : Darlisson Jesus
+
+T_COMENTARIO_UL:	// Data : 5/7/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	media
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	nota_parcial1
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	nota_parcial2
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Faz a leitura das duas notas reais do aluno.
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"informe sua primeira nota parcial: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	nota_parcial1
+T_PARENTESE_DIR:	)
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"informe sua segunda nota parcial: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	nota_parcial2
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	// Faz o calculo da media aritmetica, consulte http://pt.wikipedia.org/wiki/M%C3%A9dia_aritm%C3%A9tica.
+
+T_IDENTIFICADOR:	media
+T_OPERADOR_ATRIBUICAO:	<-
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	nota_parcial1
+T_OPERADOR_SOMA:	+
+T_IDENTIFICADOR:	nota_parcial2
+T_PARENTESE_DIR:	)
+T_OPERADOR_DIVISAO:	/
+T_NUMERO_INTEIRO:	2
+T_COMENTARIO_UL:	// Realiza a comparacao do valor da media e exibe a mensagem correspondente.
+
+T_SE:	se
+T_IDENTIFICADOR:	media
+T_OPERADOR_IGUAL:	=
+T_NUMERO_REAL:	10.0
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Aprovado com Distincao com a media de: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	media
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_PARENTESE_DIR:	)
+T_SENAO:	senao
+T_SE:	se
+T_IDENTIFICADOR:	media
+T_OPERADOR_MAIOR_IGUAL:	>=
+T_NUMERO_REAL:	7.0
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Aprovado com a media de: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	media
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_PARENTESE_DIR:	)
+T_SENAO:	senao
+T_SE:	se
+T_IDENTIFICADOR:	media
+T_OPERADOR_MENOR:	<
+T_NUMERO_REAL:	7.0
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Reprovado com a media de: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	media
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_TIPO_ATRIBUIDOR:	:
+T_NUMERO_INTEIRO:	2
+T_PARENTESE_DIR:	)
+T_FIMSE:	fimse
+T_FIMSE:	fimse
+T_FIMSE:	fimse
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

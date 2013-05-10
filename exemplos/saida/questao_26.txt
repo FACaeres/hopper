@@ -1,0 +1,94 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"Numero primo"
+T_COMENTARIO_UL:	// Função : Determinar se número é o não é primo
+
+T_COMENTARIO_UL:	// Autor : Daniel
+
+T_COMENTARIO_UL:	// Data : 7/5/2013
+
+T_COMENTARIO_UL:	// Seção de Declarações 
+
+T_VAR:	var
+T_IDENTIFICADOR:	num
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	i
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	j
+T_TIPO_ATRIBUIDOR:	:
+T_INTEIRO:	inteiro
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Seção de Comandos
+
+T_REPITA:	repita
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Escreva um numero inteiro positivo: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num
+T_PARENTESE_DIR:	)
+T_ATE:	ate
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num
+T_OPERADOR_MAIOR:	>
+T_NUMERO_INTEIRO:	0
+T_PARENTESE_DIR:	)
+T_IDENTIFICADOR:	j
+T_OPERADOR_ATRIBUICAO:	<-
+T_NUMERO_INTEIRO:	0
+T_PARA:	para
+T_IDENTIFICADOR:	i
+T_DE:	de
+T_NUMERO_INTEIRO:	1
+T_ATE:	ate
+T_IDENTIFICADOR:	num
+T_FACA:	faca
+T_COMENTARIO_UL:	//verifica se o número é divisível; se for divisivel por mais que 2 números, não é primo
+
+T_SE:	se
+T_PARENTESE_ESQ:	(
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num
+T_OPERADOR_DIVISAO_RESTO:	mod
+T_IDENTIFICADOR:	i
+T_PARENTESE_DIR:	)
+T_OPERADOR_IGUAL:	=
+T_NUMERO_INTEIRO:	0
+T_PARENTESE_DIR:	)
+T_ENTAO:	entao
+T_IDENTIFICADOR:	j
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	j
+T_OPERADOR_SOMA:	+
+T_NUMERO_INTEIRO:	1
+T_FIMSE:	fimse
+T_COMENTARIO_UL:	//interrompe se número não é primo
+
+T_SE:	se
+T_IDENTIFICADOR:	j
+T_OPERADOR_MAIOR:	>
+T_NUMERO_INTEIRO:	2
+T_ENTAO:	entao
+T_INTERROMPA:	interrompa
+T_FIMSE:	fimse
+T_FIMPARA:	fimpara
+T_COMENTARIO_UL:	//imprime se numero é primo ou não
+
+T_SE:	se
+T_IDENTIFICADOR:	j
+T_OPERADOR_MAIOR:	>
+T_NUMERO_INTEIRO:	2
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"O número não é primo"
+T_PARENTESE_DIR:	)
+T_SENAO:	senao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"O número é primo"
+T_PARENTESE_DIR:	)
+T_FIMSE:	fimse
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

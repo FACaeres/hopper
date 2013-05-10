@@ -1,0 +1,98 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"questao_08"
+T_COMENTARIO_UL:	// Descrição : Programa que pergunta o preço de três produtos e
+
+T_COMENTARIO_UL:	//             informe qual produto você deve comprar, sabendo
+
+T_COMENTARIO_UL:	//             que a decisão é sempre pelo mais barato.
+
+T_COMENTARIO_UL:	// Autor : Darlisson Jesus
+
+T_COMENTARIO_UL:	// Data : 5/7/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	preco_prod1
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod2
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod3
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Faz a leitura dos 3 valores reais de cada produto.
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o preco do primeiro produto R$: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	preco_prod1
+T_PARENTESE_DIR:	)
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o preco do segundo produto R$: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	preco_prod2
+T_PARENTESE_DIR:	)
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o preco do terceiro produto R$: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	preco_prod3
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	// Faz a comparacao um a um para descobrir o menor valor informado
+
+T_COMENTARIO_UL:	// e exibe na tela qual e o produto mais barato.
+
+T_SE:	se
+T_IDENTIFICADOR:	preco_prod1
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	preco_prod2
+T_ENTAO:	entao
+T_SE:	se
+T_IDENTIFICADOR:	preco_prod2
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	preco_prod3
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Recomendamos o terceiro produto, com o preco de R$: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod3
+T_PARENTESE_DIR:	)
+T_SENAO:	senao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Recomendamos o segundo produto, com o preco de R$: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod2
+T_PARENTESE_DIR:	)
+T_FIMSE:	fimse
+T_SENAO:	senao
+T_SE:	se
+T_IDENTIFICADOR:	preco_prod3
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	preco_prod1
+T_ENTAO:	entao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Recomendamos o primeiro produto, com o preco de R$: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod1
+T_PARENTESE_DIR:	)
+T_SENAO:	senao
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Recomendamos o terceiro produto, com o preco de R$: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	preco_prod3
+T_PARENTESE_DIR:	)
+T_FIMSE:	fimse
+T_FIMSE:	fimse
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

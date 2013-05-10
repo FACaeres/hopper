@@ -1,0 +1,75 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"questao_04"
+T_COMENTARIO_UL:	// Descricao: Programa que verifica se uma letra digitada é vogal ou consoante.
+
+T_COMENTARIO_UL:	// Autor : Darlisson Jesus
+
+T_COMENTARIO_UL:	// Data : 5/7/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	letra_digitada
+T_TIPO_ATRIBUIDOR:	:
+T_IDENTIFICADOR:	caracter
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Faz a leitura da letra.
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Digite uma letra do alfabeto: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	letra_digitada
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	// Faz a decisao da mensagem a ser mostrada. 
+
+T_ESCOLHA:	escolha
+T_IDENTIFICADOR:	letra_digitada
+T_COMENTARIO_UL:	// Se a letra digitada nao se encaixa nos casos de vogal('a','e','i','o','u')
+
+T_COMENTARIO_UL:	// entao trata-se de um outro caso, uma consoante.
+
+T_CASO:	caso
+T_STRING:	"a"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma vogal"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_CASO:	caso
+T_STRING:	"e"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma vogal"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_CASO:	caso
+T_STRING:	"i"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma vogal"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_CASO:	caso
+T_STRING:	"o"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma vogal"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_CASO:	caso
+T_STRING:	"u"
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma vogal"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_OUTROCASO:	outrocaso
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A letra <" ,letra_digitada,"> eh uma consoante"
+T_PARENTESE_DIR:	)
+T_INTERROMPA:	interrompa
+T_FIMESCOLHA:	fimescolha
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

@@ -1,0 +1,54 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"Retorna_Salario"
+T_COMENTARIO_UL:	// Função :Faça um Programa que pergunte quanto você
+
+T_COMENTARIO_UL:	//         ganha por hora e o número de horas trabalhadas no mês
+
+T_COMENTARIO_UL:	//         Calcule e mostre o total do seu salário no referido mês.
+
+T_COMENTARIO_UL:	// Autor : Iasmim Cunha
+
+T_COMENTARIO_UL:	// Data : 5/8/2013
+
+T_COMENTARIO_UL:	// Seção de Declarações 
+
+T_VAR:	var
+T_IDENTIFICADOR:	salario_hora
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_IDENTIFICADOR:	horas_mes
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_IDENTIFICADOR:	salario_base
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Seção de Comandos 
+
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Quanto você ganha por hora?"
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	salario_hora
+T_PARENTESE_DIR:	)
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Quantas horas você trabalho em um mês?"
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	horas_mes
+T_PARENTESE_DIR:	)
+T_IDENTIFICADOR:	salario_base
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	salario_hora
+T_OPERADOR_MULTIPLICACAO:	*
+T_IDENTIFICADOR:	horas_mes
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Você ganha em torno de :",salario_base," por mês"
+T_PARENTESE_DIR:	)
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

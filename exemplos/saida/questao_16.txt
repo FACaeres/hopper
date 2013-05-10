@@ -1,0 +1,90 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"questao_06"
+T_COMENTARIO_UL:	// Descricao : Programa que le três números inteiros e mostra o maior deles.
+
+T_COMENTARIO_UL:	// Autor : Darlisson Jesus
+
+T_COMENTARIO_UL:	// Data : 5/7/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	num1
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	num2
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	num3
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	maior
+T_TIPO_ATRIBUIDOR:	:
+T_INTEIRO:	inteiro
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Faz a leitura dos 3 numeros inteiros.
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o primeiro numero: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num1
+T_PARENTESE_DIR:	)
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o segundo numero: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num2
+T_PARENTESE_DIR:	)
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o terceiro numero: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	num3
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	// Faz a comparacao um a um para descobrir o maior valor informado
+
+T_COMENTARIO_UL:	// e atribuir se valor para a variavel 'maior'.
+
+T_SE:	se
+T_IDENTIFICADOR:	num1
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	num2
+T_ENTAO:	entao
+T_SE:	se
+T_IDENTIFICADOR:	num1
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	num3
+T_ENTAO:	entao
+T_IDENTIFICADOR:	maior
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	num1
+T_SENAO:	senao
+T_IDENTIFICADOR:	maior
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	num3
+T_FIMSE:	fimse
+T_SENAO:	senao
+T_SE:	se
+T_IDENTIFICADOR:	num2
+T_OPERADOR_MAIOR:	>
+T_IDENTIFICADOR:	num3
+T_ENTAO:	entao
+T_IDENTIFICADOR:	maior
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	num2
+T_SENAO:	senao
+T_IDENTIFICADOR:	maior
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	num3
+T_FIMSE:	fimse
+T_FIMSE:	fimse
+T_COMENTARIO_UL:	// Exibe na tela maior valor informado.	
+
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"O maior valor digitado foi: <", maior, ">"
+T_PARENTESE_DIR:	)
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

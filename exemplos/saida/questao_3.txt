@@ -1,0 +1,52 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"03_soma"
+T_COMENTARIO_UL:	// Função : Imprime a soma de dois números informados pelo usuário.
+
+T_COMENTARIO_UL:	// Autor : Williams Araújo
+
+T_COMENTARIO_UL:	// Data : 7/5/2013
+
+T_COMENTARIO_UL:	// Seção de Declarações 
+
+T_VAR:	var
+T_IDENTIFICADOR:	a
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	b
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	soma
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_COMENTARIO_UL:	//Faz a leitura de dois números informados pelo usuário
+
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Digite o primeiro numero: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	a
+T_PARENTESE_DIR:	)
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Digite o segundo numero: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	b
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	//Efetua o cálculo para a obtenção da soma
+
+T_IDENTIFICADOR:	soma
+T_OPERADOR_ATRIBUICAO:	<-
+T_IDENTIFICADOR:	a
+T_OPERADOR_SOMA:	+
+T_IDENTIFICADOR:	b
+T_ESCREVA:	escreva
+T_PARENTESE_ESQ:	(
+T_STRING:	"A soma é: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	soma
+T_PARENTESE_DIR:	)
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

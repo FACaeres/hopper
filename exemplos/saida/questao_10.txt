@@ -1,0 +1,50 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"Transforma_cf"
+T_COMENTARIO_UL:	// Função :Faça um Programa que peça
+
+T_COMENTARIO_UL:	//         a temperatura em graus Celsius
+
+T_COMENTARIO_UL:	//         , transforme e mostre em graus Farenheit
+
+T_COMENTARIO_UL:	// Autor : Iasmim Cunha
+
+T_COMENTARIO_UL:	// Data : 5/8/2013
+
+T_COMENTARIO_UL:	// Seção de Declarações 
+
+T_VAR:	var
+T_IDENTIFICADOR:	celsius
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_IDENTIFICADOR:	farenheit
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_COMENTARIO_UL:	// Seção de Comandos
+
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Entre com o valor da temperatura em Graus Celsius"
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	celsius
+T_PARENTESE_DIR:	)
+T_IDENTIFICADOR:	farenheit
+T_OPERADOR_ATRIBUICAO:	<-
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	celsius
+T_OPERADOR_MULTIPLICACAO:	*
+T_NUMERO_INTEIRO:	9
+T_OPERADOR_DIVISAO:	/
+T_NUMERO_INTEIRO:	5
+T_PARENTESE_DIR:	)
+T_OPERADOR_SOMA:	+
+T_NUMERO_INTEIRO:	32
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"O valor  ",celsius," em Celsius,equivale a ",farenheit," em graus Farenheit "
+T_PARENTESE_DIR:	)
+T_FIMALGORITMO:	fimalgoritmo
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!

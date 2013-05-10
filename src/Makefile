@@ -1,6 +1,6 @@
 FILE=hopper
 BIN_DIR=bin
-SAIDA_DIR=saida
+SAIDA_DIR=../exemplos/saida
 SCRIPT_FILE=script
 
 .PHONY: clean
@@ -22,4 +22,5 @@ clean:
 	@ rm -rf *.c
 	@ rm -rf *.*~ 
 	@ rm -rf *~
+	@ rm -rf $(SAIDA_DIR)/*.txt
 	@ echo "done"

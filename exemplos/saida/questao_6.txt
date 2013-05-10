@@ -1,0 +1,42 @@
+T_ALGORITMO:	algoritmo
+T_STRING:	"06_area_circulo"
+T_COMENTARIO_UL:	// Função :  Recebe o raio do círculo informada pelo usuário,calcula
+
+T_COMENTARIO_UL:	//           e mostra sua área.
+
+T_COMENTARIO_UL:	// Autor :   Williams Araújo
+
+T_COMENTARIO_UL:	// Data :    7/5/2013
+
+T_VAR:	var
+T_IDENTIFICADOR:	raio
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	area
+T_TIPO_ATRIBUIDOR:	:
+T_REAL:	real
+T_INICIO:	inicio
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"Informe o raio do círculo: "
+T_PARENTESE_DIR:	)
+T_LEIA:	leia
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	raio
+T_PARENTESE_DIR:	)
+T_COMENTARIO_UL:	//O portugol já possui uma constante chamada pi
+
+T_IDENTIFICADOR:	area
+T_OPERADOR_ATRIBUICAO:	<-
+T_PI:	pi
+T_OPERADOR_MULTIPLICACAO:	*
+T_PARENTESE_ESQ:	(
+T_IDENTIFICADOR:	raio^2
+T_PARENTESE_DIR:	)
+T_ESCREVAL:	escreval
+T_PARENTESE_ESQ:	(
+T_STRING:	"A área do círculo é: "
+T_IDENT_SEPARADOR:	,
+T_IDENTIFICADOR:	area
+T_PARENTESE_DIR:	)
+T_FIMALGORITMO:	fimalgoritmo
+SEU ALGORITMO EH VALIDO!
