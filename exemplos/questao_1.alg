@@ -6,6 +6,9 @@ algoritmo "01_Alo Mundo"
 var
 
 inicio
+	1da
       //Imprime na tela "Alo Mundo!"
+	3a
       escreval("Alo Mundo!")
+	5a
 fimalgoritmo

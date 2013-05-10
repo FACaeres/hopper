@@ -1,6 +1,9 @@
 %option yylineno
 %{
 #define ERRO -1
+int	*linhas_erro;	//Armazena o número das linhas que tiverem tokens inválidos
+int	indice=1;	//Índice atual do array "linhas_erro"
+int 	qtd_linhas;	//Quantidade de linhas do arquivo .alg
 %}
 
 T_ABS				(A|a)(B|b)(S|s)
@@ -206,19 +209,46 @@ T_BRANCO			[ \t\r]*
 {T_IDENTIFICADOR}	{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 {T_BRANCO}			{}
 \n					{}
-{T_INVALIDO}		{printf("TOKEN DESCONHECIDO ['%s'] - LINHA:%d \n",yytext, yylineno); return ERRO;}
-.					{printf("TOKEN DESCONHECIDO ['%s'] - LINHA:%d \n",yytext, yylineno); return ERRO;}
+{T_INVALIDO}		{printf("TOKEN DESCONHECIDO:\t%s\n",yytext); linhas_erro[indice]=yylineno; indice++;}
+.			{printf("TOKEN DESCONHECIDO:\t%s\n",yytext); linhas_erro[indice]=yylineno; indice++;}
 %%
 
 main(int argc, char *argv[])
 {
+	int i;	//Indice que irá percorrer o vetor de linhas inválidas
+	int c; 	//Guarda o caracter lido do arquivo
+
 	if (argc < 2)
 	{
 		printf ("Missing input file\n");exit(ERRO);
 	}
+
+	//Extrai a quantidade de linhas do algoritmo para que seja alocada memória para o vetor de linhas inválidas
+	yyin = fopen(argv[1], "r" );
+	while ( (c=fgetc(yyin)) != EOF ) {
+		if ( c == '\n' )
+			qtd_linhas++;
+		}
+
+	//Aloca a quantidade de memória suficiente para gravar as linha inválidas do algoritmo
+	linhas_erro = malloc(qtd_linhas*sizeof (int));
+
 	yyin = fopen(argv[1], "r" );
 	if(!yylex())
-		printf ("SEU ALGORITMO EH VALIDO!\n");
-	else
-		printf ("SEU ALGORITMO POSSUI ERROS! CORIJA E TENTE NOVAMENTE\n");
+	{
+		printf("\n---------------------------------------------------------------\n");
+			if (indice > 1)
+			{
+				printf("SEU ALGORITMO POSSUI TOKENS INVALIDOS NAS LINHAS :");
+				for(i=1;i<=indice-1;i++)
+					printf("\n%d", linhas_erro[i]);
+				free(linhas_erro);
+			} 
+			else
+			{
+				printf("SEU ALGORITMO NAO POSSUI TOKENS INVALIDOS PARABENS!");
+				free(linhas_erro);
+			}
+	}
 }
+

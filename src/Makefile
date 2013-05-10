@@ -5,7 +5,7 @@ SCRIPT_FILE=executa_teste
 
 .PHONY: clean
 
-compile: $(FILE).lex.c
+compile:$(FILE).lex.c
 	@ echo Compiling...
 	@ gcc -o $(FILE).lex.o $(FILE).lex.c -lfl
 	@ echo "done"
@@ -13,7 +13,7 @@ compile: $(FILE).lex.c
 $(FILE).lex.c:
 	@ flex -o $(FILE).lex.c $(FILE).lex
 	
-teste: compile
+teste: 	compile
 	bash ./$(SCRIPT_FILE).sh $(N)
 
 clean:
