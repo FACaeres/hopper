@@ -1,1 +1,11 @@
 Essa pasta contem o codigo fonte do compilador.
+limpar arquivos
+make clean
+
+compilar 
+ make 
+
+compilar e executar script que chama o analisador léxico
+make teste (valor n)
+
+valor n : Número total de arquivos a serem analisados
