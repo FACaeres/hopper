@@ -22,6 +22,7 @@ clean:
 	@ rm -rf *.c
 	@ rm -rf *.*~ 
 	@ rm -rf *~
+	@ rm -rf *.swp
 	@ rm -rf $(SAIDA_DIR)
 	@ mkdir $(SAIDA_DIR)
 	@ echo "done"

@@ -1,6 +1,6 @@
 FILE_EXEMPLOS=../exemplos 
 
-for i in {1..30}
+for ((i=1; i<=$1; i++))
 do
     ./hopper.o $FILE_EXEMPLOS/questao_$i.alg >> $FILE_EXEMPLOS/saida/questao_$i.txt
 done
