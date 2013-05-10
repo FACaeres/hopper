@@ -1,3 +1,4 @@
+%option yylineno
 %{
 
 %}
@@ -203,7 +204,8 @@ T_BRANCO			[ \t\r]*
 
 {T_IDENTIFICADOR}		{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 {T_BRANCO}			{}
-.				{printf("Token Desconhecido: ['%s']\n",yytext);}
+\n				{}
+.				{printf("TOKEN DESCONHECIDO ['%s'] - LINHA:%d \n",yytext, yylineno);}
 %%
 
 main(int argc, char *argv[])
