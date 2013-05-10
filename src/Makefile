@@ -5,16 +5,16 @@ SCRIPT_FILE=script
 
 .PHONY: clean
 
-compile:	$(FILE).lex.c
+compile: $(FILE).lex.c
 	@ echo Compiling...
-	@ gcc -o $(FILE).o $(FILE).lex.c -lfl
+	@ gcc -o $(FILE).lex.o $(FILE).lex.c -lfl
 	@ echo "done"
 
 $(FILE).lex.c:
 	@ flex -o $(FILE).lex.c $(FILE).lex
 	
 teste: compile
-	./$(FILE).o teste.txt
+	./$(FILE).lex.o teste.txt
 
 clean:
 	@ echo Cleaning...
