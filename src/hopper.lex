@@ -1,6 +1,6 @@
 %option yylineno
 %{
-
+#define ERRO -1
 %}
 
 T_ABS				(A|a)(B|b)(S|s)
@@ -205,15 +205,18 @@ T_BRANCO			[ \t\r]*
 {T_IDENTIFICADOR}		{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 {T_BRANCO}			{}
 \n				{}
-.				{printf("TOKEN DESCONHECIDO ['%s'] - LINHA:%d \n",yytext, yylineno);}
+.				{printf("TOKEN DESCONHECIDO ['%s'] - LINHA:%d \n",yytext, yylineno); return ERRO;}
 %%
 
 main(int argc, char *argv[])
 {
 	if (argc < 2)
 	{
-		printf ("Missing input file\n");exit(-1);
+		printf ("Missing input file\n");exit(ERRO);
 	}
 	yyin = fopen(argv[1], "r" );
-	yylex();
+	if(!yylex())
+		printf ("SEU ALGORITMO EH VALIDO!\n");
+	else
+		printf ("SEU ALGORITMO POSSUI ERROS! CORIJA E TENTE NOVAMENTE\n");
 }
