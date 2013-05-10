@@ -1,7 +1,7 @@
 FILE=hopper
 BIN_DIR=bin
 SAIDA_DIR=../exemplos/saida
-SCRIPT_FILE=script
+SCRIPT_FILE=executa_teste
 
 .PHONY: clean
 
@@ -14,7 +14,7 @@ $(FILE).lex.c:
 	@ flex -o $(FILE).lex.c $(FILE).lex
 	
 teste: compile
-	./$(FILE).lex.o teste.txt
+	bash ./$(SCRIPT_FILE).sh $(N)
 
 clean:
 	@ echo Cleaning...
