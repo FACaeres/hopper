@@ -14,7 +14,9 @@ $(FILE).lex.c:
 	@ flex -o $(FILE).lex.c $(FILE).lex
 	
 teste: 	compile
+	@ echo Executando testes.. 
 	bash ./$(SCRIPT_FILE).sh $(N)
+	@ echo Testes finalizados.
 
 clean:
 	@ echo Cleaning...

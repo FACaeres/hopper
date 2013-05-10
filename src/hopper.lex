@@ -209,8 +209,8 @@ T_BRANCO			[ \t\r]*
 {T_IDENTIFICADOR}	{printf("T_IDENTIFICADOR:\t%s\n", yytext);}
 {T_BRANCO}			{}
 \n					{}
-{T_INVALIDO}		{printf("TOKEN DESCONHECIDO:\t%s\n",yytext); linhas_erro[indice]=yylineno; indice++;}
-.			{printf("TOKEN DESCONHECIDO:\t%s\n",yytext); linhas_erro[indice]=yylineno; indice++;}
+{T_INVALIDO}		{printf("\n**Erro na linha %d, Token desconhecido:\t\"%s\"\n\n",yylineno, yytext); linhas_erro[indice]=yylineno; indice++;}
+.			{printf("\n**Erro na linha %d, Token desconhecido:\t\"%s\"\n\n", yylineno, yytext); linhas_erro[indice]=yylineno; indice++;}
 %%
 
 main(int argc, char *argv[])
@@ -237,18 +237,20 @@ main(int argc, char *argv[])
 	if(!yylex())
 	{
 		printf("\n---------------------------------------------------------------\n");
-			if (indice > 1)
-			{
-				printf("SEU ALGORITMO POSSUI TOKENS INVALIDOS NAS LINHAS :");
-				for(i=1;i<=indice-1;i++)
-					printf("\n%d", linhas_erro[i]);
-				free(linhas_erro);
-			} 
-			else
-			{
-				printf("SEU ALGORITMO NAO POSSUI TOKENS INVALIDOS PARABENS!");
-				free(linhas_erro);
-			}
+		
+		if (indice > 1)
+		{
+			printf("***Falhou: o algoritmo possui Tokens desconhecidos nas linhas: ");
+			
+			for(i=1;i<=indice-1;i++)
+				printf("%d, ", linhas_erro[i]);
+			free(linhas_erro);
+		} 
+		else
+		{
+			printf("***Sucesso: todos os tokens do algoritmo foram reconhecidos!");
+			free(linhas_erro);
+		}
 	}
 }
 
