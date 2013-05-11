@@ -101,8 +101,8 @@ T_COMENTARIO_UL 	"//".*(\n)?
 T_COMENTARIO_ML 	\{(.*|\n)[^\}]*\}
 T_NUMERO_INTEIRO	[0-9]+
 T_NUMERO_REAL		[0-9]+\.[0-9]+
-T_IDENTIFICADOR		[aA-zZ\_][aA-zZ0-9\_]*
-T_INVALIDO		[0-9][aA-zZ0-9]*
+T_IDENTIFICADOR		[a-zA-Z][a-zA-Z0-9]*
+T_INVALIDO		[0-9][a-zA-Z0-9]*
 T_STRING		\".*\"
 T_BRANCO		[ \t\r]*
 
@@ -205,6 +205,9 @@ T_BRANCO		[ \t\r]*
 ">="                	{printf("T_OPERADOR_MAIOR_IGUAL:  \t%s\n", yytext);}
 "("                 	{printf("T_PARENTESE_ESQ:	  \t%s\n", yytext);}
 ")"                 	{printf("T_PARENTESE_DIR:         \t%s\n", yytext);}
+"["                 	{printf("T_COLCHETE_ESQ:          \t%s\n", yytext);}
+"]"                 	{printf("T_COLCHETE_DIR:          \t%s\n", yytext);}
+"\.\."                 	{printf("T_VETOR_INTERVALO:       \t%s\n", yytext);}
 "<-"                	{printf("T_OPERADOR_ATRIBUICAO:   \t%s\n", yytext);}
 ","			{printf("T_IDENT_SEPARADOR:       \t%s\n", yytext);}
 ":"			{printf("T_TIPO_ATRIBUIDOR:       \t%s\n", yytext);}
