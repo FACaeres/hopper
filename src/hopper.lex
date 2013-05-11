@@ -101,7 +101,7 @@ T_COMENTARIO_UL 	"//".*(\n)?
 T_COMENTARIO_ML 	\{(.*|\n)[^\}]*\}
 T_NUMERO_INTEIRO	[0-9]+
 T_NUMERO_REAL		[0-9]+\.[0-9]+
-T_IDENTIFICADOR		[a-zA-Z][a-zA-Z0-9]*
+T_IDENTIFICADOR		[a-zA-Z\_][a-zA-Z0-9\_]*
 T_INVALIDO		[0-9][a-zA-Z0-9]*
 T_STRING		\".*\"
 T_BRANCO		[ \t\r]*
