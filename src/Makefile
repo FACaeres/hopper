@@ -15,7 +15,7 @@ $(FILE).lex.c:
 	
 teste: 	compile
 	@ echo Executando testes.. 
-	bash ./$(SCRIPT_FILE).sh $(N)
+	bash ./$(SCRIPT_FILE).sh 1 30
 	@ echo Testes finalizados.
 
 clean:
@@ -26,5 +26,4 @@ clean:
 	@ rm -rf *~
 	@ rm -rf *.swp
 	@ rm -rf $(SAIDA_DIR)
-	@ mkdir $(SAIDA_DIR)
 	@ echo "done"
