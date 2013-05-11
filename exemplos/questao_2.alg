@@ -6,9 +6,9 @@ algoritmo "02_numero_informado"
 // Data : 7/5/2013
 // Seção de Declarações 
 var
-   n : real
+   _n_ : real
 inicio
       escreval("Digite um Número: ")
-      leia(n)
-      escreval("O número informado foi ", n)
+      leia(_n_)
+      escreval("O número informado foi ", _n_)
 fimalgoritmo
