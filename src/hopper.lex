@@ -19,6 +19,7 @@ T_ASC			(A|a)(S|s)(C|c)
 T_ATE			(A|a)(T|t)(E|e)
 T_CARAC			(C|c)(A|a)(R|r)(A|a)(C|c)
 T_CARACPNUM		(C|c)(A|a)(R|r)(A|a)(C|c)(P|p)(N|n)(U|u)(M|m)
+T_CARACTER		(C|c)(A|a)(R|r)(A|a)(C|c)(T|t)(E|e)(R|r)
 T_CARACTERE		(C|c)(A|a)(R|r)(A|a)(C|c)(T|t)(E|e)(R|r)(E|e)
 T_CASO			(C|c)(A|a)(S|s)(O|o)
 T_COMPR			(C|c)(O|o)(M|m)(P|p)(R|r)
@@ -113,6 +114,7 @@ T_BRANCO		[ \t\r]+
 {T_ALGORITMO}		return T_ALGORITMO;
 {T_CARAC}		return T_CARAC;
 {T_CARACPNUM}		return T_CARACPNUM;
+{T_CARACTER}            return T_CARACTERE;
 {T_CARACTERE}		return T_CARACTERE;
 {T_CASO}		return T_CASO;
 {T_COMPR}		return T_COMPR;
@@ -179,8 +181,8 @@ T_BRANCO		[ \t\r]+
 {T_VAR}			return T_VAR;
 {T_VETOR}		return T_VETOR;
 {T_VERDADEIRO}		return T_VERDADEIRO;
-{T_COMENTARIO_UL}	{} 
-{T_COMENTARIO_ML}	{} 
+{T_COMENTARIO_UL}	return T_FIM_COMANDO; 
+{T_COMENTARIO_ML}	return T_FIM_COMANDO; 
 "+"                 	return T_OPERADOR_SOMA;
 "-"                 	return T_OPERADOR_SUBTRACAO;
 "*"                 	return T_OPERADOR_MULTIPLICACAO;

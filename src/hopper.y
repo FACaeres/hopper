@@ -64,7 +64,8 @@ Input:
 ;
 
 Algoritmo:
-	BlocoCabecalho QuebraComando BlocoDeclaracoes QuebraComando BlocoComando
+	BlocoCabecalho BlocoDeclaracoes BlocoComando
+	| BlocoCabecalho BlocoComando
 ;
 
 BlocoCabecalho:
@@ -78,6 +79,7 @@ BlocoDeclaracoes:
 ListaDeclaracoes:
 	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
 	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+;
 
 ListaVariaveis:
 	T_IDENTIFICADOR
@@ -87,6 +89,7 @@ ListaVariaveis:
 TipoVariavel:
 	T_REAL
 	| T_INTEIRO
+	| T_CARACTERE
 ;
 
 BlocoComando:
@@ -102,10 +105,18 @@ Comando:
 	Leia FimComando
 	| Escreva FimComando
 	| Atribuicao FimComando
+	| BlocoSe FimComando
+	| BlocoEscolha FimComando
+	| T_INTERROMPA FimComando	
 ;
 
 Leia:
-	T_LEIA T_PARENTESE_ESQ T_IDENTIFICADOR T_PARENTESE_DIR
+	T_LEIA T_PARENTESE_ESQ ListaLeia T_PARENTESE_DIR
+;
+
+ListaLeia:
+	T_IDENTIFICADOR
+	| ListaLeia T_IDENT_SEPARADOR T_IDENTIFICADOR
 ;
 
 Escreva:
@@ -114,9 +125,8 @@ Escreva:
 ;
 
 ConteudoEscreva:
-	T_IDENTIFICADOR OpcaoCasasDecimais
-	| T_STRING
-	| ConteudoEscreva T_IDENT_SEPARADOR ConteudoEscreva
+	Expr OpcaoCasasDecimais
+	| ConteudoEscreva T_IDENT_SEPARADOR Expr OpcaoCasasDecimais
 ;
 
 OpcaoCasasDecimais:
@@ -125,16 +135,44 @@ OpcaoCasasDecimais:
 	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO 
 ;
 
+BlocoSe:
+	T_SE Expr T_ENTAO FimComando Comandos T_FIMSE
+	| T_SE Expr T_ENTAO FimComando Comandos T_SENAO FimComando Comandos T_FIMSE
+;
+
+BlocoEscolha:
+	T_ESCOLHA T_IDENTIFICADOR FimComando ListaCasos T_FIMESCOLHA
+	| T_ESCOLHA T_IDENTIFICADOR FimComando ListaCasos OutroCaso T_FIMESCOLHA
+;
+
+ListaCasos:
+	Caso
+	| ListaCasos Caso
+;
+
+Caso:
+	T_CASO Expr FimComando Comandos
+;
+
+OutroCaso:
+	T_OUTROCASO FimComando Comandos
+;
+
 Atribuicao:
 	T_IDENTIFICADOR T_OPERADOR_ATRIBUICAO Expr
+;
 
 Expr:
 	T_IDENTIFICADOR
 	| T_NUMERO_INTEIRO		
 	| T_NUMERO_REAL
+	| T_PI
+	| T_STRING
 	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| Expr Add_op Expr
 	| Expr Mult_op Expr
+	| Expr Bool_op Expr
+	| Expr Comp_op Expr
 	| T_OPERADOR_SUBTRACAO Expr %prec NEG
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
 	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
@@ -150,7 +188,21 @@ Mult_op:
 	| T_OPERADOR_DIVISAO
 ;
 
-		
+Bool_op:
+	T_OP_LOGICO_E
+	| T_OP_LOGICO_OU
+	| T_OP_LOGICO_XOU
+;
+
+Comp_op:
+	T_OPERADOR_IGUAL
+	| T_OPERADOR_DIFERENTE
+	| T_OPERADOR_MENOR
+	| T_OPERADOR_MAIOR
+	| T_OPERADOR_MENOR_IGUAL
+	| T_OPERADOR_MAIOR_IGUAL
+;
+
 %%
 
 extern int 	yylineno;	

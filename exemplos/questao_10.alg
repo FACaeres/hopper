@@ -15,4 +15,3 @@ leia(celsius)
 farenheit <- (celsius*9/5) +32
 escreval("O valor  ",celsius," em Celsius,equivale a ",farenheit," em graus Farenheit ")
 fimalgoritmo
-fimalgoritmo

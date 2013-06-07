@@ -3,8 +3,6 @@ algoritmo "01_Alo Mundo"
 // Autor :        Williams Araújo
 // Data : 7/5/2013
 // Seção de Declarações 
-var
-
 inicio
 	
       //Imprime na tela "Alo Mundo!"
