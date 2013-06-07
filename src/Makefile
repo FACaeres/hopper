@@ -17,7 +17,7 @@ $(FILE).lex.c:
 teste: 	compile
 	@ echo Executando testes.. 
 	@ mkdir -p $(SAIDA_DIR)
-	bash ./$(SCRIPT_FILE).sh 1 19
+	bash ./$(SCRIPT_FILE).sh 1 30
 	@ echo Testes finalizados.
 
 clean:

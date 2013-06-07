@@ -36,6 +36,12 @@
 %token 	T_NUMERO_INTEIRO T_NUMERO_REAL T_OP_LOGICO_E T_OP_LOGICO_XOU  
 %token 	T_OP_LOGICO_NAO T_OP_LOGICO_OU T_INVALIDO
 
+%left 	T_OP_LOGICO_OU
+%left 	T_OP_LOGICO_XOU
+%left 	T_OP_LOGICO_E
+%left 	T_OP_LOGICO_NAO
+%left 	IGUAL DIFERENTE MENOR MENOR_IGUAL MAIOR MAIOR_IGUAL
+%left 	T_OPERADOR_DIVISAO_RESTO
 %left 	T_OPERADOR_SOMA T_OPERADOR_SUBTRACAO
 %left 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO
 %left 	NEG
@@ -107,7 +113,10 @@ Comando:
 	| Atribuicao FimComando
 	| BlocoSe FimComando
 	| BlocoEscolha FimComando
-	| T_INTERROMPA FimComando	
+	| BlocoPara FimComando
+	| BlocoEnquanto FimComando
+	| BlocoRepita FimComando
+	| T_INTERROMPA FimComando
 ;
 
 Leia:
@@ -158,6 +167,19 @@ OutroCaso:
 	T_OUTROCASO FimComando Comandos
 ;
 
+BlocoPara:
+	T_PARA Expr T_DE Expr T_ATE Expr T_FACA FimComando Comandos T_FIMPARA
+	| T_PARA Expr T_DE Expr T_ATE Expr T_PASSO Expr T_FACA FimComando Comandos T_FIMPARA
+;
+
+BlocoEnquanto:
+	T_ENQUANTO Expr T_FACA FimComando Comandos T_FIMENQUANTO
+;
+
+BlocoRepita:
+	T_REPITA FimComando Comandos T_ATE Expr
+;
+
 Atribuicao:
 	T_IDENTIFICADOR T_OPERADOR_ATRIBUICAO Expr
 ;
@@ -169,11 +191,13 @@ Expr:
 	| T_PI
 	| T_STRING
 	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| Expr T_OPERADOR_DIVISAO_RESTO Expr
 	| Expr Add_op Expr
 	| Expr Mult_op Expr
 	| Expr Bool_op Expr
 	| Expr Comp_op Expr
 	| T_OPERADOR_SUBTRACAO Expr %prec NEG
+	| T_OP_LOGICO_NAO Expr
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
 	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 ;
