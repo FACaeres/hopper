@@ -6,8 +6,9 @@ SCRIPT_FILE=executa_teste
 .PHONY: clean
 
 compile:$(FILE).lex.c
-	@ echo Compiling...
-	@ gcc -o $(FILE).lex.o $(FILE).lex.c -lfl
+	@ bison -d $(FILE).y
+	@ flex  -o $(FILE).flex.c $(FILE).lex
+	@ gcc  -o $(FILE).o $(FILE).lex.c $(FILE).tab.c -lfl -lm
 	@ echo "done"
 
 $(FILE).lex.c:
@@ -22,6 +23,7 @@ teste: 	compile
 clean:
 	@ echo Cleaning...
 	@ rm -rf *.o
+	@ rm -rf *.tab.h
 	@ rm -rf *.c
 	@ rm -rf *.*~ 
 	@ rm -rf *~

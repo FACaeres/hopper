@@ -1,18 +1,11 @@
 %option yylineno
 %{
+#define YYTYPE double
+#include "hopper.tab.h"
 #include <stdio.h>
-#include <string.h>
 
 #define ERRO -1
-struct par_linha_token
-{
-  char *token;
-  int linha;
-}par_linha_token;
 
-struct par_linha_token	*linhas_erro;	//Armazena o número das linhas que tiverem tokens inválidos
-int	indice=1;	//Índice atual do array "linhas_erro"
-int 	qtd_linhas;	//Quantidade de linhas do arquivo .alg
 %}
 
 T_ABS			(A|a)(B|b)(S|s)
@@ -47,6 +40,7 @@ T_EXP			(E|e)(X|x)(P|p)
 T_FACA			(F|f)(A|a)(C|c)(A|a)
 T_FALSO			(F|f)(A|a)(L|l)(S|s)(O|o)
 T_FIMALGORITMO		(F|f)(I|i)(M|m)(A|a)(L|l)(G|g)(O|o)(R|r)(I|i)(T|t)(M|m)(O|o)
+T_FIM_COMANDO           [\n]
 T_FIMENQUANTO		(F|f)(I|i)(M|m)(E|e)(N|n)(Q|q)(U|u)(A|a)(N|n)(T|t)(O|o)
 T_FIMESCOLHA		(F|f)(I|i)(M|m)(E|e)(S|s)(C|c)(O|o)(L|l)(H|h)(A|a)
 T_FIMFUNCAO		(F|f)(I|i)(M|m)(F|f)(U|u)(N|n)(C|c)(A|a)(O|o)
@@ -104,175 +98,119 @@ T_NUMERO_REAL		[0-9]+\.[0-9]+
 T_IDENTIFICADOR		[a-zA-Z\_][a-zA-Z0-9\_]*
 T_INVALIDO		[0-9][a-zA-Z0-9]*
 T_STRING		\".*\"
-T_BRANCO		[ \t\r]*
-
+T_BRANCO		[ \t\r]+
 
 %%
-
-{T_STRING}		{printf("T_STRING:                \t%s\n", yytext);}
-{T_ABS}			{printf("T_ABS:                   \t%s\n", yytext);}
-{T_ALEATORIO}		{printf("T_ALEATORIO:             \t%s\n", yytext);}
-{T_ARCCOS}		{printf("T_ARCCOS:                \t%s\n", yytext);}
-{T_ARCSEN}		{printf("T_ARCSEN:                \t%s\n", yytext);}
-{T_ARCTAN}		{printf("T_ARCTAN:                \t%s\n", yytext);}
-{T_ATE}			{printf("T_ATE:                   \t%s\n", yytext);}
-{T_ASC}			{printf("T_ASC:                   \t%s\n", yytext);}
-{T_ARQUIVO}		{printf("T_ARQUIVO:               \t%s\n", yytext);}
-{T_ALGORITMO}		{printf("T_ALGORITMO:             \t%s\n", yytext);}
-{T_CARAC}		{printf("T_CARAC:                 \t%s\n", yytext);}
-{T_CARACPNUM}		{printf("T_CARACPNUM:             \t%s\n", yytext);}
-{T_CARACTERE}		{printf("T_CARACTERE:             \t%s\n", yytext);}
-{T_CASO}		{printf("T_CASO:                  \t%s\n", yytext);}
-{T_COMPR}		{printf("T_COMPR:                 \t%s\n", yytext);}
-{T_COPIA}		{printf("T_COPIA:                 \t%s\n", yytext);}
-{T_COS}			{printf("T_COS:                   \t%s\n", yytext);}
-{T_COTAN}		{printf("T_COTAN:                 \t%s\n", yytext);}
-{T_CRONOMETRO}		{printf("T_CRONOMETRO: 	          \t%s\n", yytext);}
-{T_DE}			{printf("T_DE:                    \t%s\n", yytext);}
-{T_DEBUG}		{printf("T_DEBUG:                 \t%s\n", yytext);}
-{T_DECLARE}		{printf("T_DECLARE:               \t%s\n", yytext);}
-{T_ECO}			{printf("T_ECO:                   \t%s\n", yytext);}
-{T_ENQUANTO}		{printf("T_ENQUANTO:              \t%s\n", yytext);}
-{T_ENTAO}		{printf("T_ENTAO:                 \t%s\n", yytext);}
-{T_ESCOLHA}		{printf("T_ESCOLHA:               \t%s\n", yytext);}
-{T_ESCREVA}		{printf("T_ESCREVA:               \t%s\n", yytext);}
-{T_ESCREVAL}		{printf("T_ESCREVAL:              \t%s\n", yytext);}
-{T_EXP}			{printf("T_EXP:                   \t%s\n", yytext);}
-{T_FACA}		{printf("T_FACA:                  \t%s\n", yytext);}
-{T_FALSO}		{printf("T_FALSO:                 \t%s\n", yytext);}
-{T_FIMALGORITMO}	{printf("T_FIMALGORITMO:          \t%s\n", yytext);}
-{T_FIMENQUANTO}		{printf("T_FIMENQUANTO:           \t%s\n", yytext);}
-{T_FIMESCOLHA}		{printf("T_FIMESCOLHA:            \t%s\n", yytext);}
-{T_FIMFUNCAO}		{printf("T_FIMFUNCAO:             \t%s\n", yytext);}
-{T_FIMPARA}		{printf("T_FIMPARA:               \t%s\n", yytext);}
-{T_FIMPROCEDIMENTO}	{printf("T_FIMPROCEDIMENTO:       \t%s\n", yytext);}
-{T_FIMREPITA}		{printf("T_FIMREPITA:             \t%s\n", yytext);}
-{T_FIMSE}		{printf("T_FIMSE:                 \t%s\n", yytext);}
-{T_FUNCAO}		{printf("T_FUNCAO:                \t%s\n", yytext);}
-{T_GRAUPRAD}		{printf("T_GRAUPRAD               \t%s\n", yytext);}
-{T_INICIO}		{printf("T_INICIO:                \t%s\n", yytext);}
-{T_INT}			{printf("T_INT:                   \t%s\n", yytext);}
-{T_INTEIRO}		{printf("T_INTEIRO:               \t%s\n", yytext);}
-{T_INTERROMPA}		{printf("T_INTERROMPA:            \t%s\n", yytext);}
-{T_LEIA}		{printf("T_LEIA:                  \t%s\n", yytext);}
-{T_LIMPATELA}		{printf("T_LIMPATELA:             \t%s\n", yytext);}
-{T_LITERAL}		{printf("T_LITERAL:               \t%s\n", yytext);}
-{T_LOG}			{printf("T_LOG:                   \t%s\n", yytext);}
-{T_LOGICO}		{printf("T_LOGICO:                \t%s\n", yytext);}
-{T_MAIUSC}		{printf("T_MAIUSC:                \t%s\n", yytext);}
-{T_MENSAGEM}		{printf("T_MENSAGEM:              \t%s\n", yytext);}
-{T_MINUSC}		{printf("T_MINUSC:                \t%s\n", yytext);}
-{T_NUMPCARAC}		{printf("T_NUMPCARAC:             \t%s\n", yytext);}
-{T_NUMERICO}		{printf("T_NUMERICO:              \t%s\n", yytext);}
-{T_OUTROCASO}		{printf("T_OUTROCASO:             \t%s\n", yytext);}
-{T_PARA}		{printf("T_PARA:                  \t%s\n", yytext);}
-{T_PASSO}		{printf("T_PASSO:                 \t%s\n", yytext);}
-{T_PAUSA}		{printf("T_PAUSA:                 \t%s\n", yytext);}
-{T_PI}			{printf("T_PI:                    \t%s\n", yytext);}
-{T_POS}			{printf("T_POS:                   \t%s\n", yytext);}
-{T_PROCEDIMENTO}	{printf("T_PROCEDIMENTO:          \t%s\n", yytext);}
-{T_QUAD}		{printf("T_QUAD:        	  \t%s\n", yytext);}
-{T_RADPGRAU}		{printf("T_RADPGRAU:    	  \t%s\n", yytext);}
-{T_RAIZQ}		{printf("T_RAIZQ:       	  \t%s\n", yytext);}
-{T_RAND}		{printf("T_RAND:                  \t%s\n", yytext);}
-{T_RANDI}		{printf("T_RANDI:                 \t%s\n", yytext);}
-{T_REAL}		{printf("T_REAL:                  \t%s\n", yytext);}
-{T_REPITA}		{printf("T_REPITA:       	  \t%s\n", yytext);}
-{T_RETONRE}		{printf("T_RETORNE:      	  \t%s\n", yytext);}
-{T_SE}			{printf("T_SE:           	  \t%s\n", yytext);}
-{T_SEN}			{printf("T_SEN:          	  \t%s\n", yytext);}
-{T_SENAO}		{printf("T_SENAO:        	  \t%s\n", yytext);}
-{T_TAN}			{printf("T_TAN:          	  \t%s\n", yytext);}
-{T_TIMER}		{printf("T_TIMER:        	  \t%s\n", yytext);}
-{T_VAR}			{printf("T_VAR:          	  \t%s\n", yytext);}
-{T_VETOR}		{printf("T_VETOR:        	  \t%s\n", yytext);}
-{T_VERDADEIRO}		{printf("T_VERDADEIRO:   	  \t%s\n", yytext);}
-{T_COMENTARIO_UL}	{printf("T_COMENTARIO_UL:	  \t%s\n",yytext);} 
-{T_COMENTARIO_ML}	{printf("T_COMENTARIO_ML: 	  \t%s\n",yytext);} 
-"+"                 	{printf("T_OPERADOR_SOMA: 	  \t%s\n", yytext);}
-"-"                 	{printf("T_OPERADOR_SUBTRACAO:    \t%s\n", yytext);}
-"*"                 	{printf("T_OPERADOR_MULTIPLICACAO:\t%s\n", yytext);}
-"/"                 	{printf("T_OPERADOR_DIVISAO:      \t%s\n", yytext);}
-"\\"                	{printf("T_OPERADOR_DIVISAO_INT:  \t%s\n", yytext);}
-"\^"                	{printf("T_OPERADOR_EXPONENCIACAO:\t%s\n", yytext);}
-"%"                 	{printf("T_OPERADOR_DIVISAO_RESTO:\t%s\n", yytext);}
-{T_MOD}			{printf("T_OPERADOR_DIVISAO_RESTO:\t%s\n", yytext);}
-"="                 	{printf("T_OPERADOR_IGUAL:        \t%s\n", yytext);}
-"<>"                	{printf("T_OPERADOR_DIFERENTE:    \t%s\n", yytext);}
-"<"                 	{printf("T_OPERADOR_MENOR:        \t%s\n", yytext);}
-">"                 	{printf("T_OPERADOR_MAIOR:        \t%s\n", yytext);}
-"<="               	{printf("T_OPERADOR_MENOR_IGUAL:  \t%s\n", yytext);}
-">="                	{printf("T_OPERADOR_MAIOR_IGUAL:  \t%s\n", yytext);}
-"("                 	{printf("T_PARENTESE_ESQ:	  \t%s\n", yytext);}
-")"                 	{printf("T_PARENTESE_DIR:         \t%s\n", yytext);}
-"["                 	{printf("T_COLCHETE_ESQ:          \t%s\n", yytext);}
-"]"                 	{printf("T_COLCHETE_DIR:          \t%s\n", yytext);}
-"\.\."                 	{printf("T_VETOR_INTERVALO:       \t%s\n", yytext);}
-"<-"                	{printf("T_OPERADOR_ATRIBUICAO:   \t%s\n", yytext);}
-","			{printf("T_IDENT_SEPARADOR:       \t%s\n", yytext);}
-":"			{printf("T_TIPO_ATRIBUIDOR:       \t%s\n", yytext);}
-{T_NUMERO_INTEIRO}	{printf("T_NUMERO_INTEIRO:        \t%s\n", yytext);}
-{T_NUMERO_REAL}		{printf("T_NUMERO_REAL:           \t%s\n", yytext);}
-{T_E}			{printf("T_OP_LOGICO_E:           \t%s\n", yytext);}
-{T_XOU}			{printf("T_OP_LOGICO_XOU:         \t%s\n", yytext);}
-{T_NAO}			{printf("T_OP_LOGICO_NAO:         \t%s\n", yytext);}
-{T_OU}			{printf("T_OP_LOGICO_OU:          \t%s\n", yytext);}
-
-{T_IDENTIFICADOR}	{printf("T_IDENTIFICADOR:         \t%s\n", yytext);}
+{T_STRING}		return T_STRING;
+{T_ABS}			return T_ABS;
+{T_ALEATORIO}		return T_ALEATORIO;
+{T_ARCCOS}		return T_ARCCOS;
+{T_ARCSEN}		return T_ARCSEN;
+{T_ARCTAN}		return T_ARCTAN;
+{T_ATE}			return T_ATE;
+{T_ASC}			return T_ASC;
+{T_ARQUIVO}		return T_ARQUIVO;
+{T_ALGORITMO}		return T_ALGORITMO;
+{T_CARAC}		return T_CARAC;
+{T_CARACPNUM}		return T_CARACPNUM;
+{T_CARACTERE}		return T_CARACTERE;
+{T_CASO}		return T_CASO;
+{T_COMPR}		return T_COMPR;
+{T_COPIA}		return T_COPIA;
+{T_COS}			return T_COS;
+{T_COTAN}		return T_COTAN;
+{T_CRONOMETRO}		return T_CRONOMETRO;
+{T_DE}			return T_DE;       
+{T_DEBUG}		return T_DEBUG;    
+{T_DECLARE}		return T_DECLARE;  
+{T_ECO}			return T_ECO;
+{T_ENQUANTO}		return T_ENQUANTO;
+{T_ENTAO}		return T_ENTAO;  
+{T_ESCOLHA}		return T_ESCOLHA;
+{T_ESCREVA}		return T_ESCREVA;
+{T_ESCREVAL}		return T_ESCREVAL;
+{T_EXP}			return T_EXP;
+{T_FACA}		return T_FACA;   
+{T_FALSO}		return T_FALSO;                 
+{T_FIMALGORITMO}	return T_FIMALGORITMO;         
+{T_FIMENQUANTO}		return T_FIMENQUANTO;          
+{T_FIMESCOLHA}		return T_FIMESCOLHA;          
+{T_FIMFUNCAO}		return T_FIMFUNCAO;          
+{T_FIMPARA}		return T_FIMPARA;           
+{T_FIMPROCEDIMENTO}	return T_FIMPROCEDIMENTO;  
+{T_FIMREPITA}		return T_FIMREPITA;       
+{T_FIMSE}		return T_FIMSE;          
+{T_FUNCAO}		return T_FUNCAO;       
+{T_GRAUPRAD}		return T_GRAUPRAD;       
+{T_INICIO}		return T_INICIO;      
+{T_INT}			return T_INT;
+{T_INTEIRO}		return T_INTEIRO;  
+{T_INTERROMPA}		return T_INTERROMPA;
+{T_LEIA}		return T_LEIA;     
+{T_LIMPATELA}		return T_LIMPATELA; 
+{T_LITERAL}		return T_LITERAL;  
+{T_LOG}			return T_LOG;
+{T_LOGICO}		return T_LOGICO;  
+{T_MAIUSC}		return T_MAIUSC; 
+{T_MENSAGEM}		return T_MENSAGEM;
+{T_MINUSC}		return T_MINUSC; 
+{T_NUMPCARAC}		return T_NUMPCARAC;
+{T_NUMERICO}		return T_NUMERICO; 
+{T_OUTROCASO}		return T_OUTROCASO;
+{T_PARA}		return T_PARA;     
+{T_PASSO}		return T_PASSO;                 
+{T_PAUSA}		return T_PAUSA;                 
+{T_PI}			return T_PI;                    
+{T_POS}			return T_POS;
+{T_PROCEDIMENTO}	return T_PROCEDIMENTO;
+{T_QUAD}		return T_QUAD;
+{T_RADPGRAU}		return T_RADPGRAU;
+{T_RAIZQ}		return T_RAIZQ;
+{T_RAND}		return T_RAND;
+{T_RANDI}		return T_RANDI;
+{T_REAL}		return T_REAL;
+{T_REPITA}		return T_REPITA;
+{T_RETONRE}		return T_RETORNE;
+{T_SE}			return T_SE;
+{T_SEN}			return T_SEN;
+{T_SENAO}		return T_SENAO;
+{T_TAN}			return T_TAN;
+{T_TIMER}		return T_TIMER;
+{T_VAR}			return T_VAR;
+{T_VETOR}		return T_VETOR;
+{T_VERDADEIRO}		return T_VERDADEIRO;
+{T_COMENTARIO_UL}	{} 
+{T_COMENTARIO_ML}	{} 
+"+"                 	return T_OPERADOR_SOMA;
+"-"                 	return T_OPERADOR_SUBTRACAO;
+"*"                 	return T_OPERADOR_MULTIPLICACAO;
+"/"                 	return T_OPERADOR_DIVISAO;
+"\\"                	return T_OPERADOR_DIVISAO_INT;
+"\^"                	return T_OPERADOR_EXPONENCIACAO;
+"%"                 	return T_OPERADOR_DIVISAO_RESTO;
+{T_MOD}			return T_OPERADOR_DIVISAO_RESTO;
+"="                 	return T_OPERADOR_IGUAL;
+"<>"                	return T_OPERADOR_DIFERENTE;
+"<"                 	return T_OPERADOR_MENOR;
+">"                 	return T_OPERADOR_MAIOR;
+"<="               	return T_OPERADOR_MENOR_IGUAL;
+">="                	return T_OPERADOR_MAIOR_IGUAL;
+"("                 	return T_PARENTESE_ESQ;
+")"                 	return T_PARENTESE_DIR;
+"["                 	return T_COLCHETE_ESQ;
+"]"                 	return T_COLCHETE_DIR;
+"\.\."                 	return T_VETOR_INTERVALO;
+"<-"                	return T_OPERADOR_ATRIBUICAO;
+","			return T_IDENT_SEPARADOR;
+":"			return T_TIPO_ATRIBUIDOR;
+{T_NUMERO_INTEIRO}	return T_NUMERO_INTEIRO;
+{T_NUMERO_REAL}		return T_NUMERO_REAL;
+{T_E}			return T_OP_LOGICO_E;
+{T_XOU}			return T_OP_LOGICO_XOU;
+{T_NAO}			return T_OP_LOGICO_NAO;
+{T_OU}			return T_OP_LOGICO_OU;
+{T_IDENTIFICADOR}	return T_IDENTIFICADOR;
 {T_BRANCO}		{}
-\n			{}
-{T_INVALIDO}		{
-			  struct par_linha_token token_invalido;
-			  token_invalido.token=malloc(sizeof(yytext));
-			  memcpy(token_invalido.token, yytext, sizeof(yytext));
-			  memcpy(&token_invalido.linha, &yylineno, sizeof(int));
-			  linhas_erro[indice]=token_invalido; 
-			  indice++;
-			}
-.			{
-			  struct par_linha_token token_invalido;
-			  token_invalido.token=malloc(sizeof(yytext));
-			  memcpy(token_invalido.token, yytext, sizeof(yytext));
-			  memcpy(&token_invalido.linha, &yylineno, sizeof(int));
-			  linhas_erro[indice]=token_invalido; 
-			  indice++;
-			}
-%%
-
-main(int argc, char *argv[])
-{
-	int i;	//Indice que irá percorrer o vetor de linhas inválidas
-	int c; 	//Guarda o caracter lido do arquivo
-
-	if (argc < 2)
-	{
-		printf ("Missing input file\n");exit(ERRO);
-	}
-
-	//Extrai a quantidade de linhas do algoritmo para que seja alocada memória para o vetor de linhas inválidas
-	yyin = fopen(argv[1], "r" );
-	while ( (c=fgetc(yyin)) != EOF ) {
-		if ( c == '\n' )
-			qtd_linhas++;
-		}
-
-	//Aloca a quantidade de memória suficiente para gravar as linha inválidas do algoritmo
-	linhas_erro = malloc(qtd_linhas*sizeof (par_linha_token));
-
-	yyin = fopen(argv[1], "r" );
-	if(!yylex())
-	{
-		printf("\n---------------------------------------------------------------\n");
-		if (indice > 1)
-		{
-			for(i=1;i<=indice-1;i++)
-				printf("Token desconhecido [%s] na linha: %d\n", linhas_erro[i].token, linhas_erro[i].linha);
-			free(linhas_erro);
-		} 
-		else
-		{
-			printf("***Sucesso: todos os tokens do algoritmo foram reconhecidos!\n");
-			free(linhas_erro);
-		}
-	}
-}
+{T_FIM_COMANDO}		return T_FIM_COMANDO;
+{T_INVALIDO}		return T_INVALIDO;
+.			return ERRO;
