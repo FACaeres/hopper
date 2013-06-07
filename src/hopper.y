@@ -70,8 +70,7 @@ Input:
 ;
 
 Algoritmo:
-	BlocoCabecalho BlocoDeclaracoes BlocoComando
-	| BlocoCabecalho BlocoComando
+	BlocoCabecalho BlocoDeclaracoes BlocoFuncoes BlocoComando
 ;
 
 BlocoCabecalho:
@@ -79,7 +78,8 @@ BlocoCabecalho:
 ;
 
 BlocoDeclaracoes:
-	T_VAR QuebraComando ListaDeclaracoes
+
+	| T_VAR QuebraComando ListaDeclaracoes
 ;
 
 ListaDeclaracoes:
@@ -96,6 +96,27 @@ TipoVariavel:
 	T_REAL
 	| T_INTEIRO
 	| T_CARACTERE
+;
+
+BlocoFuncoes:
+	
+	| BlocoFuncao
+	| BlocoProcedimento
+	| BlocoFuncoes BlocoFuncao
+	| BlocoFuncoes BlocoProcedimento
+;
+
+BlocoFuncao:
+	T_FUNCAO T_IDENTIFICADOR T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando
+;
+
+BlocoProcedimento:
+	T_PROCEDIMENTO T_IDENTIFICADOR T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR FimComando BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMPROCEDIMENTO FimComando
+;
+
+ListaParametros:
+	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
+	| ListaParametros T_IDENT_SEPARADOR ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
 ;
 
 BlocoComando:
@@ -116,6 +137,8 @@ Comando:
 	| BlocoPara FimComando
 	| BlocoEnquanto FimComando
 	| BlocoRepita FimComando
+	| T_IDENTIFICADOR T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
+	| T_RETORNE Expr FimComando
 	| T_INTERROMPA FimComando
 ;
 
@@ -200,6 +223,15 @@ Expr:
 	| T_OP_LOGICO_NAO Expr
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
 	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_MAIUSC T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_COMPR T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_IDENTIFICADOR T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+	| T_COPIA T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+;
+
+List_Expr:
+	Expr
+	| List_Expr T_IDENT_SEPARADOR Expr
 ;
 
 Add_op:
