@@ -1,4 +1,4 @@
-algoritmo "imprime_nesima_01"
+algoritmo "imprime_nesima_02"
 
 var
    n : inteiro
@@ -9,7 +9,7 @@ var
 inicio
       para i de 1 ate n faca
        para j de 1 ate i faca
-           escreva(i)
+           escreva(j)
        fimpara
        escreval(" ")
       fimpara
