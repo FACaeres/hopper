@@ -20,7 +20,7 @@
 
 %token 	T_ABS T_ALEATORIO T_ARCCOS T_ARCSEN T_ARCTAN T_ATE T_ASC T_ARQUIVO T_CARAC     
 %token 	T_CARACPNUM T_CARACTERE T_CASO T_COMPR T_COPIA T_COS T_COTAN T_CRONOMETRO     
-%token 	T_DE T_DEBUG 
+%token 	T_DE T_DEBUG
 
 %token 	T_DECLARE T_ECO T_ENQUANTO T_ENTAO T_ESCOLHA T_EXP T_FACA  
 %token 	T_FALSO T_FIMENQUANTO T_FIMESCOLHA T_FIMFUNCAO T_FIMPARA  
@@ -34,8 +34,7 @@
 %token 	T_OPERADOR_DIFERENTE T_OPERADOR_MENOR T_OPERADOR_MAIOR T_OPERADOR_MENOR_IGUAL  
 %token 	T_OPERADOR_MAIOR_IGUAL T_COLCHETE_ESQ T_COLCHETE_DIR T_VETOR_INTERVALO  
 %token 	T_NUMERO_INTEIRO T_NUMERO_REAL T_OP_LOGICO_E T_OP_LOGICO_XOU  
-%token 	T_OP_LOGICO_NAO T_OP_LOGICO_OU T_INVALIDO   
-
+%token 	T_OP_LOGICO_NAO T_OP_LOGICO_OU T_INVALIDO
 
 %left 	T_OPERADOR_SOMA T_OPERADOR_SUBTRACAO
 %left 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO
@@ -45,13 +44,27 @@
 %start 	Input
 %%
 
+//Definição de Quebra de linha
+//-----------------------------------------------
+QuebraComando:
+	
+	| FimComando
+;
+
+FimComando:
+	T_FIM_COMANDO
+	| FimComando T_FIM_COMANDO
+;
+
+//Inicio da análise sintática
+//-----------------------------------------------
+
 Input:
-	  
-	| Input Algoritmo
+	QuebraComando Algoritmo
 ;
 
 Algoritmo:
-	BlocoCabecalho BlocoDeclaracoes BlocoComando 
+	BlocoCabecalho QuebraComando BlocoDeclaracoes QuebraComando BlocoComando
 ;
 
 BlocoCabecalho:
@@ -59,13 +72,12 @@ BlocoCabecalho:
 ;
 
 BlocoDeclaracoes:
-	T_VAR QuebraComando ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	T_VAR QuebraComando ListaDeclaracoes
 ;
 
-QuebraComando:
-	
-	| FimComando
-;
+ListaDeclaracoes:
+	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
 
 ListaVariaveis:
 	T_IDENTIFICADOR
@@ -90,11 +102,6 @@ Comando:
 	Leia FimComando
 	| Escreva FimComando
 	| Atribuicao FimComando
-;
-
-FimComando:
-	T_FIM_COMANDO
-	| FimComando T_FIM_COMANDO
 ;
 
 Leia:
