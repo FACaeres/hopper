@@ -5,13 +5,11 @@ SCRIPT_FILE=executa_teste
 
 .PHONY: clean
 
-compile:$(FILE).lex.c
+compile:
 	@ bison -d $(FILE).y
-	@ gcc  -o $(FILE) $(FILE).lex.c $(FILE).tab.c -lfl -lm
-	@ echo "done"
-
-$(FILE).lex.c:
 	@ flex -o $(FILE).lex.c $(FILE).lex
+	@ gcc  -o $(FILE).o $(FILE).lex.c $(FILE).tab.c -lfl -lm
+	@ echo "done"
 	
 teste: 	compile
 	@ echo Executando testes.. 
