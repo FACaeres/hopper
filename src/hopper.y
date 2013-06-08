@@ -2,6 +2,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+	
 %}
 
 %token 	T_ALGORITMO T_STRING T_FIM_COMANDO 
@@ -48,7 +50,9 @@
 %right 	T_OPERADOR_EXPONENCIACAO
 
 %start 	Input
-%%
+%% 
+
+ParserError : error {yyerrok; yyclearin;}
 
 //Definição de Quebra de linha
 //-----------------------------------------------
@@ -67,35 +71,42 @@ FimComando:
 
 Input:
 	QuebraComando Algoritmo
+	| ParserError FimComando
 ;
 
 Algoritmo:
 	BlocoCabecalho BlocoDeclaracoes BlocoFuncoes BlocoComando
+	| ParserError FimComando
 ;
 
 BlocoCabecalho:
 	T_ALGORITMO T_STRING FimComando
+	| ParserError FimComando
 ;
 
 BlocoDeclaracoes:
 
 	| T_VAR QuebraComando ListaDeclaracoes
+	| ParserError FimComando
 ;
 
 ListaDeclaracoes:
 	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
 	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	| ParserError FimComando
 ;
 
 ListaVariaveis:
 	T_IDENTIFICADOR
 	| ListaVariaveis T_IDENT_SEPARADOR T_IDENTIFICADOR
+	| ParserError FimComando
 ;
 
 TipoVariavel:
 	T_REAL
 	| T_INTEIRO
 	| T_CARACTERE
+	| ParserError FimComando
 ;
 
 BlocoFuncoes:
@@ -108,6 +119,7 @@ BlocoFuncoes:
 
 BlocoFuncao:
 	T_FUNCAO T_IDENTIFICADOR T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando
+	| ParserError FimComando
 ;
 
 BlocoProcedimento:
@@ -117,15 +129,18 @@ BlocoProcedimento:
 ListaParametros:
 	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
 	| ListaParametros T_IDENT_SEPARADOR ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
+	| ParserError FimComando
 ;
 
 BlocoComando:
 	T_INICIO FimComando Comandos T_FIMALGORITMO QuebraComando
+	| ParserError FimComando
 ;
 
 Comandos:
 	Comando
 	| Comandos Comando
+	| ParserError FimComando
 ;
 
 Comando:
@@ -140,6 +155,7 @@ Comando:
 	| T_IDENTIFICADOR T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
 	| T_RETORNE Expr FimComando
 	| T_INTERROMPA FimComando
+	| ParserError FimComando
 ;
 
 Leia:
@@ -149,6 +165,7 @@ Leia:
 ListaLeia:
 	T_IDENTIFICADOR
 	| ListaLeia T_IDENT_SEPARADOR T_IDENTIFICADOR
+	| ParserError FimComando
 ;
 
 Escreva:
@@ -159,12 +176,14 @@ Escreva:
 ConteudoEscreva:
 	Expr OpcaoCasasDecimais
 	| ConteudoEscreva T_IDENT_SEPARADOR Expr OpcaoCasasDecimais
+	| ParserError FimComando
 ;
 
 OpcaoCasasDecimais:
 	
 	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
-	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO 
+	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
+	| ParserError FimComando
 ;
 
 BlocoSe:
@@ -180,10 +199,12 @@ BlocoEscolha:
 ListaCasos:
 	Caso
 	| ListaCasos Caso
+	| ParserError FimComando
 ;
 
 Caso:
 	T_CASO Expr FimComando Comandos
+	| ParserError FimComando
 ;
 
 OutroCaso:
@@ -227,11 +248,13 @@ Expr:
 	| T_COMPR T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| T_IDENTIFICADOR T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
 	| T_COPIA T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+	| ParserError T_PARENTESE_DIR
 ;
 
 List_Expr:
 	Expr
 	| List_Expr T_IDENT_SEPARADOR Expr
+	| ParserError FimComando
 ;
 
 Add_op:
@@ -261,23 +284,106 @@ Comp_op:
 
 %%
 
+//Definicao da Fila
+/*****************************************************************************/
+typedef struct elementofila
+{
+    int lineNo;
+    char token[50];
+    struct elementofila *prox;
+}elementofila;
+
+typedef struct fila
+{
+    elementofila *inicio;
+    elementofila *final;
+} fila;
+
+void cria_fila(fila *_fila)
+{
+    _fila->inicio = _fila->final = NULL;
+}
+
+int fila_vazia(fila *_fila)
+{
+    if(_fila->inicio == NULL && _fila->final == NULL)
+        return 1;
+    else
+        return 0;
+}
+
+int push(fila *_fila, int _lineNo, char* _token)
+{
+    elementofila *novoElemento;
+    novoElemento = (elementofila*) malloc(sizeof(elementofila));
+    if (novoElemento == NULL)
+        return 0;
+    novoElemento->lineNo = _lineNo;
+    strcpy(novoElemento->token,_token);
+    novoElemento->prox = NULL;
+    if (fila_vazia(_fila))
+        _fila->inicio = novoElemento;
+    else
+        (_fila->final)->prox = novoElemento;
+    _fila->final = novoElemento;
+   return 1;
+}
+
+int pop(fila *_fila, struct elementofila **_elemento)
+{
+    if (fila_vazia(_fila))
+        return 0;
+    *_elemento = (_fila->inicio);
+    if (_fila->inicio == _fila->final)
+      _fila->final = NULL;
+    _fila->inicio = (_fila->inicio)->prox;
+    return 1;
+}
+
+void pop_all(fila *_fila)
+{
+    while(!fila_vazia(_fila))
+  {
+        elementofila *ret;
+        pop(_fila, &ret);
+        printf("Expressao invalida: [%s], linha [%d].\n", ret->token,
+	  ret->lineNo);
+        free(ret);
+  }
+
+}
+
+/*****************************************************************************/
+
 extern int 	yylineno;	
 extern char 	*yytext;
 
+fila fila_erros;
+
 int yyerror(char *s) {
-	printf("%s. Linha: %d. Token não esperado: %s\n", s, yylineno, yytext);
+	//printf("Linha: %d. Token não esperado: %s\n",yylineno, yytext);
+	push(&fila_erros, yylineno, yytext);	
 }
 
 int main(int ac, char **av) {
+	
+	//Inicializa a fila de erros
+	cria_fila(&fila_erros);
+	
 	extern FILE *yyin;
 
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
 		exit(1);
 	}
+	
+	yyparse();
 
-	if(!yyparse())
+	if(fila_vazia(&fila_erros))
 		printf("O algoritmo é valido!\n");
 	else
-		printf("Existem erros no algoritmo.\n");
+	{
+		printf("Existem erros no algoritmo.\n\n");
+		pop_all(&fila_erros);
+	}	
 }
