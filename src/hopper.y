@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-	
+#include "fila/fila.c"	
 %}
 
 %token 	T_ALGORITMO T_STRING T_FIM_COMANDO 
@@ -248,7 +248,7 @@ Expr:
 	| T_COMPR T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| T_IDENTIFICADOR T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
 	| T_COPIA T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
-	| ParserError T_PARENTESE_DIR
+	| T_PARENTESE_ESQ ParserError T_PARENTESE_DIR
 ;
 
 List_Expr:
@@ -284,84 +284,21 @@ Comp_op:
 
 %%
 
-//Definicao da Fila
-/*****************************************************************************/
-typedef struct elementofila
-{
-    int lineNo;
-    char token[50];
-    struct elementofila *prox;
-}elementofila;
-
-typedef struct fila
-{
-    elementofila *inicio;
-    elementofila *final;
-} fila;
-
-void cria_fila(fila *_fila)
-{
-    _fila->inicio = _fila->final = NULL;
-}
-
-int fila_vazia(fila *_fila)
-{
-    if(_fila->inicio == NULL && _fila->final == NULL)
-        return 1;
-    else
-        return 0;
-}
-
-int push(fila *_fila, int _lineNo, char* _token)
-{
-    elementofila *novoElemento;
-    novoElemento = (elementofila*) malloc(sizeof(elementofila));
-    if (novoElemento == NULL)
-        return 0;
-    novoElemento->lineNo = _lineNo;
-    strcpy(novoElemento->token,_token);
-    novoElemento->prox = NULL;
-    if (fila_vazia(_fila))
-        _fila->inicio = novoElemento;
-    else
-        (_fila->final)->prox = novoElemento;
-    _fila->final = novoElemento;
-   return 1;
-}
-
-int pop(fila *_fila, struct elementofila **_elemento)
-{
-    if (fila_vazia(_fila))
-        return 0;
-    *_elemento = (_fila->inicio);
-    if (_fila->inicio == _fila->final)
-      _fila->final = NULL;
-    _fila->inicio = (_fila->inicio)->prox;
-    return 1;
-}
-
-void pop_all(fila *_fila)
-{
-    while(!fila_vazia(_fila))
-  {
-        elementofila *ret;
-        pop(_fila, &ret);
-        printf("Expressao invalida: [%s], linha [%d].\n", ret->token,
-	  ret->lineNo);
-        free(ret);
-  }
-
-}
-
-/*****************************************************************************/
-
 extern int 	yylineno;	
 extern char 	*yytext;
 
+//Definicoes para uso das funcoes de fila
+extern void cria_fila(fila*);
+extern int fila_vazia(fila*);
+extern int push(fila*, int, char*);
+extern int pop(fila*, struct elementofila**);
+extern void pop_all(fila*);
+
+//Criacao da fila de erros
 fila fila_erros;
 
 int yyerror(char *s) {
-	//printf("Linha: %d. Token não esperado: %s\n",yylineno, yytext);
+	//Enfileira os tokens invalidos
 	push(&fila_erros, yylineno, yytext);	
 }
 

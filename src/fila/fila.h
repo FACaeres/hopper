@@ -2,10 +2,12 @@
 #define FILA_H_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
+#include<string.h>
+
 typedef struct elementofila
 {
     int lineNo;
-    char* token;
+    char token[50];
     struct elementofila *prox;
 }elementofila;
 

@@ -114,7 +114,7 @@ T_BRANCO		[ \t\r]+
 {T_ALGORITMO}		return T_ALGORITMO;
 {T_CARAC}		return T_CARAC;
 {T_CARACPNUM}		return T_CARACPNUM;
-{T_CARACTER}            return T_CARACTERE;
+{T_CARACTER}		return T_CARACTERE;
 {T_CARACTERE}		return T_CARACTERE;
 {T_CASO}		return T_CASO;
 {T_COMPR}		return T_COMPR;
@@ -135,7 +135,7 @@ T_BRANCO		[ \t\r]+
 {T_FACA}		return T_FACA;   
 {T_FALSO}		return T_FALSO;                 
 {T_FIMALGORITMO}	return T_FIMALGORITMO;         
-{T_FIMENQUANTO}		return T_FIMENQUANTO;          
+{T_FIMENQUANTO}	return T_FIMENQUANTO;          
 {T_FIMESCOLHA}		return T_FIMESCOLHA;          
 {T_FIMFUNCAO}		return T_FIMFUNCAO;          
 {T_FIMPARA}		return T_FIMPARA;           
@@ -201,18 +201,18 @@ T_BRANCO		[ \t\r]+
 ")"                 	return T_PARENTESE_DIR;
 "["                 	return T_COLCHETE_ESQ;
 "]"                 	return T_COLCHETE_DIR;
-"\.\."                 	return T_VETOR_INTERVALO;
+"\.\."                	return T_VETOR_INTERVALO;
 "<-"                	return T_OPERADOR_ATRIBUICAO;
 ","			return T_IDENT_SEPARADOR;
 ":"			return T_TIPO_ATRIBUIDOR;
 {T_NUMERO_INTEIRO}	return T_NUMERO_INTEIRO;
-{T_NUMERO_REAL}		return T_NUMERO_REAL;
+{T_NUMERO_REAL}	return T_NUMERO_REAL;
 {T_E}			return T_OP_LOGICO_E;
 {T_XOU}			return T_OP_LOGICO_XOU;
 {T_NAO}			return T_OP_LOGICO_NAO;
 {T_OU}			return T_OP_LOGICO_OU;
 {T_IDENTIFICADOR}	return T_IDENTIFICADOR;
 {T_BRANCO}		{}
-{T_FIM_COMANDO}		return T_FIM_COMANDO;
+{T_FIM_COMANDO}	return T_FIM_COMANDO;
 {T_INVALIDO}		return T_INVALIDO;
 .			return ERRO;

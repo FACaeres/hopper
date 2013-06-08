@@ -20,7 +20,7 @@ int push(fila *_fila, int _lineNo, char *_token)
     if (novoElemento == NULL)
         return 0;
     novoElemento->lineNo = _lineNo;
-    novoElemento->token = _token;
+    strcpy(novoElemento->token,_token);
     novoElemento->prox = NULL;
     if (fila_vazia(_fila))
         _fila->inicio = novoElemento;
