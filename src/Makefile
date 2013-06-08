@@ -13,8 +13,7 @@ compile:
 	
 teste: 	compile
 	@ echo Executando testes.. 
-	@ mkdir -p $(SAIDA_DIR)
-	bash ./$(SCRIPT_FILE).sh 1 40
+	bash ./$(SCRIPT_FILE).sh 1
 	@ echo Testes finalizados.
 
 clean:
@@ -25,5 +24,4 @@ clean:
 	@ rm -rf *.*~ 
 	@ rm -rf *~
 	@ rm -rf *.swp
-	@ rm -rf $(SAIDA_DIR)
 	@ echo "done"

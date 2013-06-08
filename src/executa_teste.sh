@@ -2,7 +2,9 @@
 
 FILE_EXEMPLOS=../exemplos 
 
-for i in $(seq $1 $2)
+total=`ls ../exemplos/*.alg | wc -l`
+
+for i in $(seq $1 $total)
 do
 	./hopper.o $FILE_EXEMPLOS/questao_$i.alg
 done
