@@ -7,7 +7,6 @@ SCRIPT_FILE=executa_teste
 
 compile:$(FILE).lex.c
 	@ bison -d $(FILE).y
-	@ flex  -o $(FILE).flex.c $(FILE).lex
 	@ gcc  -o $(FILE) $(FILE).lex.c $(FILE).tab.c -lfl -lm
 	@ echo "done"
 
