@@ -52,7 +52,7 @@
 %start 	Input
 %% 
 
-ParserError : error {yyerrok; yyclearin;}
+ParserError : error {/*yyerrok; yyclearin;*/}
 
 //Definição de Quebra de linha
 //-----------------------------------------------
@@ -320,7 +320,7 @@ int main(int ac, char **av) {
 		printf("O algoritmo é valido!\n");
 	else
 	{
-		printf("Existem erros no algoritmo.\n\n");
+		printf("\n\nExistem erros no algoritmo.\n");
 		pop_all(&fila_erros);
 	}	
 }
