@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fila/fila.c"	
+#include "fila/fila.c"
+#include "hash/hash.c"
 int erros;
 extern yylineno, yytext;
 %}
@@ -75,7 +76,6 @@ FimComando:
 
 Input:
 	QuebraComando Algoritmo
-	| error {erros++; yyerror("Esperava ALGORITMO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 Algoritmo:
@@ -85,7 +85,6 @@ Algoritmo:
 
 BlocoCabecalho:
 	T_Algoritmo T_String FimComando
-	| error {erros++; yyerror("Formato do nome do algoritmo inválido, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 
@@ -133,18 +132,15 @@ BlocoFuncao:
 
 BlocoProcedimento:
 	T_Procedimento T_Identificador T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando
-	| error {erros++; yyerror("Estrutura do procedimento inválida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 ListaParametros:
 	ListaVariaveis T_Tipo_Atribuidor TipoVariavel
 	| ListaParametros T_Ident_Separador ListaVariaveis T_Tipo_Atribuidor TipoVariavel
-	| error {erros++; yyerror("Parâmetros inválidos ", yylineno, yytext);} FimComando
 ;
 
 BlocoComando:
 	T_Inicio FimComando Comandos T_FimAlgoritmo QuebraComando
-	| error {erros++; yyerror("Bloco principal mal-formado, token inválido: ", yylineno, yytext);} FimComando
 ;
 
 Comandos:
@@ -170,7 +166,6 @@ Comando:
 
 Leia:
 	T_Leia T_Parentese_Esq ListaLeia T_Parentese_Dir
-	| error {erros++; yyerror("Instrucao leia invalida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 ListaLeia:
@@ -181,7 +176,6 @@ ListaLeia:
 
 Escreva:
 	T_Escreva T_Parentese_Esq ConteudoEscreva T_Parentese_Dir
-	| error {erros++; yyerror("Parâmetro inválido no ESCREVA, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 ConteudoEscreva:
@@ -200,19 +194,16 @@ OpcaoCasasDecimais:
 BlocoSe:
 	T_Se Expr T_Entao FimComando Comandos T_FimSe
 	| T_Se Expr T_Entao FimComando Comandos T_Senao FimComando Comandos T_FimSe
-	| error {erros++; yyerror("Bloco SE invalido, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 BlocoEscolha:
 	T_Escolha T_Identificador FimComando ListaCasos T_Fimescolha
 	| T_Escolha T_Identificador FimComando ListaCasos OutroCaso T_Fimescolha
-	| error {erros++; yyerror("Bloco escolha inválido, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 ListaCasos:
 	Caso
 	| ListaCasos Caso
-	| error {erros++; yyerror("Bloco Caso inválido, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 Caso:
@@ -222,29 +213,24 @@ Caso:
 
 OutroCaso:
 	T_OutroCaso FimComando Comandos
-	| error {erros++; yyerror("Estrutura Outrocaso invalida, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 BlocoPara:
 	T_Para Expr T_De Expr T_Ate Expr T_Faca FimComando Comandos T_FimPara
 	| T_Para Expr T_De Expr T_Ate Expr T_Passo Expr T_Faca FimComando Comandos T_FimPara
-	| error {erros++; yyerror("Bloco para inválido, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 BlocoEnquanto:
 	T_Enquanto Expr T_Faca FimComando Comandos T_FimEnquanto
-	| error {erros++; yyerror("Bloco enquanto inválido, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 
 BlocoRepita:
 	T_Repita FimComando Comandos T_Ate Expr
-	| error {erros++; yyerror("Bloco repita invalido, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 Atribuicao:
 	T_Identificador T_Operador_Atribuicao Expr
-	| error {erros++; yyerror("Atribuicao invalida, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 Expr:
@@ -292,14 +278,12 @@ Add_op:
 Mult_op:
 	T_OPERADOR_MULTIPLICACAO
 	| T_OPERADOR_DIVISAO
-	| error {erros++; yyerror("Esperava * ou /, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 Bool_op:
 	T_OP_LOGICO_E
 	| T_OP_LOGICO_OU
 	| T_OP_LOGICO_XOU
-	| error {erros++; yyerror("Esperava 'ou' 'e' 'xou', encontrado: ", yylineno, yytext);} FimComando
 ;
 
 Comp_op:
@@ -309,13 +293,11 @@ Comp_op:
 	| T_OPERADOR_MAIOR
 	| T_OPERADOR_MENOR_IGUAL
 	| T_OPERADOR_MAIOR_IGUAL
-	| error {erros++; yyerror("Esperava operador comparacao, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 
 T_Algoritmo:
 	T_ALGORITMO
-	| error {erros++; yyerror("Esperava ALGORITMO ", yylineno, yytext);} FimComando
 ;	
 
 T_String:
@@ -326,7 +308,6 @@ T_String:
 
 T_Var:
 	T_VAR
-	| error {erros++; yyerror("Esperava VAR, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 
@@ -347,7 +328,6 @@ T_Ident_Separador:
 
 T_Funcao:
 	T_FUNCAO
-	| error {erros++; yyerror("Esperava FUNCAO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_Parentese_Esq:
@@ -367,74 +347,56 @@ T_Inicio:
 
 T_FimFuncao:
 	T_FIMFUNCAO
-	| error {erros++; yyerror("Esperava FIMFUNCAO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_Procedimento:
 	T_PROCEDIMENTO
-	| error {erros++; yyerror("Esperava PROCEDIMENTO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_FimProcedimento:
 	T_FIMPROCEDIMENTO
-	| error {erros++; yyerror("Esperava FIMPROCEDIMENTO, encontrou: ", yylineno, yytext);} FimComando
-;
-
-T_Inicio:
-	T_INICIO
-	| error {erros++; yyerror("Esperava INICIO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_FimAlgoritmo:
 	T_FIMALGORITMO
-	| error {erros++; yyerror("Esperava FIMALGORITMO, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_Retorne:
 	T_RETORNE
-	| error {erros++; yyerror("Esperava RETORNE, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 
 T_Interrompa:
 	T_INTERROMPA
-	| error {erros++; yyerror("Esperava INTERROMPA, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_Leia:
 	T_LEIA
-	| error {erros++; yyerror("Esperava LEIA, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 T_Escreva:
 	T_ESCREVA
 	| T_ESCREVAL
-	| error {erros++; yyerror("Esperava ESCREVA ou ESCREVAL, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Se:
 	T_SE
-	| error {erros++; yyerror("Esperava SE, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Entao:
 	T_ENTAO
-	| error {erros++; yyerror("Esperava ENTAO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_FimSe:
 	T_FIMSE
-	| error {erros++; yyerror("Esperava FIMSE, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Senao:
 	T_SENAO
-	| error {erros++; yyerror("Esperava SENAO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Escolha:
 	T_ESCOLHA
-	| error {erros++; yyerror("Esperava ESCOLHA, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Fimescolha:
@@ -444,62 +406,50 @@ T_Fimescolha:
 
 T_Caso:
 	T_CASO
-	| error {erros++; yyerror("Esperava CASO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_OutroCaso:
 	T_OUTROCASO
-	| error {erros++; yyerror("Esperava OUTROCASO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Para:
 	T_PARA
-	| error {erros++; yyerror("Esperava PARA, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Ate:
 	T_ATE
-	| error {erros++; yyerror("Esperava ATE, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_De:
 	T_DE
-	| error {erros++; yyerror("Esperava DE, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Faca:
 	T_FACA
-	| error {erros++; yyerror("Esperava FACA, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_FimPara:
 	T_FIMPARA
-	| error {erros++; yyerror("Esperava FIMPARA, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Passo:
 	T_PASSO
-	| error {erros++; yyerror("Esperava PASSO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Enquanto:
 	T_ENQUANTO
-	| error {erros++; yyerror("Esperava ENQUANTO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_FimEnquanto:
 	T_FIMENQUANTO
-	| error {erros++; yyerror("Esperava FIMENQUANTO, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Repita:
 	T_REPITA
-	| error {erros++; yyerror("Esperava REPITA, encontrado: ", yylineno, yytext);} FimComando
 ;
 
 T_Operador_Atribuicao:
 	T_OPERADOR_ATRIBUICAO
-	| error {erros++; yyerror("Esperava ':=', encontrado: ", yylineno, yytext);} FimComando
 ;
 
 %%

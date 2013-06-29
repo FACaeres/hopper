@@ -26,30 +26,21 @@ void hash_inserir(char *nome, char *escopo, char *tipo)
     HASH_ADD(hh, records, key, sizeof(item_key), r); 
 }
 
-struct item *hash_consultar(char *nome, char *escopo)
+int hash_consultar(char *nome, char *escopo)
 {
 	
     memset(&l, 0, sizeof(item));
     l.key.nome = nome;
     l.key.escopo = escopo;
     HASH_FIND(hh, records, &l.key, sizeof(item_key), p);
-
+    
     if (p) 
     {	
 	printf("encontrado: %s %s %s\n", p->key.nome, p->key.escopo, p->tipo);
-	return p;
+	return 1;
     }
-}
-
-
-
-
-int main(int argc, char *argv[]) {
-    
-    
-    hash_inserir("nome1", "escopo1", "tipo1");    
-
-    hash_consultar("nome1", "escopo1");	
-
-    return 0;
+    else
+    {
+    	return -1;
+    }
 }
