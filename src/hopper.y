@@ -5,8 +5,13 @@
 #include <string.h>
 #include "fila/fila.c"
 #include "hash/hash.c"
+#define YYSTYPE char*
 int erros;
 extern yylineno, yytext;
+
+char *var_nome;
+char *var_escopo;
+char *var_tipo;
 %}
 
 %locations
@@ -75,7 +80,7 @@ FimComando:
 //-----------------------------------------------
 
 Input:
-	QuebraComando Algoritmo
+	QuebraComando Algoritmo {var_escopo = "__GLOBAL__";}
 ;
 
 Algoritmo:
@@ -101,8 +106,6 @@ ListaDeclaracoes:
 	| error {erros++; yyerror("Declaracao de variável inválida: ", yylineno, yytext);} FimComando
 ;
 
-
-
 ListaVariaveis:
 	T_Identificador
 	| ListaVariaveis T_Ident_Separador T_Identificador
@@ -110,9 +113,9 @@ ListaVariaveis:
 ;
 
 TipoVariavel:
-	T_REAL
-	| T_INTEIRO
-	| T_CARACTERE
+	T_REAL {var_tipo = "real";}
+	| T_INTEIRO {var_tipo = "inteiro";}
+	| T_CARACTERE {var_tipo = "caractere";}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -126,12 +129,14 @@ BlocoFuncoes:
 ;
 
 BlocoFuncao:
-	T_Funcao T_Identificador T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando
+	T_Funcao T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
+	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando {var_escopo = "__GLOBAL__";}
 	| error {erros++; yyerror("Estrutura da funcão inválida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 BlocoProcedimento:
-	T_Procedimento T_Identificador T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando
+	T_Procedimento T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
+	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando {var_escopo = "__GLOBAL__";}
 ;
 
 ListaParametros:

@@ -7,6 +7,6 @@ inicio
 	
       //Imprime na tela "Alo Mundo!"
 	
-      escrev("Alo Mundo!")
+      escreval("Alo Mundo!")
 	
 fimalgoritmo
