@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fila/fila.c"
 #include "hash/hash.c"
 #define YYSTYPE char*
 int erros;
@@ -12,6 +11,71 @@ extern yylineno, yytext;
 char *var_nome;
 char *var_escopo;
 char *var_tipo;
+
+typedef struct elementofila
+{
+    char token[50];
+    struct elementofila *prox;
+}elementofila;
+
+typedef struct fila
+{
+    elementofila *inicio;
+    elementofila *final;
+} fila;
+
+fila *Fila;
+
+void cria_fila(fila *_fila)
+{
+    _fila->inicio = _fila->final = NULL;
+}
+
+int fila_vazia(fila *_fila)
+{
+    if(_fila->inicio == NULL && _fila->final == NULL)
+        return 1;
+    else
+        return 0;
+}
+
+int push(fila *_fila, char *_token)
+{
+    elementofila *novoElemento;
+    novoElemento = (elementofila*) malloc(sizeof(elementofila));
+    if (novoElemento == NULL)
+        return 0;
+    strcpy(novoElemento->token,_token);
+    novoElemento->prox = NULL;
+    if (fila_vazia(_fila))
+        _fila->inicio = novoElemento;
+    else
+        (_fila->final)->prox = novoElemento;
+    _fila->final = novoElemento;
+   return 1;
+}
+
+int pop(fila *_fila, struct elementofila **_elemento)
+{
+    if (fila_vazia(_fila))
+        return 0;
+    *_elemento = (_fila->inicio);
+    if (_fila->inicio == _fila->final)
+      _fila->final = NULL;
+    _fila->inicio = (_fila->inicio)->prox;
+    return 1;
+}
+
+void pop_all(fila *_fila)
+{
+    while(!fila_vazia(_fila))
+  {
+        elementofila *ret;
+        pop(_fila, &ret);
+        free(ret);
+  }
+}
+
 %}
 
 %locations
@@ -108,12 +172,21 @@ ListaDeclaracoes:
 
 ListaVariaveis:
 	T_Identificador
-	| ListaVariaveis T_Ident_Separador T_Identificador
+	| ListaVariaveis T_Ident_Separador T_Identificador {/*push(Fila, $3);*/}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
 TipoVariavel:
-	T_REAL {var_tipo = "real";}
+	T_REAL 
+	{
+		var_tipo = "real";		
+		elementofila **elemento_fila;
+		
+		/*while(pop(Fila, elemento_fila) == 1)
+		{
+		
+		}*/
+	}
 	| T_INTEIRO {var_tipo = "inteiro";}
 	| T_CARACTERE {var_tipo = "caractere";}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
@@ -228,7 +301,6 @@ BlocoPara:
 BlocoEnquanto:
 	T_Enquanto Expr T_Faca FimComando Comandos T_FimEnquanto
 ;
-
 
 BlocoRepita:
 	T_Repita FimComando Comandos T_Ate Expr
@@ -462,7 +534,9 @@ T_Operador_Atribuicao:
 int main(int ac, char **av) {
 		
 	extern FILE *yyin;
-
+	
+	//cria_fila(Fila);
+		
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
 		exit(1);
@@ -483,6 +557,7 @@ int yyerror(char *s, int line, char *msg )
   printf ("ERRO->%d %s %s\n", line, s, msg ); 
   return 0;
 }
+
 int yywrap(void)
 {
   return 1;
