@@ -5,10 +5,12 @@
 #include <string.h>
 #include "hash/hash.c"
 #define YYSTYPE char*
-int erros;
-extern yylineno, yytext;
 
-char *var_nome;
+int erros;
+extern yylineno;
+extern char* yytext;
+
+char *var_none;
 char *var_escopo;
 char *var_tipo;
 
@@ -171,8 +173,8 @@ ListaDeclaracoes:
 ;
 
 ListaVariaveis:
-	T_Identificador
-	| ListaVariaveis T_Ident_Separador T_Identificador {/*push(Fila, $3);*/}
+	T_Identificador {push(Fila, $1);}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push(Fila, $3);}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -180,12 +182,12 @@ TipoVariavel:
 	T_REAL 
 	{
 		var_tipo = "real";		
-		elementofila **elemento_fila;
-		
-		/*while(pop(Fila, elemento_fila) == 1)
+		elementofila *elemento_fila;
+	
+		while(pop(Fila, &elemento_fila) == 1)
 		{
-		
-		}*/
+			printf("DEBUG:%s\n", elemento_fila->token);
+		}
 	}
 	| T_INTEIRO {var_tipo = "inteiro";}
 	| T_CARACTERE {var_tipo = "caractere";}
@@ -394,7 +396,7 @@ T_Tipo_Atribuidor:
 ;
 
 T_Identificador:
-	T_IDENTIFICADOR
+	T_IDENTIFICADOR { $$ = strdup(yytext);}
 	| error {erros++; yyerror("Nome nao segue as regras de criacao, consulte as referencias: ", yylineno, yytext);} FimComando
 ;
 
@@ -534,8 +536,8 @@ T_Operador_Atribuicao:
 int main(int ac, char **av) {
 		
 	extern FILE *yyin;
-	
-	//cria_fila(Fila);
+	Fila = (fila*) malloc(2*sizeof(elementofila));	
+	cria_fila(Fila);
 		
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
