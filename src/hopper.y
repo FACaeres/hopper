@@ -13,6 +13,9 @@ extern int push(fila*, char*);
 extern int pop(fila*, struct elementofila**);
 extern void pop_all(fila*);
 
+extern void hash_inserir(char *nome, char *escopo, char *tipo);
+int hash_consultar(char *nome, char *escopo);
+
 fila fila_var;
 
 
@@ -94,7 +97,7 @@ FimComando:
 //-----------------------------------------------
 
 Input:
-	QuebraComando Algoritmo {var_escopo = "__GLOBAL__";}
+	QuebraComando {var_escopo = "__GLOBAL__";} Algoritmo 
 ;
 
 Algoritmo:
@@ -127,18 +130,39 @@ ListaVariaveis:
 ;
 
 TipoVariavel:
-	T_REAL 
+	T_REAL
 	{
 		var_tipo = "real";		
 		elementofila *elemento_fila;
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
-		  printf(" %s \n", elemento_fila->token);
+			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
-	| T_INTEIRO {var_tipo = "inteiro";}
-	| T_CARACTERE {var_tipo = "caractere";}
+	| T_INTEIRO
+	{
+		var_tipo = "inteiro";		
+		elementofila *elemento_fila;
+		
+		while(pop(&fila_var, &elemento_fila) == 1)
+		{
+			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
+		}
+	}
+	| T_CARACTERE
+	{
+		var_tipo = "caractere";		
+		elementofila *elemento_fila;
+		
+		while(pop(&fila_var, &elemento_fila) == 1)
+		{
+			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
+		}
+	}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
 ;
 
