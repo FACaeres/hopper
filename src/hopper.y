@@ -270,10 +270,10 @@ ListaLeia:
 		}
 	}
 	| ListaLeia T_Ident_Separador T_Identificador
-	{		
-		if (hash_consultar($1, var_escopo) == 0)
+	{	
+		if (hash_consultar($3, var_escopo) == 0)
 		{
-			if (hash_consultar($1, "__GLOBAL__") == 0)
+			if (hash_consultar($3, "__GLOBAL__") == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
