@@ -7,6 +7,7 @@
 #include "uthash.h"
 
 #define YYSTYPE char*
+#define GLOBAL "__GLOBAL__"
 
 extern void cria_fila(fila*);
 extern int fila_vazia(fila*);
@@ -137,7 +138,7 @@ FimComando:
 //-----------------------------------------------
 
 Input:
-	QuebraComando {var_escopo = "__GLOBAL__";} Algoritmo 
+	QuebraComando {var_escopo = GLOBAL;} Algoritmo 
 ;
 
 Algoritmo:
@@ -164,8 +165,8 @@ ListaDeclaracoes:
 ;
 
 ListaVariaveis:
-	T_Identificador {push(&fila_var, $1);}
-	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, $3);}
+	T_Identificador {push(&fila_var, strdup($1));}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, strdup($3));}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -213,14 +214,14 @@ BlocoFuncoes:
 ;
 
 BlocoFuncao:
-	T_Funcao T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
-	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando {var_escopo = "__GLOBAL__";}
+	T_Funcao T_Identificador {var_escopo = strdup($2);} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
+	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando {var_escopo = GLOBAL;}
 	| error {erros++; yyerror("Estrutura da funcão inválida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 BlocoProcedimento:
-	T_Procedimento T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
-	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando {var_escopo = "__GLOBAL__";}
+	T_Procedimento T_Identificador {var_escopo = strdup($2);} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
+	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando {var_escopo = GLOBAL;}
 ;
 
 ListaParametros:
@@ -260,9 +261,9 @@ Leia:
 ListaLeia:
 	T_Identificador
 	{
-		if (hash_consultar($1, var_escopo) == 0)
+		if (hash_consultar(strdup($1), var_escopo) == 0)
 		{
-			if (hash_consultar($1, "__GLOBAL__") == 0)
+			if (hash_consultar(strdup($1), GLOBAL) == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
@@ -271,9 +272,9 @@ ListaLeia:
 	}
 	| ListaLeia T_Ident_Separador T_Identificador
 	{	
-		if (hash_consultar($3, var_escopo) == 0)
+		if (hash_consultar(strdup($3), var_escopo) == 0)
 		{
-			if (hash_consultar($3, "__GLOBAL__") == 0)
+			if (hash_consultar(strdup($3), GLOBAL) == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
@@ -585,7 +586,7 @@ int main(int ac, char **av) {
 
 int yyerror(char *s, int line, char *msg )
 {
-  printf ("ERRO->%d %s %s\n", line, s, msg ); 
+  printf ("ERRO->%d %s %s %s\n", line, s, msg, var_escopo);
   return 0;
 }
 
