@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fila/fila.c"
-#include "uthash.h"
+#include "hash/hash.h"
 
 #define YYSTYPE char*
 #define GLOBAL "__GLOBAL__"
@@ -24,53 +24,6 @@ extern char *yytext;
 char *var_nome;
 char *var_escopo;
 char *var_tipo;
-
-typedef struct 
-{
-  char nome[50];
-  char escopo[50];
-} item_key;
-
-typedef struct 
-{
-    item_key key;
-    char tipo[50];
-    UT_hash_handle hh;
-} item;
-
-item l, *tmp, *records = NULL;
-
-void hash_inserir(char *nome, char *escopo, char *tipo)
-{
-    item *r;
-    r = (item*)malloc( sizeof(item) );
-    memset(r, 0, sizeof(item));
-    strcpy(r->key.nome, nome);
-    strcpy(r->key.escopo, escopo);
-    strcpy(r->tipo, tipo);
-    //printf("adicionado: %s %s %s\n",r->key.nome, r->key.escopo, r->tipo);    
-    HASH_ADD(hh, records, key, sizeof(item_key), r); 
-}
-
-int hash_consultar(char *nome, char *escopo)
-{  
-    item *p = malloc(sizeof(*p));;
-    memset(&l, 0, sizeof(item));
-    strcpy(l.key.nome, nome);
-    strcpy(l.key.escopo, escopo);
-    HASH_FIND(hh, records, &l.key, sizeof(item_key), p);
-        
-    if (p) 
-    {	
-	    //printf("encontrado: %s %s %s\n",p->key.nome, p->key.escopo, p->tipo);
-		return 1;
-    }
-    else
-    {
-   	    //printf("não encontrado encontrado: %s %s\n",nome, escopo);
-    	return 0;
-    }
-}
 
 %}
 
@@ -167,8 +120,8 @@ ListaDeclaracoes:
 ;
 
 ListaVariaveis:
-	T_Identificador {push(&fila_var, strdup($1));}
-	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, strdup($3));}
+	T_Identificador {push(&fila_var, $1);}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, $3);}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -216,13 +169,13 @@ BlocoFuncoes:
 ;
 
 BlocoFuncao:
-	T_Funcao T_Identificador {var_escopo = strdup($2);} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
+	T_Funcao T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
 	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando {var_escopo = GLOBAL;}
 	| error {erros++; yyerror("Estrutura da funcão inválida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 BlocoProcedimento:
-	T_Procedimento T_Identificador {var_escopo = strdup($2);} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
+	T_Procedimento T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
 	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando {var_escopo = GLOBAL;}
 ;
 
@@ -263,9 +216,9 @@ Leia:
 ListaLeia:
 	T_Identificador
 	{
-		if (hash_consultar(strdup($1), var_escopo) == 0)
+		if (hash_consultar($1, var_escopo) == 0)
 		{
-			if (hash_consultar(strdup($1), GLOBAL) == 0)
+			if (hash_consultar($1, GLOBAL) == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
@@ -274,9 +227,9 @@ ListaLeia:
 	}
 	| ListaLeia T_Ident_Separador T_Identificador
 	{	
-		if (hash_consultar(strdup($3), var_escopo) == 0)
+		if (hash_consultar($3, var_escopo) == 0)
 		{
-			if (hash_consultar(strdup($3), GLOBAL) == 0)
+			if (hash_consultar($3, GLOBAL) == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
