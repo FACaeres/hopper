@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "hash/hash.c"
 #include "fila/fila.c"
+#include "uthash.h"
+
 #define YYSTYPE char*
 
 extern void cria_fila(fila*);
@@ -13,13 +14,9 @@ extern int push(fila*, char*);
 extern int pop(fila*, struct elementofila**);
 extern void pop_all(fila*);
 
-extern void hash_inserir(char *nome, char *escopo, char *tipo);
-int hash_consultar(char *nome, char *escopo);
-
 fila fila_var;
 
 int erros;
-
 extern yylineno;
 extern char *yytext;
 
@@ -27,6 +24,50 @@ char *var_nome;
 char *var_escopo;
 char *var_tipo;
 
+typedef struct {
+  char *nome;
+  char *escopo;
+} item_key;
+
+typedef struct {
+    item_key key;
+    char *tipo;
+    UT_hash_handle hh;
+} item;
+
+item l, *tmp, *records = NULL;
+
+void hash_inserir(char *nome, char *escopo, char *tipo)
+{
+    item *r;
+    r = (item*)malloc( sizeof(item) );
+    memset(r, 0, sizeof(item));
+    r->key.nome = nome;
+    r->key.escopo = escopo;
+    r->tipo = tipo;
+    printf("adicionado: %s %s %s\n",r->key.nome, r->key.escopo, r->tipo);    
+    HASH_ADD(hh, records, key, sizeof(item_key), r); 
+}
+
+int hash_consultar(char *nome, char *escopo)
+{  
+    item *p = malloc(sizeof(*p));;
+    memset(&l, 0, sizeof(item));
+    l.key.nome = nome;
+    l.key.escopo = escopo;
+    HASH_FIND(hh, records, &l.key, sizeof(item_key), p);
+        
+    if (p) 
+    {	
+	    printf("encontrado: %s %s %s\n",p->key.nome, p->key.escopo, p->tipo);
+		return 1;
+    }
+    else
+    {
+   	    printf("não encontrado encontrado: %s %s\n",nome, escopo);
+    	return 0;
+    }
+}
 
 %}
 
@@ -131,35 +172,32 @@ ListaVariaveis:
 TipoVariavel:
 	T_REAL
 	{
-		var_tipo = "real";		
+		var_tipo = "real";	
 		elementofila *elemento_fila;
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| T_INTEIRO
 	{
-		var_tipo = "inteiro";		
+		var_tipo = "inteiro";	
 		elementofila *elemento_fila;
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| T_CARACTERE
 	{
-		var_tipo = "caractere";		
+		var_tipo = "caractere";	
 		elementofila *elemento_fila;
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
@@ -222,7 +260,6 @@ Leia:
 ListaLeia:
 	T_Identificador
 	{
-		printf("Nome: %s\t\tEscopo: %s\t\t\n", $1, var_escopo);
 		if (hash_consultar($1, var_escopo) == 0)
 		{
 			if (hash_consultar($1, "__GLOBAL__") == 0)
@@ -233,16 +270,15 @@ ListaLeia:
 		}
 	}
 	| ListaLeia T_Ident_Separador T_Identificador
-	{
-		printf("Nome: %s\t\tEscopo: %s\t\t\n", $3, var_escopo);
-		if (hash_consultar($3, var_escopo) == 0)
+	{		
+		if (hash_consultar($1, var_escopo) == 0)
 		{
-			if (hash_consultar($3, "__GLOBAL__") == 0)
+			if (hash_consultar($1, "__GLOBAL__") == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
 			}
-		}
+		}	
 	}
 	| error {erros++; yyerror("Parâmetro inválido no LEIA, token nao esperado: ", yylineno, yytext);} FimComando
 ;
