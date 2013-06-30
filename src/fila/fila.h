@@ -6,8 +6,7 @@
 
 typedef struct elementofila
 {
-    int lineNo;
-    char token[50];
+    char token[256];
     struct elementofila *prox;
 }elementofila;
 
@@ -19,7 +18,7 @@ typedef struct fila
 
 void cria_fila(fila *_fila);
 int fila_vazia(fila *_fila);
-int push(fila *_fila, int _lineNo, char *_token);
+int push(fila *_fila, char *_token);
 int pop(fila *_fila, struct elementofila **_elemento);
 void pop_all(fila *_fila);
 #endif

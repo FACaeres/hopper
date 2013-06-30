@@ -4,79 +4,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hash/hash.c"
+#include "fila/fila.c"
 #define YYSTYPE char*
 
-int erros;
-extern yylineno;
-extern char* yytext;
+extern void cria_fila(fila*);
+extern int fila_vazia(fila*);
+extern int push(fila*, char*);
+extern int pop(fila*, struct elementofila**);
+extern void pop_all(fila*);
 
-char *var_none;
+fila fila_var;
+
+
+int erros;
+
+extern yylineno;
+extern char *yytext;
+
+char *var_nome;
 char *var_escopo;
 char *var_tipo;
 
-typedef struct elementofila
-{
-    char token[50];
-    struct elementofila *prox;
-}elementofila;
-
-typedef struct fila
-{
-    elementofila *inicio;
-    elementofila *final;
-} fila;
-
-fila *Fila;
-
-void cria_fila(fila *_fila)
-{
-    _fila->inicio = _fila->final = NULL;
-}
-
-int fila_vazia(fila *_fila)
-{
-    if(_fila->inicio == NULL && _fila->final == NULL)
-        return 1;
-    else
-        return 0;
-}
-
-int push(fila *_fila, char *_token)
-{
-    elementofila *novoElemento;
-    novoElemento = (elementofila*) malloc(sizeof(elementofila));
-    if (novoElemento == NULL)
-        return 0;
-    strcpy(novoElemento->token,_token);
-    novoElemento->prox = NULL;
-    if (fila_vazia(_fila))
-        _fila->inicio = novoElemento;
-    else
-        (_fila->final)->prox = novoElemento;
-    _fila->final = novoElemento;
-   return 1;
-}
-
-int pop(fila *_fila, struct elementofila **_elemento)
-{
-    if (fila_vazia(_fila))
-        return 0;
-    *_elemento = (_fila->inicio);
-    if (_fila->inicio == _fila->final)
-      _fila->final = NULL;
-    _fila->inicio = (_fila->inicio)->prox;
-    return 1;
-}
-
-void pop_all(fila *_fila)
-{
-    while(!fila_vazia(_fila))
-  {
-        elementofila *ret;
-        pop(_fila, &ret);
-        free(ret);
-  }
-}
 
 %}
 
@@ -173,8 +121,8 @@ ListaDeclaracoes:
 ;
 
 ListaVariaveis:
-	T_Identificador {push(Fila, $1);}
-	| ListaVariaveis T_Ident_Separador T_Identificador {push(Fila, $3);}
+	T_Identificador {push(&fila_var, $1);}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, $3);}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -183,10 +131,10 @@ TipoVariavel:
 	{
 		var_tipo = "real";		
 		elementofila *elemento_fila;
-	
-		while(pop(Fila, &elemento_fila) == 1)
+		
+		while(pop(&fila_var, &elemento_fila) == 1)
 		{
-			printf("DEBUG:%s\n", elemento_fila->token);
+		  printf(" %s \n", elemento_fila->token);
 		}
 	}
 	| T_INTEIRO {var_tipo = "inteiro";}
@@ -536,8 +484,8 @@ T_Operador_Atribuicao:
 int main(int ac, char **av) {
 		
 	extern FILE *yyin;
-	Fila = (fila*) malloc(2*sizeof(elementofila));	
-	cria_fila(Fila);
+	
+	cria_fila(&fila_var);
 		
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);

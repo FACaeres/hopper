@@ -13,13 +13,12 @@ int fila_vazia(fila *_fila)
         return 0;
 }
 
-int push(fila *_fila, int _lineNo, char *_token)
+int push(fila *_fila, char *_token)
 {
     elementofila *novoElemento;
     novoElemento = (elementofila*) malloc(sizeof(elementofila));
     if (novoElemento == NULL)
         return 0;
-    novoElemento->lineNo = _lineNo;
     strcpy(novoElemento->token,_token);
     novoElemento->prox = NULL;
     if (fila_vazia(_fila))
@@ -47,7 +46,7 @@ void pop_all(fila *_fila)
   {
         elementofila *ret;
         pop(_fila, &ret);
-        printf("Expressao invalida: [%s], linha [%d].\n", ret->token ,ret->lineNo);
+        printf("Expressao invalida: [%s].\n", ret->token);
         free(ret);
   }
 
