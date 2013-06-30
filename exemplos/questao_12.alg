@@ -6,6 +6,7 @@ algoritmo "Negativo_ou_positivo"
 // Seção de Declarações 
 var
   valor : real
+  primeiro, segundo: inteiro
 inicio
 // Seção de Comandos
 escreval("Entre com o primeiro valor...")
