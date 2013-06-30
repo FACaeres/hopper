@@ -33,14 +33,14 @@ int hash_consultar(char *nome, char *escopo)
     l.key.nome = nome;
     l.key.escopo = escopo;
     HASH_FIND(hh, records, &l.key, sizeof(item_key), p);
-    
-    if (p) 
+	
+	if (p) 
     {	
-	printf("encontrado: %s %s %s\n", p->key.nome, p->key.escopo, p->tipo);
-	return 1;
+		printf("encontrado: %s %s %s\n", p->key.nome, p->key.escopo, p->tipo);
+		return 1;
     }
     else
     {
-    	return -1;
+    	return 0;
     }
 }

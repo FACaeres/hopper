@@ -18,7 +18,6 @@ int hash_consultar(char *nome, char *escopo);
 
 fila fila_var;
 
-
 int erros;
 
 extern yylineno;
@@ -138,7 +137,7 @@ TipoVariavel:
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
+			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| T_INTEIRO
@@ -149,7 +148,7 @@ TipoVariavel:
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
+			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| T_CARACTERE
@@ -160,7 +159,7 @@ TipoVariavel:
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			//printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
+			printf("Nome: %s\t\tEscopo: %s\t\tTipo: %s\n", elemento_fila->token, var_escopo, var_tipo);
 		}
 	}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
@@ -222,7 +221,29 @@ Leia:
 
 ListaLeia:
 	T_Identificador
+	{
+		printf("Nome: %s\t\tEscopo: %s\t\t\n", $1, var_escopo);
+		if (hash_consultar($1, var_escopo) == 0)
+		{
+			if (hash_consultar($1, "__GLOBAL__") == 0)
+			{
+				erros++;
+				yyerror("Variável não declarada: ", yylineno, yytext);	
+			}
+		}
+	}
 	| ListaLeia T_Ident_Separador T_Identificador
+	{
+		printf("Nome: %s\t\tEscopo: %s\t\t\n", $3, var_escopo);
+		if (hash_consultar($3, var_escopo) == 0)
+		{
+			if (hash_consultar($3, "__GLOBAL__") == 0)
+			{
+				erros++;
+				yyerror("Variável não declarada: ", yylineno, yytext);	
+			}
+		}
+	}
 	| error {erros++; yyerror("Parâmetro inválido no LEIA, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
