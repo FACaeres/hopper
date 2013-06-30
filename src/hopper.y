@@ -133,7 +133,16 @@ TipoVariavel:
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
+			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
+			{
 			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			}
+			else
+			{
+				strcat(elemento_fila->token, " ");
+				strcat(elemento_fila->token, var_escopo);				
+				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
+			}
 		}
 	}
 	| T_INTEIRO
@@ -143,7 +152,16 @@ TipoVariavel:
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
-			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
+			{
+				hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			}
+			else
+			{
+				strcat(elemento_fila->token, " ");
+				strcat(elemento_fila->token, var_escopo);				
+				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
+			}
 		}
 	}
 	| T_CARACTERE
@@ -153,7 +171,16 @@ TipoVariavel:
 		
 		while(pop(&fila_var, &elemento_fila) == 1)
 		{
-			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
+			{
+				hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			}
+			else
+			{
+				strcat(elemento_fila->token, " ");
+				strcat(elemento_fila->token, var_escopo);				
+				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);
+			}
 		}
 	}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
@@ -214,20 +241,18 @@ Leia:
 ;
 
 ListaLeia:
-	T_Identificador
-	{
-		if (hash_consultar($1, var_escopo) == 0)
+	T_Identificador	{
+		if (hash_consultar(strdup($1), var_escopo) == 0)
 		{
 			if (hash_consultar($1, GLOBAL) == 0)
 			{
 				erros++;
 				yyerror("Variável não declarada: ", yylineno, yytext);	
 			}
-		}
+		}	
 	}
-	| ListaLeia T_Ident_Separador T_Identificador
-	{	
-		if (hash_consultar($3, var_escopo) == 0)
+	| ListaLeia T_Ident_Separador T_Identificador {	
+		if (hash_consultar(strdup($3), var_escopo) == 0)
 		{
 			if (hash_consultar($3, GLOBAL) == 0)
 			{
@@ -262,8 +287,16 @@ BlocoSe:
 ;
 
 BlocoEscolha:
-	T_Escolha T_Identificador FimComando ListaCasos T_Fimescolha
-	| T_Escolha T_Identificador FimComando ListaCasos OutroCaso T_Fimescolha
+	T_Escolha T_Identificador {
+		if (hash_consultar(strdup($2), var_escopo) == 0)
+		{
+			if (hash_consultar(strdup($2), GLOBAL) == 0)
+			{
+				erros++;
+				yyerror("Variável não declarada: ", yylineno, yytext);	
+			}
+		}	
+	} FimComando ListaCasos OutroCaso T_Fimescolha
 ;
 
 ListaCasos:
@@ -277,7 +310,8 @@ Caso:
 ;
 
 OutroCaso:
-	T_OutroCaso FimComando Comandos
+	
+	| T_OutroCaso FimComando Comandos	
 ;
 
 BlocoPara:
@@ -294,11 +328,29 @@ BlocoRepita:
 ;
 
 Atribuicao:
-	T_Identificador T_Operador_Atribuicao Expr
+	T_Identificador {
+		if (hash_consultar(strdup($1), var_escopo) == 0)
+		{
+			if (hash_consultar(strdup($1), GLOBAL) == 0)
+			{
+				erros++;
+				yyerror("Variável não declarada: ", yylineno, yytext);	
+			}
+		}	
+	} T_Operador_Atribuicao Expr
 ;
 
 Expr:
-	T_Identificador
+	T_Identificador {
+		if (hash_consultar(strdup($1), var_escopo) == 0)
+		{
+			if (hash_consultar(strdup($1), GLOBAL) == 0)
+			{
+				erros++;
+				yyerror("Variável não declarada: ", yylineno, yytext);	
+			}
+		}
+	}
 	| T_NUMERO_INTEIRO		
 	| T_NUMERO_REAL
 	| T_PI
@@ -541,11 +593,11 @@ int main(int ac, char **av) {
 
 int yyerror(char *s, int line, char *msg )
 {
-  printf ("ERRO->%d %s %s %s\n", line, s, msg, var_escopo);
-  return 0;
+	printf ("ERRO->%d %s %s \n", line, s, msg);
+	return 0;
 }
 
 int yywrap(void)
 {
-  return 1;
+	return 1;
 }

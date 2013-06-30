@@ -6,17 +6,17 @@ algoritmo "questao_03"
 // Data : 5/7/2013
 
 var
-    sexo_letra: caracter
+    sexo_letra: caractere
 
 inicio
 	// Faz a leitura da letra.
     escreva("Informe seu sexo, F para feminino ou M para masculino: ")
     leia(sexo_letra)
-    
+ 
 	// Faz a decisao da mensagem a ser mostrada. 
 	// O portugol nao e case sensitive, entao 'M' == 'm'.	
 	
-    escolha sexo_Letra
+    escolha sexo_letra
     caso "M"
         escreva("Seu sexo = M - masculino")
     caso "F"

@@ -31,8 +31,7 @@ inicio
             meio <- num3
             menor <- num1
           fimse
-        fimse
-
+        fimse        
    senao
        se (num3>=num2) e (num3>=num1) entao
            maior <- num3
