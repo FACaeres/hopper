@@ -35,7 +35,7 @@ void cadastrar_variavel(char var_tipo[50])
 			erros++;
 			strcat(elemento_fila_var->token, " ");
 			strcat(elemento_fila_var->token, var_escopo);				
-			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);			
+			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);		
 		}
 	}
 }
@@ -49,10 +49,7 @@ void verificar_variavel(char variavel[50])
 			erros++;
 			strcat(variavel, " ");
 			strcat(variavel, var_escopo);				
-			//yyerror("Variável não declarada: ", yylineno, variavel); - impl Daniel
-			yyerror("Variável não declarada: ", yylineno, yytext);
-
-	
+			yyerror("Variável não declarada: ", yylineno, variavel);
 		}
 	}	
 }
@@ -381,7 +378,7 @@ int main(int ac, char **av) {
 
 int yyerror(char *msg, int line, char *token )
 {
-	push_error(&fila_erros, msg,line, token);
+	push_error(&fila_erros, msg, line, token);
 	return 0;
 }
 
