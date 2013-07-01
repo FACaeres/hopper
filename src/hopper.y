@@ -25,6 +25,36 @@ char *var_nome;
 char *var_escopo;
 char *var_tipo;
 
+void cadastrar_variavel(char var_tipo[50])
+{
+	elementofila *elemento_fila;
+	while(pop(&fila_var, &elemento_fila) == 1)
+	{
+		if(hash_consultar(elemento_fila->token, var_escopo) == 0)
+		{
+			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+		}
+		else
+		{
+			strcat(elemento_fila->token, " ");
+			strcat(elemento_fila->token, var_escopo);				
+			yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
+		}
+	}
+}
+
+void verificar_variavel(char variavel[50])
+{
+	if (hash_consultar(variavel, var_escopo) == 0)
+	{
+		if (hash_consultar(variavel, GLOBAL) == 0)
+		{
+			erros++;
+			yyerror("Variável não declarada: ", yylineno, yytext);	
+		}
+	}	
+}
+
 %}
 
 %locations
@@ -74,7 +104,7 @@ char *var_tipo;
 %right 	T_OPERADOR_EXPONENCIACAO
 
 %start 	Input
-%% 
+%%
 
 //Definição de Quebra de linha
 //-----------------------------------------------
@@ -126,63 +156,9 @@ ListaVariaveis:
 ;
 
 TipoVariavel:
-	T_REAL
-	{
-		var_tipo = "real";	
-		elementofila *elemento_fila;
-		
-		while(pop(&fila_var, &elemento_fila) == 1)
-		{
-			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
-			{
-			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			}
-			else
-			{
-				strcat(elemento_fila->token, " ");
-				strcat(elemento_fila->token, var_escopo);				
-				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
-			}
-		}
-	}
-	| T_INTEIRO
-	{
-		var_tipo = "inteiro";	
-		elementofila *elemento_fila;
-		
-		while(pop(&fila_var, &elemento_fila) == 1)
-		{
-			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
-			{
-				hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			}
-			else
-			{
-				strcat(elemento_fila->token, " ");
-				strcat(elemento_fila->token, var_escopo);				
-				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
-			}
-		}
-	}
-	| T_CARACTERE
-	{
-		var_tipo = "caractere";	
-		elementofila *elemento_fila;
-		
-		while(pop(&fila_var, &elemento_fila) == 1)
-		{
-			if(hash_consultar(elemento_fila->token, var_escopo) == 0)
-			{
-				hash_inserir(elemento_fila->token, var_escopo, var_tipo);
-			}
-			else
-			{
-				strcat(elemento_fila->token, " ");
-				strcat(elemento_fila->token, var_escopo);				
-				yyerror("Variável já declarada: ", yylineno, elemento_fila->token);
-			}
-		}
-	}
+	T_REAL {cadastrar_variavel("real");}
+	| T_INTEIRO {cadastrar_variavel("inteiro");}
+	| T_CARACTERE {cadastrar_variavel("caractere");}
 	| error {erros++; yyerror("Tipo de dados Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -241,26 +217,8 @@ Leia:
 ;
 
 ListaLeia:
-	T_Identificador	{
-		if (hash_consultar(strdup($1), var_escopo) == 0)
-		{
-			if (hash_consultar($1, GLOBAL) == 0)
-			{
-				erros++;
-				yyerror("Variável não declarada: ", yylineno, yytext);	
-			}
-		}	
-	}
-	| ListaLeia T_Ident_Separador T_Identificador {	
-		if (hash_consultar(strdup($3), var_escopo) == 0)
-		{
-			if (hash_consultar($3, GLOBAL) == 0)
-			{
-				erros++;
-				yyerror("Variável não declarada: ", yylineno, yytext);	
-			}
-		}	
-	}
+	T_Identificador {verificar_variavel(strdup($1));}
+	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
 	| error {erros++; yyerror("Parâmetro inválido no LEIA, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
@@ -287,16 +245,7 @@ BlocoSe:
 ;
 
 BlocoEscolha:
-	T_Escolha T_Identificador {
-		if (hash_consultar(strdup($2), var_escopo) == 0)
-		{
-			if (hash_consultar(strdup($2), GLOBAL) == 0)
-			{
-				erros++;
-				yyerror("Variável não declarada: ", yylineno, yytext);	
-			}
-		}	
-	} FimComando ListaCasos OutroCaso T_Fimescolha
+	T_Escolha T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_Fimescolha
 ;
 
 ListaCasos:
@@ -328,30 +277,12 @@ BlocoRepita:
 ;
 
 Atribuicao:
-	T_Identificador {
-		if (hash_consultar(strdup($1), var_escopo) == 0)
-		{
-			if (hash_consultar(strdup($1), GLOBAL) == 0)
-			{
-				erros++;
-				yyerror("Variável não declarada: ", yylineno, yytext);	
-			}
-		}	
-	} T_Operador_Atribuicao Expr
+	T_Identificador {verificar_variavel(strdup($1));} T_Operador_Atribuicao Expr
 ;
 
 Expr:
-	T_Identificador {
-		if (hash_consultar(strdup($1), var_escopo) == 0)
-		{
-			if (hash_consultar(strdup($1), GLOBAL) == 0)
-			{
-				erros++;
-				yyerror("Variável não declarada: ", yylineno, yytext);	
-			}
-		}
-	}
-	| T_NUMERO_INTEIRO		
+	T_Identificador {verificar_variavel(strdup($1));}
+	| T_NUMERO_INTEIRO
 	| T_NUMERO_REAL
 	| T_PI
 	| T_String
