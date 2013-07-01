@@ -113,7 +113,6 @@ QuebraComando:
 FimComando:
 	T_FIM_COMANDO
 	| FimComando T_FIM_COMANDO
-	| error {erros++; yyerror("Esperava quebra de linha, encontrou: ", yylineno, yytext);}
 ;
 
 //Inicio da análise sintática
@@ -129,26 +128,26 @@ Algoritmo:
 ;
 
 BlocoCabecalho:
-	T_Algoritmo T_String FimComando
+	T_ALGORITMO T_STRING FimComando
 ;
 
 
 BlocoDeclaracoes:
 
-	| T_Var QuebraComando ListaDeclaracoes
+	| T_VAR QuebraComando ListaDeclaracoes
 	| error {erros++; yyerror("Variável Inválida ", yylineno, yytext);} FimComando
 ;
 
 
 ListaDeclaracoes:
-	ListaVariaveis T_Tipo_Atribuidor TipoVariavel FimComando
-	| ListaDeclaracoes ListaVariaveis T_Tipo_Atribuidor TipoVariavel FimComando
+	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
 	| error {erros++; yyerror("Declaracao de variável inválida: ", yylineno, yytext);} FimComando
 ;
 
 ListaVariaveis:
 	T_Identificador {push_var(&fila_variavel, $1);}
-	| ListaVariaveis T_Ident_Separador T_Identificador {push_var(&fila_variavel, $3);}
+	| ListaVariaveis T_IDENT_SEPARADOR T_Identificador {push_var(&fila_variavel, $3);}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -169,23 +168,23 @@ BlocoFuncoes:
 ;
 
 BlocoFuncao:
-	T_Funcao T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir T_Tipo_Atribuidor TipoVariavel FimComando
-	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimFuncao FimComando {var_escopo = GLOBAL;}
+	T_FUNCAO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando {var_escopo = GLOBAL;}
 	| error {erros++; yyerror("Estrutura da funcão inválida, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 BlocoProcedimento:
-	T_Procedimento T_Identificador {var_escopo = $2;} T_Parentese_Esq ListaParametros T_Parentese_Dir FimComando 
-	BlocoDeclaracoes T_Inicio FimComando Comandos T_FimProcedimento FimComando {var_escopo = GLOBAL;}
+	T_PROCEDIMENTO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR FimComando 
+	BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMPROCEDIMENTO FimComando {var_escopo = GLOBAL;}
 ;
 
 ListaParametros:
-	ListaVariaveis T_Tipo_Atribuidor TipoVariavel
-	| ListaParametros T_Ident_Separador ListaVariaveis T_Tipo_Atribuidor TipoVariavel
+	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
+	| ListaParametros T_IDENT_SEPARADOR ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
 ;
 
 BlocoComando:
-	T_Inicio FimComando Comandos T_FimAlgoritmo QuebraComando
+	T_INICIO FimComando Comandos T_FIMALGORITMO QuebraComando
 ;
 
 Comandos:
@@ -203,46 +202,46 @@ Comando:
 	| BlocoPara FimComando
 	| BlocoEnquanto FimComando
 	| BlocoRepita FimComando
-	| T_Identificador T_Parentese_Esq List_Expr T_Parentese_Dir FimComando
-	| T_Retorne Expr FimComando
-	| T_Interrompa FimComando
+	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
+	| T_RETORNE Expr FimComando
+	| T_INTERROMPA FimComando
 	| error {erros++; yyerror("Comando inválido: ", yylineno, yytext);} FimComando
 ;
 
 Leia:
-	T_Leia T_Parentese_Esq ListaLeia T_Parentese_Dir
+	T_LEIA T_PARENTESE_ESQ ListaLeia T_PARENTESE_DIR
 ;
 
 ListaLeia:
 	T_Identificador {verificar_variavel(strdup($1));}
-	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
+	| ListaLeia T_IDENT_SEPARADOR T_Identificador {verificar_variavel(strdup($3));} 
 	| error {erros++; yyerror("Parâmetro inválido no LEIA, token nao esperado: ", yylineno, yytext);} FimComando
 ;
 
 Escreva:
-	T_Escreva T_Parentese_Esq ConteudoEscreva T_Parentese_Dir
+	T_Escreva T_PARENTESE_ESQ ConteudoEscreva T_PARENTESE_DIR
 ;
 
 ConteudoEscreva:
 	Expr OpcaoCasasDecimais
-	| ConteudoEscreva T_Ident_Separador Expr OpcaoCasasDecimais
+	| ConteudoEscreva T_IDENT_SEPARADOR Expr OpcaoCasasDecimais
 	| error {erros++; yyerror("Parâmetros inválidos no ESCREVA, token invalido: ", yylineno, yytext);} FimComando
 ;
 
 OpcaoCasasDecimais:
 	
-	| T_Tipo_Atribuidor T_NUMERO_INTEIRO
-	| T_Tipo_Atribuidor T_NUMERO_INTEIRO T_Tipo_Atribuidor T_NUMERO_INTEIRO
+	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
+	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
 	| error {erros++; yyerror("Formatacao de casas decimais inválidas", yylineno, yytext);} FimComando
 ;
 
 BlocoSe:
-	T_Se Expr T_Entao FimComando Comandos T_FimSe
-	| T_Se Expr T_Entao FimComando Comandos T_Senao FimComando Comandos T_FimSe
+	T_SE Expr T_ENTAO FimComando Comandos T_FIMSE
+	| T_SE Expr T_ENTAO FimComando Comandos T_SENAO FimComando Comandos T_FIMSE
 ;
 
 BlocoEscolha:
-	T_Escolha T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_Fimescolha
+	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_FIMESCOLHA
 ;
 
 ListaCasos:
@@ -251,30 +250,30 @@ ListaCasos:
 ;
 
 Caso:
-	T_Caso Expr FimComando Comandos
+	T_CASO Expr FimComando Comandos
 	| error {erros++; yyerror("Estrutura Caso invalida, token desconhecido: ", yylineno, yytext);} FimComando
 ;
 
 OutroCaso:
 	
-	| T_OutroCaso FimComando Comandos	
+	| T_OUTROCASO FimComando Comandos	
 ;
 
 BlocoPara:
-	T_Para Expr T_De Expr T_Ate Expr T_Faca FimComando Comandos T_FimPara
-	| T_Para Expr T_De Expr T_Ate Expr T_Passo Expr T_Faca FimComando Comandos T_FimPara
+	T_PARA Expr T_DE Expr T_ATE Expr T_FACA FimComando Comandos T_FIMPARA
+	| T_PARA Expr T_DE Expr T_ATE Expr T_PASSO Expr T_FACA FimComando Comandos T_FIMPARA
 ;
 
 BlocoEnquanto:
-	T_Enquanto Expr T_Faca FimComando Comandos T_FimEnquanto
+	T_ENQUANTO Expr T_FACA FimComando Comandos T_FIMENQUANTO
 ;
 
 BlocoRepita:
-	T_Repita FimComando Comandos T_Ate Expr
+	T_REPITA FimComando Comandos T_ATE Expr
 ;
 
 Atribuicao:
-	T_Identificador {verificar_variavel(strdup($1));} T_Operador_Atribuicao Expr
+	T_Identificador {verificar_variavel(strdup($1));} T_OPERADOR_ATRIBUICAO Expr
 ;
 
 Expr:
@@ -282,8 +281,8 @@ Expr:
 	| T_NUMERO_INTEIRO
 	| T_NUMERO_REAL
 	| T_PI
-	| T_String
-	| T_Parentese_Esq Expr T_Parentese_Dir
+	| T_STRING
+	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| Expr T_OPERADOR_DIVISAO_RESTO Expr
 	| Expr Add_op Expr
 	| Expr Mult_op Expr
@@ -292,17 +291,17 @@ Expr:
 	| T_OPERADOR_SUBTRACAO Expr %prec NEG
 	| T_OP_LOGICO_NAO Expr
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
-	| T_RAIZQ T_Parentese_Esq Expr T_Parentese_Dir
-	| T_MAIUSC T_Parentese_Esq Expr T_Parentese_Dir
-	| T_COMPR T_Parentese_Esq Expr T_Parentese_Dir
-	| T_Identificador T_Parentese_Esq List_Expr T_Parentese_Dir
-	| T_COPIA T_Parentese_Esq List_Expr T_Parentese_Dir
-	| T_Parentese_Esq error {erros++; yyerror("Expressao inválida", yylineno, yytext);} T_Parentese_Dir
+	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_MAIUSC T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_COMPR T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+	| T_COPIA T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+	| T_PARENTESE_ESQ error {erros++; yyerror("Expressao inválida", yylineno, yytext);} T_PARENTESE_DIR
 ;
 
 List_Expr:
 	Expr
-	| List_Expr T_Ident_Separador Expr
+	| List_Expr T_IDENT_SEPARADOR Expr
 	| error {erros++; yyerror("Expressao invalida: ", yylineno, yytext);} FimComando
 ;
 
@@ -339,161 +338,14 @@ Comp_op:
 	| T_OPERADOR_MAIOR_IGUAL
 ;
 
-
-T_Algoritmo:
-	T_ALGORITMO
-;	
-
-T_String:
-	T_STRING
-	| error {erros++; yyerror("Formato de String inválido ", yylineno, yytext);} FimComando
-;
-
-
-T_Var:
-	T_VAR
-;
-
-
-T_Tipo_Atribuidor:
-	T_TIPO_ATRIBUIDOR
-	| error {erros++; yyerror("Esperava ':', encontrou: ", yylineno, yytext);} FimComando
-;
-
 T_Identificador:
 	T_IDENTIFICADOR { $$ = strdup(yytext);}
 	| error {erros++; yyerror("Nome nao segue as regras de criacao, consulte as referencias: ", yylineno, yytext);} FimComando
 ;
 
-T_Ident_Separador:
-	T_IDENT_SEPARADOR
-	| error {erros++; yyerror("Esperava ',' encontrou: ", yylineno, yytext);} FimComando
-;
-
-T_Funcao:
-	T_FUNCAO
-;
-
-T_Parentese_Esq:
-	T_PARENTESE_ESQ
-	| error {erros++; yyerror("Esperava '(', encontrou: ", yylineno, yytext);} FimComando
-;
-
-T_Parentese_Dir:
-	T_PARENTESE_DIR
-	| error {erros++; yyerror("Esperava ')', encontrou: ", yylineno, yytext);} FimComando
-;
-
-T_Inicio:
-	T_INICIO
-	| error {erros++; yyerror("Esperava INICIO, encontrou: ", yylineno, yytext);} FimComando
-;
-
-T_FimFuncao:
-	T_FIMFUNCAO
-;
-
-T_Procedimento:
-	T_PROCEDIMENTO
-;
-
-T_FimProcedimento:
-	T_FIMPROCEDIMENTO
-;
-
-T_FimAlgoritmo:
-	T_FIMALGORITMO
-;
-
-T_Retorne:
-	T_RETORNE
-;
-
-
-T_Interrompa:
-	T_INTERROMPA
-;
-
-T_Leia:
-	T_LEIA
-;
-
 T_Escreva:
 	T_ESCREVA
 	| T_ESCREVAL
-;
-
-T_Se:
-	T_SE
-;
-
-T_Entao:
-	T_ENTAO
-;
-
-T_FimSe:
-	T_FIMSE
-;
-
-T_Senao:
-	T_SENAO
-;
-
-T_Escolha:
-	T_ESCOLHA
-;
-
-T_Fimescolha:
-	T_FIMESCOLHA
-	| error {erros++; yyerror("Esperava FIMESCOLHA, encontrado: ", yylineno, yytext);} FimComando
-;
-
-T_Caso:
-	T_CASO
-;
-
-T_OutroCaso:
-	T_OUTROCASO
-;
-
-T_Para:
-	T_PARA
-;
-
-T_Ate:
-	T_ATE
-;
-
-T_De:
-	T_DE
-;
-
-T_Faca:
-	T_FACA
-;
-
-T_FimPara:
-	T_FIMPARA
-;
-
-T_Passo:
-	T_PASSO
-;
-
-T_Enquanto:
-	T_ENQUANTO
-;
-
-T_FimEnquanto:
-	T_FIMENQUANTO
-;
-
-T_Repita:
-	T_REPITA
-;
-
-T_Operador_Atribuicao:
-	T_OPERADOR_ATRIBUICAO
 ;
 
 %%
