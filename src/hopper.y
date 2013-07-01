@@ -3,22 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "fila/fila.c"
+#include "var/var.c"
 #include "hash/hash.h"
 
 #define YYSTYPE char*
 #define GLOBAL "__GLOBAL__"
 
-extern void cria_fila(fila*);
-extern int fila_vazia(fila*);
-extern int push(fila*, char*);
-extern int pop(fila*, struct elementofila**);
-extern void pop_all(fila*);
-
-fila fila_var;
+fila_var fila_variavel;
 
 int erros;
-extern yylineno;
+extern int yylineno;
 extern char *yytext;
 
 char *var_nome;
@@ -27,18 +21,19 @@ char *var_tipo;
 
 void cadastrar_variavel(char var_tipo[50])
 {
-	elementofila *elemento_fila;
-	while(pop(&fila_var, &elemento_fila) == 1)
+	elementofila_var *elemento_fila_var;
+	while(pop_var(&fila_variavel, &elemento_fila_var) == 1)
 	{
-		if(hash_consultar(elemento_fila->token, var_escopo) == 0)
+		if(hash_consultar(elemento_fila_var->token, var_escopo) == 0)
 		{
-			hash_inserir(elemento_fila->token, var_escopo, var_tipo);
+			hash_inserir(elemento_fila_var->token, var_escopo, var_tipo);
 		}
 		else
 		{
-			strcat(elemento_fila->token, " ");
-			strcat(elemento_fila->token, var_escopo);				
-			yyerror("Variável já declarada: ", yylineno, elemento_fila->token);			
+			erros++;
+			strcat(elemento_fila_var->token, " ");
+			strcat(elemento_fila_var->token, var_escopo);				
+			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);			
 		}
 	}
 }
@@ -50,7 +45,9 @@ void verificar_variavel(char variavel[50])
 		if (hash_consultar(variavel, GLOBAL) == 0)
 		{
 			erros++;
-			yyerror("Variável não declarada: ", yylineno, yytext);	
+			strcat(variavel, " ");
+			strcat(variavel, var_escopo);				
+			yyerror("Variável não declarada: ", yylineno, variavel);	
 		}
 	}	
 }
@@ -150,8 +147,8 @@ ListaDeclaracoes:
 ;
 
 ListaVariaveis:
-	T_Identificador {push(&fila_var, $1);}
-	| ListaVariaveis T_Ident_Separador T_Identificador {push(&fila_var, $3);}
+	T_Identificador {push_var(&fila_variavel, $1);}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push_var(&fila_variavel, $3);}
 	| error {erros++; yyerror("Nome de variavel Inválido: ", yylineno, yytext);} FimComando
 ;
 
@@ -505,7 +502,7 @@ int main(int ac, char **av) {
 		
 	extern FILE *yyin;
 	
-	cria_fila(&fila_var);
+	cria_fila_var(&fila_variavel);
 		
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
@@ -519,12 +516,12 @@ int main(int ac, char **av) {
 	else
 	{
 		printf("\n\nExistem erros no algoritmo.\n");		
-	}	
+	}
 }
 
 int yyerror(char *s, int line, char *msg )
 {
-	printf ("ERRO->%d %s %s \n", line, s, msg);
+	printf ("ERRO -> Linha: %d. %s %s \n", line, s, msg);
 	return 0;
 }
 

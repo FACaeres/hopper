@@ -25,7 +25,7 @@ inicio
            maior <- num2
         se (num1>=num3) entao
            meio <- num1
-           menor <- c
+           menor <- num3
         senao
           se (num3>=num1) entao
             meio <- num3
