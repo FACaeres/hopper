@@ -1,8 +1,8 @@
-#ifndef FILA_H_INCLUDED
-#define FILA_H_INCLUDED
+#ifndef VAR_H_INCLUDED
+#define VAR_H_INCLUDED
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 
 typedef struct elementofila_var
 {

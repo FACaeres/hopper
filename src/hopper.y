@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "fila/fila.c"
 #include "var/var.c"
 #include "hash/hash.h"
 
@@ -10,6 +11,7 @@
 #define GLOBAL "__GLOBAL__"
 
 fila_var fila_variavel;
+filaError fila_erros;
 
 int erros;
 extern int yylineno;
@@ -47,7 +49,10 @@ void verificar_variavel(char variavel[50])
 			erros++;
 			strcat(variavel, " ");
 			strcat(variavel, var_escopo);				
-			yyerror("Variável não declarada: ", yylineno, variavel);	
+			//yyerror("Variável não declarada: ", yylineno, variavel); - impl Daniel
+			yyerror("Variável não declarada: ", yylineno, yytext);
+
+	
 		}
 	}	
 }
@@ -354,7 +359,9 @@ int main(int ac, char **av) {
 		
 	extern FILE *yyin;
 	
+
 	cria_fila_var(&fila_variavel);
+	cria_fila_error(&fila_erros);
 		
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
@@ -363,17 +370,18 @@ int main(int ac, char **av) {
 	
 	yyparse();
 
-	if(!erros)
+	if(fila_vazia_error(&fila_erros))
 		printf("O algoritmo é valido!\n");
 	else
 	{
-		printf("\n\nExistem erros no algoritmo.\n");		
+		printf("\n\nExistem erros no algoritmo.\n");
+		pop_all_error(&fila_erros);
 	}
 }
 
-int yyerror(char *s, int line, char *msg )
+int yyerror(char *msg, int line, char *token )
 {
-	printf ("ERRO -> Linha: %d. %s %s \n", line, s, msg);
+	push_error(&fila_erros, msg,line, token);
 	return 0;
 }
 
