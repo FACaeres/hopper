@@ -59,14 +59,17 @@ void verificar_variavel(char variavel[50])
 %locations
 %error-verbose
 
-%token 	T_ALGORITMO T_STRING T_VAR T_INICIO T_FIM_COMANDO 
-%token 	T_IDENTIFICADOR T_TIPO_ATRIBUIDOR T_IDENT_SEPARADOR T_REAL T_INTEIRO
-%token 	T_ESCREVA T_ESCREVAL T_PARENTESE_DIR T_PARENTESE_ESQ
+%token 	T_ALGORITMO T_STRING T_FIM_COMANDO 
+%token 	T_VAR T_IDENTIFICADOR T_TIPO_ATRIBUIDOR T_IDENT_SEPARADOR T_REAL T_INTEIRO
+%token 	T_INICIO T_ESCREVA T_ESCREVAL T_PARENTESE_DIR T_PARENTESE_ESQ
 %token 	T_LEIA T_OPERADOR_ATRIBUICAO
 
-%token 	T_OPERADOR_SOMA T_OPERADOR_SUBTRACAO
-%token 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO
-%token 	T_OPERADOR_EXPONENCIACAO T_RAIZQ
+%token 	T_OPERADOR_SOMA
+%token 	T_OPERADOR_SUBTRACAO
+%token 	T_OPERADOR_MULTIPLICACAO
+%token 	T_OPERADOR_DIVISAO
+%token 	T_OPERADOR_EXPONENCIACAO
+%token  T_RAIZQ
 
 %token 	T_FIMALGORITMO
 
@@ -88,63 +91,88 @@ void verificar_variavel(char variavel[50])
 %token 	T_NUMERO_INTEIRO T_NUMERO_REAL T_OP_LOGICO_E T_OP_LOGICO_XOU  
 %token 	T_OP_LOGICO_NAO T_OP_LOGICO_OU T_INVALIDO
 
+%left 	T_OP_LOGICO_OU
+%left 	T_OP_LOGICO_XOU
 %left 	T_OP_LOGICO_E
-%left 	T_OP_LOGICO_OU T_OP_LOGICO_XOU 
 %left 	T_OP_LOGICO_NAO
-%left 	T_OPERADOR_MAIOR T_OPERADOR_MENOR T_OPERADOR_IGUAL T_OPERADOR_DIFERENTE T_OPERADOR_MAIOR_IGUAL T_OPERADOR_MENOR_IGUAL
+%left 	T_OPERADOR_IGUAL T_OPERADOR_DIFERENTE T_OPERADOR_MENOR T_OPERADOR_MENOR_IGUAL T_OPERADOR_MAIOR T_OPERADOR_MAIOR_IGUAL
+%left 	T_OPERADOR_DIVISAO_RESTO
 %left 	T_OPERADOR_SOMA T_OPERADOR_SUBTRACAO
-%left 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO T_OPERADOR_DIVISAO_RESTO
+%left 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO
 %left 	NEG
 %right 	T_OPERADOR_EXPONENCIACAO
 
 %start 	Input
 %%
 
+//Definição de Quebra de linha
+//-----------------------------------------------
+QuebraComando:
+	
+	| FimComando
+;
+
+FimComando:
+	T_FIM_COMANDO
+	| FimComando T_FIM_COMANDO
+;
+
+//Inicio da análise sintática
+//-----------------------------------------------
+
 Input:
 	QuebraComando {var_escopo = GLOBAL;} Algoritmo 
 ;
 
 Algoritmo:
-	T_ALGORITMO T_STRING FimComando T_VAR QuebraComando ListaDeclaracoes  BlocoComando
-	|T_ALGORITMO T_STRING FimComando T_VAR QuebraComando ListaDeclaracoes BlocoFuncoes BlocoComando
+	BlocoCabecalho BlocoDeclaracoes BlocoFuncoes BlocoComando
+	|BlocoCabecalho BlocoDeclaracoes BlocoComando
 	| error {erros++; yyerror("Ordem inválida dos blocos, encontrou: ", yylineno, yytext);} FimComando
+;
+
+BlocoCabecalho:
+	T_ALGORITMO T_STRING FimComando
+;
+
+
+BlocoDeclaracoes:
+
+	| T_VAR QuebraComando ListaDeclaracoes
+	| error {erros++; yyerror("Variável Inválida ", yylineno, yytext);} FimComando
 ;
 
 
 ListaDeclaracoes:
-	ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
-	| ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
-	| error {erros++; yyerror("Declaracao de variável inválida: ", yylineno, yytext);} FimComando
+	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
 ;
 
 ListaVariaveis:
-	T_IDENTIFICADOR { $$ = strdup(yytext); push_var(&fila_variavel, $1);}
-	| ListaVariaveis T_IDENT_SEPARADOR T_IDENTIFICADOR { $$ = strdup(yytext); push_var(&fila_variavel, $3);}
-	
+	T_Identificador {push_var(&fila_variavel, $1);}
+	| ListaVariaveis T_IDENT_SEPARADOR T_Identificador {push_var(&fila_variavel, $3);}
 ;
 
 TipoVariavel:
 	T_REAL {cadastrar_variavel("real");}
 	| T_INTEIRO {cadastrar_variavel("inteiro");}
 	| T_CARACTERE {cadastrar_variavel("caractere");}
-	
 ;
 
 BlocoFuncoes:	
-	  BlocoFuncao
+	BlocoFuncao
 	| BlocoProcedimento
 	| BlocoFuncoes BlocoFuncao
 	| BlocoFuncoes BlocoProcedimento
 ;
 
 BlocoFuncao:
-	T_FUNCAO T_IDENTIFICADOR { $$ = strdup(yytext); var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando T_VAR QuebraComando ListaDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando {var_escopo = GLOBAL;}
-	
+	T_FUNCAO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando {var_escopo = GLOBAL;}
 ;
 
 BlocoProcedimento:
-	T_PROCEDIMENTO T_IDENTIFICADOR { $$ = strdup(yytext); var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR FimComando 
-	T_VAR QuebraComando ListaDeclaracoes T_INICIO FimComando Comandos T_FIMPROCEDIMENTO FimComando {var_escopo = GLOBAL;}
+	T_PROCEDIMENTO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR FimComando 
+	BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMPROCEDIMENTO FimComando {var_escopo = GLOBAL;}
 ;
 
 ListaParametros:
@@ -159,7 +187,6 @@ BlocoComando:
 Comandos:
 	Comando
 	| Comandos Comando
-	
 ;
 
 Comando:
@@ -171,10 +198,9 @@ Comando:
 	| BlocoPara FimComando
 	| BlocoEnquanto FimComando
 	| BlocoRepita FimComando
-	| T_IDENTIFICADOR { $$ = strdup(yytext);} T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
+	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
 	| T_RETORNE Expr FimComando
 	| T_INTERROMPA FimComando
-	| error {erros++; yyerror("Comando inválido: ", yylineno, yytext);} FimComando
 ;
 
 Leia:
@@ -182,9 +208,8 @@ Leia:
 ;
 
 ListaLeia:
-	T_IDENTIFICADOR { $$ = strdup(yytext); verificar_variavel(strdup($1));}
-	| ListaLeia T_IDENT_SEPARADOR T_IDENTIFICADOR { $$ = strdup(yytext); verificar_variavel(strdup($3));} 
-	| error {erros++; yyerror("Parâmetro inválido no LEIA, token nao esperado: ", yylineno, yytext);} FimComando
+	T_Identificador {verificar_variavel(strdup($1));}
+	| ListaLeia T_IDENT_SEPARADOR T_Identificador {verificar_variavel(strdup($3));} 
 ;
 
 Escreva:
@@ -194,7 +219,6 @@ Escreva:
 ConteudoEscreva:
 	Expr OpcaoCasasDecimais
 	| ConteudoEscreva T_IDENT_SEPARADOR Expr OpcaoCasasDecimais
-	| error {erros++; yyerror("Parâmetros inválidos no ESCREVA, token invalido: ", yylineno, yytext);} FimComando
 ;
 
 OpcaoCasasDecimais:
@@ -210,7 +234,7 @@ BlocoSe:
 ;
 
 BlocoEscolha:
-	T_ESCOLHA T_IDENTIFICADOR { $$ = strdup(yytext); verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_FIMESCOLHA
+	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_FIMESCOLHA
 ;
 
 ListaCasos:
@@ -220,7 +244,6 @@ ListaCasos:
 
 Caso:
 	T_CASO Expr FimComando Comandos
-	
 ;
 
 OutroCaso:
@@ -242,68 +265,53 @@ BlocoRepita:
 ;
 
 Atribuicao:
-	T_IDENTIFICADOR { $$ = strdup(yytext); verificar_variavel(strdup($1));} T_OPERADOR_ATRIBUICAO Expr
+	T_Identificador {verificar_variavel(strdup($1));} T_OPERADOR_ATRIBUICAO Expr
 ;
 
 Expr:
-	T_IDENTIFICADOR { $$ = strdup(yytext); verificar_variavel(strdup($1));}
+	T_Identificador {verificar_variavel(strdup($1));}
 	| T_NUMERO_INTEIRO
 	| T_NUMERO_REAL
 	| T_PI
 	| T_STRING
-	| Expr T_OP_LOGICO_OU Expr
+	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| Expr T_OPERADOR_DIVISAO_RESTO Expr
+	| Expr T_OPERADOR_SOMA Expr
+	| Expr T_OPERADOR_SUBTRACAO Expr 
+	| Expr T_OPERADOR_MULTIPLICACAO Expr
+	| Expr T_OPERADOR_DIVISAO Expr
 	| Expr T_OP_LOGICO_E Expr
+	| Expr T_OP_LOGICO_OU Expr
 	| Expr T_OP_LOGICO_XOU Expr
 	| Expr T_OPERADOR_IGUAL Expr
 	| Expr T_OPERADOR_DIFERENTE Expr
 	| Expr T_OPERADOR_MENOR Expr
 	| Expr T_OPERADOR_MAIOR Expr
 	| Expr T_OPERADOR_MENOR_IGUAL Expr
-	| Expr T_OPERADOR_MAIOR_IGUAL Expr	
-	| Expr T_OPERADOR_DIVISAO_RESTO Expr
-	| Expr T_OPERADOR_SOMA Expr
-	| Expr T_OPERADOR_SUBTRACAO Expr
-	| Expr T_OPERADOR_MULTIPLICACAO Expr
-	| Expr T_OPERADOR_DIVISAO Expr	
+	| Expr T_OPERADOR_MAIOR_IGUAL Expr
 	| T_OPERADOR_SUBTRACAO Expr %prec NEG
 	| T_OP_LOGICO_NAO Expr
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
+	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| T_MAIUSC T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| T_COMPR T_PARENTESE_ESQ Expr T_PARENTESE_DIR
-	| T_IDENTIFICADOR { $$ = strdup(yytext);} T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
+	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
 	| T_COPIA T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR
-	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
-	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
-	| error {erros++; yyerror("Expressao inválida", yylineno, yytext);}
+	| T_PARENTESE_ESQ error {erros++; yyerror("Expressao inválida", yylineno, yytext);} T_PARENTESE_DIR
 ;
 
 List_Expr:
 	Expr
 	| List_Expr T_IDENT_SEPARADOR Expr
-	| error {erros++; yyerror("Expressao invalida: ", yylineno, yytext);} FimComando
 ;
 
+T_Identificador:
+	T_IDENTIFICADOR { $$ = strdup(yytext);}
+;
 
-/**
-***
-***	Simbolos terminais
-***
-**/
 T_Escreva:
 	T_ESCREVA
 	| T_ESCREVAL
-;
-
-//Definição de Quebra de linha
-//-----------------------------------------------
-QuebraComando:
-	
-	| FimComando
-;
-
-FimComando:
-	T_FIM_COMANDO
-	| FimComando T_FIM_COMANDO
 ;
 
 %%
