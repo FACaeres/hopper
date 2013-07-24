@@ -101,6 +101,7 @@ void verificar_variavel(char variavel[50])
 %left 	T_OPERADOR_MULTIPLICACAO T_OPERADOR_DIVISAO
 %left 	NEG
 %right 	T_OPERADOR_EXPONENCIACAO
+%nonassoc T_INVALIDO
 
 %start 	Input
 %%
@@ -127,35 +128,54 @@ Input:
 Algoritmo:
 	BlocoCabecalho BlocoDeclaracoes BlocoFuncoes BlocoComando
 	|BlocoCabecalho BlocoDeclaracoes BlocoComando
-	| error {erros++; yyerror("Ordem inválida dos blocos, encontrou: ", yylineno, yytext);} FimComando
 ;
 
 BlocoCabecalho:
-	T_ALGORITMO T_STRING FimComando
+	T_Algoritmo T_STRING FimComando
 ;
 
+T_Algoritmo:
+	T_ALGORITMO
+	| error {erros++; yyerror("Esperava ALGORITMO, encontrado: ", yylineno, yytext);}
+;
 
 BlocoDeclaracoes:
 
-	| T_VAR QuebraComando ListaDeclaracoes
-	| error {erros++; yyerror("Variável Inválida ", yylineno, yytext);} FimComando
+	| T_Var QuebraComando ListaDeclaracoes
+;
+
+T_Var:
+	T_VAR
+	| error {erros++; yyerror("Esperava VAR, encontrado: ", yylineno, yytext);} T_FIM_COMANDO
 ;
 
 
 ListaDeclaracoes:
-	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	ListaVariaveis T_Tipo_Atribuidor TipoVariavel FimComando
 	| ListaDeclaracoes ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+;
+
+T_Tipo_Atribuidor:
+	T_TIPO_ATRIBUIDOR
+	| error {erros++; yyerror("Esperava ':', encontrado: ", yylineno, yytext);} 
 ;
 
 ListaVariaveis:
 	T_Identificador {push_var(&fila_variavel, $1);}
-	| ListaVariaveis T_IDENT_SEPARADOR T_Identificador {push_var(&fila_variavel, $3);}
+	| ListaVariaveis T_Ident_Separador T_Identificador {push_var(&fila_variavel, $3);}
 ;
+
+T_Ident_Separador:
+	T_IDENT_SEPARADOR
+	| error {erros++; yyerror("Esperava VIRGULA, encontrado: ", yylineno, yytext);}
+;
+
 
 TipoVariavel:
 	T_REAL {cadastrar_variavel("real");}
 	| T_INTEIRO {cadastrar_variavel("inteiro");}
 	| T_CARACTERE {cadastrar_variavel("caractere");}
+	| error {erros++; yyerror("Tipo de variavel desconhecido: ", yylineno, yytext);}
 ;
 
 BlocoFuncoes:	
@@ -166,9 +186,10 @@ BlocoFuncoes:
 ;
 
 BlocoFuncao:
-	T_FUNCAO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_TIPO_ATRIBUIDOR TipoVariavel FimComando
+	T_FUNCAO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR T_Tipo_Atribuidor TipoVariavel FimComando
 	BlocoDeclaracoes T_INICIO FimComando Comandos T_FIMFUNCAO FimComando {var_escopo = GLOBAL;}
 ;
+
 
 BlocoProcedimento:
 	T_PROCEDIMENTO T_Identificador {var_escopo = $2;} T_PARENTESE_ESQ ListaParametros T_PARENTESE_DIR FimComando 
@@ -176,8 +197,8 @@ BlocoProcedimento:
 ;
 
 ListaParametros:
-	ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
-	| ListaParametros T_IDENT_SEPARADOR ListaVariaveis T_TIPO_ATRIBUIDOR TipoVariavel
+	ListaVariaveis T_Tipo_Atribuidor TipoVariavel
+	| ListaParametros T_Ident_Separador ListaVariaveis T_Tipo_Atribuidor TipoVariavel
 ;
 
 BlocoComando:
@@ -201,6 +222,7 @@ Comando:
 	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
 	| T_RETORNE Expr FimComando
 	| T_INTERROMPA FimComando
+	| error {erros++; yyerror("Comando inválido: ", yylineno, yytext);}
 ;
 
 Leia:
@@ -209,7 +231,7 @@ Leia:
 
 ListaLeia:
 	T_Identificador {verificar_variavel(strdup($1));}
-	| ListaLeia T_IDENT_SEPARADOR T_Identificador {verificar_variavel(strdup($3));} 
+	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
 ;
 
 Escreva:
@@ -223,14 +245,25 @@ ConteudoEscreva:
 
 OpcaoCasasDecimais:
 	
-	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
-	| T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO T_TIPO_ATRIBUIDOR T_NUMERO_INTEIRO
-	| error {erros++; yyerror("Formatacao de casas decimais inválidas", yylineno, yytext);} FimComando
+	| T_Tipo_Atribuidor T_NUMERO_INTEIRO
+	| T_Tipo_Atribuidor T_NUMERO_INTEIRO T_Tipo_Atribuidor T_NUMERO_INTEIRO
+	| error {erros++; yyerror("Formatacao de casas decimais inválidas", yylineno, yytext);}
+
 ;
 
 BlocoSe:
-	T_SE Expr T_ENTAO FimComando Comandos T_FIMSE
-	| T_SE Expr T_ENTAO FimComando Comandos T_SENAO FimComando Comandos T_FIMSE
+	T_SE Expr T_Entao FimComando Comandos T_FimSe
+	| T_SE Expr T_Entao FimComando Comandos T_SENAO FimComando Comandos T_FimSe
+;
+
+T_FimSe:
+	T_FIMSE
+	| error {erros++; yyerror("Esperava FIMSE, encontrado: ", yylineno, yytext);}
+;
+
+T_Entao:
+	T_ENTAO
+	| error {erros++; yyerror("Esperava ENTAO, encontrado: ", yylineno, yytext);}
 ;
 
 BlocoEscolha:
@@ -331,18 +364,17 @@ int main(int ac, char **av) {
 	
 	yyparse();
 
-	if(fila_vazia_error(&fila_erros))
-		printf("O algoritmo é valido!\n");
+	if(!erros)
+		printf("\n\nO algoritmo é valido!\n");
 	else
 	{
 		printf("\n\nExistem erros no algoritmo.\n");
-		pop_all_error(&fila_erros);
 	}
 }
 
 int yyerror(char *msg, int line, char *token )
 {
-	push_error(&fila_erros, msg, line, token);
+	printf ("ERRO -> Linha: %d. %s %s \n", yylineno, msg, token);
 	return 0;
 }
 
