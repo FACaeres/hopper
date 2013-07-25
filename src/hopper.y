@@ -13,6 +13,8 @@
 fila_var fila_variavel;
 filaError fila_erros;
 
+filaTraducao *fila_traducao;
+
 int erros;
 extern int yylineno;
 extern char *yytext;
@@ -131,7 +133,7 @@ Algoritmo:
 ;
 
 BlocoCabecalho:
-	T_Algoritmo T_STRING FimComando
+	T_Algoritmo T_STRING FimComando 
 ;
 
 T_Algoritmo:
@@ -350,8 +352,9 @@ T_Escreva:
 %%
 
 int main(int ac, char **av) {
-		
+	FILE *file_traducao;
 	extern FILE *yyin;
+	
 	
 
 	cria_fila_var(&fila_variavel);
@@ -361,11 +364,16 @@ int main(int ac, char **av) {
 		perror(av[1]);
 		exit(1);
 	}
+
+	cria_fila_traducao(fila_traducao);	
 	
 	yyparse();
 
-	if(!erros)
+	if(!erros){
 		printf("\n\nO algoritmo é valido!\n");
+		//file_traducao= fopen ("traducao.c", "w+");
+		//cria_arquivo(fila_traducao,file_traducao);	
+	}
 	else
 	{
 		printf("\n\nExistem erros no algoritmo.\n");
