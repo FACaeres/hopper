@@ -22,6 +22,7 @@ char *var_nome;
 char *var_escopo;
 char *var_tipo;
 char *c;
+char *tipo;
 
 void cadastrar_variavel(char var_tipo[50])
 {
@@ -230,11 +231,11 @@ Comando:
 ;
 
 Leia:
-	T_LEIA T_PARENTESE_ESQ ListaLeia T_PARENTESE_DIR
+	T_LEIA {push_traducao(&fila_traducao,"scanf");} T_PARENTESE_ESQ {push_traducao(&fila_traducao,"(");} ListaLeia T_PARENTESE_DIR {push_traducao(&fila_traducao,")");}
 ;
 
 ListaLeia:
-	T_Identificador {verificar_variavel(strdup($1));}
+	T_Identificador {verificar_variavel(strdup($1));} {push_traducao(&fila_traducao,strdup($1));}
 	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
 ;
 

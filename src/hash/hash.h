@@ -51,3 +51,4 @@ int hash_consultar(char *nome, char *escopo)
     }
 }
 
+
