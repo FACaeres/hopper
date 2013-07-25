@@ -12,7 +12,6 @@
 
 fila_var fila_variavel;
 filaError fila_erros;
-
 filaTraducao fila_traducao;
 
 int erros;
@@ -207,7 +206,7 @@ ListaParametros:
 ;
 
 BlocoComando:
-	T_INICIO {push_traducao(&fila_traducao,"void main() {");} FimComando Comandos T_FIMALGORITMO QuebraComando
+	T_INICIO {push_traducao(&fila_traducao,"void main() {");} FimComando Comandos T_FIMALGORITMO {push_traducao(&fila_traducao,"}");} QuebraComando
 ;
 
 Comandos:
@@ -217,7 +216,7 @@ Comandos:
 
 Comando:
 	Leia FimComando 
-	| Escreva FimComando
+	| Escreva FimComando {push_traducao(&fila_traducao,";");}
 	| Atribuicao FimComando
 	| BlocoSe FimComando
 	| BlocoEscolha FimComando
@@ -240,7 +239,7 @@ ListaLeia:
 ;
 
 Escreva:
-	T_Escreva T_PARENTESE_ESQ ConteudoEscreva T_PARENTESE_DIR 
+	T_Escreva T_PARENTESE_ESQ {push_traducao(&fila_traducao,"(");} ConteudoEscreva T_PARENTESE_DIR {push_traducao(&fila_traducao,")");}
 ;
 
 ConteudoEscreva:
@@ -311,7 +310,7 @@ Expr:
 	| T_NUMERO_INTEIRO
 	| T_NUMERO_REAL
 	| T_PI
-	| T_STRING
+	| T_STRING {$$ = strdup(yytext); push_traducao(&fila_traducao,$$);}
 	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
 	| Expr T_OPERADOR_DIVISAO_RESTO Expr
 	| Expr T_OPERADOR_SOMA Expr
@@ -348,8 +347,8 @@ T_Identificador:
 ;
 
 T_Escreva:
-	T_ESCREVA
-	| T_ESCREVAL
+	T_ESCREVA {push_traducao(&fila_traducao,"printf");}
+	| T_ESCREVAL {push_traducao(&fila_traducao,"printf");}
 ;
 
 %%
@@ -362,13 +361,14 @@ int main(int ac, char **av) {
 
 	cria_fila_var(&fila_variavel);
 	cria_fila_error(&fila_erros);
-		
+	cria_fila_traducao(&fila_traducao);	
+	  
+		 
 	if(ac > 1 && (yyin = fopen(av[1], "r")) == NULL) {
 		perror(av[1]);
 		exit(1);
 	}
 
-	cria_fila_traducao(&fila_traducao);	
 	
 	yyparse();
 
