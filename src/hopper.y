@@ -365,7 +365,7 @@ int main(int ac, char **av) {
 		exit(1);
 	}
 
-	cria_fila_traducao(fila_traducao);	
+	//cria_fila_traducao(fila_traducao);	
 	
 	yyparse();
 
