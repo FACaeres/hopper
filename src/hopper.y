@@ -13,7 +13,7 @@
 fila_var fila_variavel;
 filaError fila_erros;
 
-filaTraducao *fila_traducao;
+filaTraducao fila_traducao;
 
 int erros;
 extern int yylineno;
@@ -22,6 +22,7 @@ extern char *yytext;
 char *var_nome;
 char *var_escopo;
 char *var_tipo;
+char *c;
 
 void cadastrar_variavel(char var_tipo[50])
 {
@@ -137,7 +138,9 @@ BlocoCabecalho:
 ;
 
 T_Algoritmo:
-	T_ALGORITMO
+	T_ALGORITMO {push_traducao(&fila_traducao, "#include <stdio.h>");
+		     push_traducao(&fila_traducao, "#include <stdlib.h>");
+		     push_traducao(&fila_traducao, "#include <string.h>");}
 	| error {erros++; yyerror("Esperava ALGORITMO, encontrado: ", yylineno, yytext);}
 ;
 
@@ -204,7 +207,7 @@ ListaParametros:
 ;
 
 BlocoComando:
-	T_INICIO FimComando Comandos T_FIMALGORITMO QuebraComando
+	T_INICIO {push_traducao(&fila_traducao,"void main() {");} FimComando Comandos T_FIMALGORITMO QuebraComando
 ;
 
 Comandos:
@@ -213,7 +216,7 @@ Comandos:
 ;
 
 Comando:
-	Leia FimComando
+	Leia FimComando 
 	| Escreva FimComando
 	| Atribuicao FimComando
 	| BlocoSe FimComando
@@ -237,7 +240,7 @@ ListaLeia:
 ;
 
 Escreva:
-	T_Escreva T_PARENTESE_ESQ ConteudoEscreva T_PARENTESE_DIR
+	T_Escreva T_PARENTESE_ESQ ConteudoEscreva T_PARENTESE_DIR 
 ;
 
 ConteudoEscreva:
@@ -365,14 +368,14 @@ int main(int ac, char **av) {
 		exit(1);
 	}
 
-	//cria_fila_traducao(fila_traducao);	
+	cria_fila_traducao(&fila_traducao);	
 	
 	yyparse();
 
 	if(!erros){
 		printf("\n\nO algoritmo é valido!\n");
-		//file_traducao= fopen ("traducao.c", "w+");
-		//cria_arquivo(fila_traducao,file_traducao);	
+		file_traducao= fopen ("traducao.c", "w+");
+		cria_arquivo(&fila_traducao,file_traducao);	
 	}
 	else
 	{

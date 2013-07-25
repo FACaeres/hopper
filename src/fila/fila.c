@@ -67,7 +67,7 @@ int fila_vazia_traducao(filaTraducao *_fila)
         return 0;
 }
 
-int push_traducao(filaTraducao *_fila, elementoFilaTraducao *_elemento, char *_dado){
+int push_traducao(filaTraducao *_fila, char *_dado){
     elementoFilaTraducao *novoElemento;
     novoElemento = (elementoFilaTraducao*) malloc(sizeof(elementoFilaTraducao));
     if (novoElemento == NULL)

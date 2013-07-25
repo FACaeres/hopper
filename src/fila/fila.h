@@ -36,7 +36,7 @@ int pop_error(filaError *_fila, struct elementofilaError **_elemento);
 void pop_all_error(filaError *_fila);
 void cria_fila_traducao(filaTraducao *_fila);
 int fila_vazia_traducao(filaTraducao *_fila);
-int push_traducao(filaTraducao *_fila, elementoFilaTraducao *_elemento, char *_dado);
+int push_traducao(filaTraducao *_fila,  char *_dado);
 
 
 #endif
