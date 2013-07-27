@@ -23,10 +23,13 @@ char *var_escopo;
 char *var_tipo;
 char *c;
 char *tipo;
+char leiaTipos[256];
+char leiaVariaveis[256];
 
 void cadastrar_variavel(char var_tipo[50])
 {
 	elementofila_var *elemento_fila_var;
+	push_traducao(&fila_traducao,var_tipo);
 	while(pop_var(&fila_variavel, &elemento_fila_var) == 1)
 	{
 		if(hash_consultar(elemento_fila_var->token, var_escopo) == 0)
@@ -40,7 +43,12 @@ void cadastrar_variavel(char var_tipo[50])
 			strcat(elemento_fila_var->token, var_escopo);				
 			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);		
 		}
+		push_traducao(&fila_traducao,elemento_fila_var->token);
+		if(elemento_fila_var->prox!=NULL)
+		  push_traducao(&fila_traducao,",");
 	}
+	push_traducao(&fila_traducao,";");
+	
 }
 
 void verificar_variavel(char variavel[50])
@@ -161,7 +169,7 @@ ListaDeclaracoes:
 ;
 
 T_Tipo_Atribuidor:
-	T_TIPO_ATRIBUIDOR
+	T_TIPO_ATRIBUIDOR 
 	| error {erros++; yyerror("Esperava ':', encontrado: ", yylineno, yytext);} 
 ;
 
@@ -171,15 +179,15 @@ ListaVariaveis:
 ;
 
 T_Ident_Separador:
-	T_IDENT_SEPARADOR
+	T_IDENT_SEPARADOR 
 	| error {erros++; yyerror("Esperava VIRGULA, encontrado: ", yylineno, yytext);}
 ;
 
 
 TipoVariavel:
-	T_REAL {cadastrar_variavel("real");}
-	| T_INTEIRO {cadastrar_variavel("inteiro");}
-	| T_CARACTERE {cadastrar_variavel("caractere");}
+	T_REAL {cadastrar_variavel("float");}
+	| T_INTEIRO {cadastrar_variavel("int");}
+	| T_CARACTERE {cadastrar_variavel("char *");}
 	| error {erros++; yyerror("Tipo de variavel desconhecido: ", yylineno, yytext);}
 ;
 
@@ -257,17 +265,21 @@ OpcaoCasasDecimais:
 ;
 
 BlocoSe:
-	T_SE Expr T_Entao FimComando Comandos T_FimSe
-	| T_SE Expr T_Entao FimComando Comandos T_SENAO FimComando Comandos T_FimSe
+	T_Se Expr T_Entao FimComando Comandos T_FimSe
+	| T_Se Expr T_Entao FimComando Comandos T_SENAO FimComando Comandos T_FimSe
+;
+
+T_Se:
+      T_SE {push_traducao(&fila_traducao,"if");}
 ;
 
 T_FimSe:
-	T_FIMSE
+	T_FIMSE {push_traducao(&fila_traducao,"}");}
 	| error {erros++; yyerror("Esperava FIMSE, encontrado: ", yylineno, yytext);}
 ;
 
 T_Entao:
-	T_ENTAO
+	T_ENTAO {push_traducao(&fila_traducao,"{");}
 	| error {erros++; yyerror("Esperava ENTAO, encontrado: ", yylineno, yytext);}
 ;
 
@@ -308,11 +320,11 @@ Atribuicao:
 
 Expr:
 	T_Identificador {verificar_variavel(strdup($1));}
-	| T_NUMERO_INTEIRO
+	| T_NUMERO_INTEIRO {push_traducao(&fila_traducao,"scanf");}
 	| T_NUMERO_REAL
 	| T_PI
 	| T_STRING {$$ = strdup(yytext); push_traducao(&fila_traducao,$$);}
-	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR
+	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR {push_traducao(&fila_traducao,"("); push_traducao(&fila_traducao,$2); push_traducao(&fila_traducao,")"); }
 	| Expr T_OPERADOR_DIVISAO_RESTO Expr
 	| Expr T_OPERADOR_SOMA Expr
 	| Expr T_OPERADOR_SUBTRACAO Expr 
