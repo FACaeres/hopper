@@ -1,3 +1,7 @@
+Log History
+=====
+1.0 - Versão Inicial
+
 Git
 =====
 Boa galera, to fazendo esse pequeno tutorial para quem ainda não meche com o git como repositorio.
