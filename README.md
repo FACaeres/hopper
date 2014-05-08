@@ -38,14 +38,22 @@ Legal, agora sua branch esta disponivel no github.
 O objetivo disso é que todos devem trabalhar em suas branchs. No master so ficaram os codigos 100%. Se você acha que seu codigo ta pronto para ir para o master.. avisar aos membros de equipe e esperar o feedback positivo de todos..
 
 Para trabalhar com suas branchs segue a lista de algums comandos utils que eu uso:
-git status
-git add <filename>
-git commit -m '<Aqui voce escreve sua mensagem do commit>'
-git pull origin kevin (logo substitua kevin pelo nome da sua branch)
-git push origin kevin
-gitk
-git branch -a
-git checkout
+        
+        git status
+        
+        git add <filename>
+        
+        git commit -m '<Aqui voce escreve sua mensagem do commit>'
+        
+        git pull origin kevin (logo substitua kevin pelo nome da sua branch)
+        
+        git push origin kevin
+        
+        gitk
+        
+        git branch -a
+        
+        git checkout
 
 Procurem saber oque cada comando realiza. E bom trabalho.
 Duvidas kevingmq@gmail.com
