@@ -125,7 +125,7 @@ QuebraComando:
 ;
 
 FimComando:
-	T_FIM_COMANDO
+	T_FIM_COMANDO {printf("\n");}
 	| FimComando T_FIM_COMANDO
 ;
 
@@ -146,9 +146,8 @@ BlocoCabecalho:
 ;
 
 T_Algoritmo:
-	T_ALGORITMO {push_traducao(&fila_traducao, "#include <stdio.h>");
-		     push_traducao(&fila_traducao, "#include <stdlib.h>");
-		     push_traducao(&fila_traducao, "#include <string.h>");}
+	T_ALGORITMO {push_traducao(&fila_traducao, "import sys\n");
+		     push_traducao(&fila_traducao, "import math\n\n");}
 	| error {erros++; yyerror("Esperava ALGORITMO, encontrado: ", yylineno, yytext);}
 ;
 
@@ -215,7 +214,7 @@ ListaParametros:
 ;
 
 BlocoComando:
-	T_INICIO {push_traducao(&fila_traducao,"void main() {");} FimComando Comandos T_FIMALGORITMO {push_traducao(&fila_traducao,"}");} QuebraComando
+	T_INICIO FimComando Comandos T_FIMALGORITMO  QuebraComando
 ;
 
 Comandos:
@@ -225,7 +224,7 @@ Comandos:
 
 Comando:
 	Leia FimComando 
-	| Escreva FimComando {push_traducao(&fila_traducao,";");}
+	| Escreva FimComando
 	| Atribuicao FimComando
 	| BlocoSe FimComando
 	| BlocoEscolha FimComando
@@ -360,8 +359,8 @@ T_Identificador:
 ;
 
 T_Escreva:
-	T_ESCREVA {push_traducao(&fila_traducao,"printf");}
-	| T_ESCREVAL {push_traducao(&fila_traducao,"printf");}
+	T_ESCREVA {push_traducao(&fila_traducao,"print");}
+	| T_ESCREVAL {push_traducao(&fila_traducao,"print");}
 ;
 
 %%
@@ -387,7 +386,7 @@ int main(int ac, char **av) {
 
 	if(!erros){
 		printf("\n\nO algoritmo é valido!\n");
-		file_traducao= fopen ("traducao.c", "w+");
+		file_traducao= fopen ("traducao.py", "w+");
 		cria_arquivo(&fila_traducao,file_traducao);	
 	}
 	else
