@@ -8,7 +8,7 @@ algoritmo "02_numero_informado"
 var
    _n_ : real
 inicio
-      escreva("Digite um Número: ")
+      escreva("Digite um Numero: ")
       leia(_n_)
-      escreva("O número informado foi ", _n_)
+      escreva("O numero informado foi ", _n_)
 fimalgoritmo
