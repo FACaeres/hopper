@@ -19,3 +19,7 @@
 .\#*
 *.*~
 *~
+hopper.lex.c
+hopper.tab.c
+hopper.tab.h
+traducao.c
