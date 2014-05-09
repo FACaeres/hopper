@@ -90,7 +90,7 @@ void cria_arquivo(filaTraducao *fila,FILE *file_traducao){
   elemento_traducao = fila->inicio;
 
   for(i=0;i<fila->tamanho;++i){
-    fprintf(file_traducao, " %s\n ", elemento_traducao->elemento);
+    fprintf(file_traducao, "%s", elemento_traducao->elemento);
     elemento_traducao = elemento_traducao->prox;
   }
 }
