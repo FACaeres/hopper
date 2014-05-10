@@ -252,7 +252,7 @@ Escreva:
 
 ConteudoEscreva:
 	Expr
-	| Expr T_IDENT_SEPARADOR {push_traducao(&fila_traducao,",");} Expr
+	| Expr T_IDENT_SEPARADOR {push_traducao(&fila_traducao,", ");} Expr
 ;
 
 
@@ -316,7 +316,8 @@ BlocoRepita:
 ;
 
 Atribuicao:
-	T_Identificador {verificar_variavel(strdup($1));} T_OPERADOR_ATRIBUICAO Expr
+	T_Identificador {verificar_variavel(strdup($1));push_traducao(&fila_traducao, $1);} T_OPERADOR_ATRIBUICAO {push_traducao(&fila_traducao, " = ");}Expr
+{push_traducao(&fila_traducao, "\n");}
 ;
 
 Expr:
@@ -326,20 +327,22 @@ Expr:
 	| T_PI
 	| T_STRING {$$ = strdup(yytext); push_traducao(&fila_traducao,$$);}
 	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR {push_traducao(&fila_traducao,"("); push_traducao(&fila_traducao,$2); push_traducao(&fila_traducao,")"); }
-	| Expr T_OPERADOR_DIVISAO_RESTO Expr
-	| Expr T_OPERADOR_SOMA Expr
-	| Expr T_OPERADOR_SUBTRACAO Expr 
-	| Expr T_OPERADOR_MULTIPLICACAO Expr
-	| Expr T_OPERADOR_DIVISAO Expr
-	| Expr T_OP_LOGICO_E Expr
-	| Expr T_OP_LOGICO_OU Expr
+	| Expr T_OPERADOR_DIVISAO_RESTO {push_traducao(&fila_traducao, " % ");}Expr
+	| T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
+	| T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
+	| T_NUMERO_REAL  {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
+	| Expr T_OPERADOR_SUBTRACAO {push_traducao(&fila_traducao, " - ");}Expr 
+	| Expr T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * ");}Expr
+	| Expr T_OPERADOR_DIVISAO {push_traducao(&fila_traducao, " / ");} Expr
+	| Expr T_OP_LOGICO_E {push_traducao(&fila_traducao, " and ");} Expr
+	| Expr T_OP_LOGICO_OU {push_traducao(&fila_traducao, " or ");} Expr
 	| Expr T_OP_LOGICO_XOU Expr
-	| Expr T_OPERADOR_IGUAL Expr
-	| Expr T_OPERADOR_DIFERENTE Expr
-	| Expr T_OPERADOR_MENOR Expr
-	| Expr T_OPERADOR_MAIOR Expr
-	| Expr T_OPERADOR_MENOR_IGUAL Expr
-	| Expr T_OPERADOR_MAIOR_IGUAL Expr
+	| Expr T_OPERADOR_IGUAL {push_traducao(&fila_traducao, " == ");}Expr
+	| Expr T_OPERADOR_DIFERENTE {push_traducao(&fila_traducao, " != ");}Expr 
+	| Expr T_OPERADOR_MENOR {push_traducao(&fila_traducao, " < ");}Expr 
+	| Expr T_OPERADOR_MAIOR {push_traducao(&fila_traducao, " > ");}Expr
+	| Expr T_OPERADOR_MENOR_IGUAL {push_traducao(&fila_traducao, " <= ");}Expr
+	| Expr T_OPERADOR_MAIOR_IGUAL {push_traducao(&fila_traducao, " >= ");}Expr
 	| T_OPERADOR_SUBTRACAO Expr %prec NEG
 	| T_OP_LOGICO_NAO Expr
 	| Expr T_OPERADOR_EXPONENCIACAO Expr
