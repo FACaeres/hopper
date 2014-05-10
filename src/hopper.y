@@ -322,11 +322,11 @@ Atribuicao:
 
 Expr:
 	T_Identificador {verificar_variavel(strdup($1));push_traducao(&fila_traducao, $1);}
-	| T_NUMERO_INTEIRO {push_traducao(&fila_traducao,"scanf");}
-	| T_NUMERO_REAL
+	| T_NUMERO_INTEIRO {char s[50];sprintf(s,"%i", atoi(yylval));push_traducao(&fila_traducao, s);}
+	| T_NUMERO_REAL {char s[50];sprintf(s,"%f", atof(yylval));push_traducao(&fila_traducao, s);}
 	| T_PI
 	| T_STRING {$$ = strdup(yytext); push_traducao(&fila_traducao,$$);}
-	| T_PARENTESE_ESQ Expr T_PARENTESE_DIR {push_traducao(&fila_traducao,"("); push_traducao(&fila_traducao,$2); push_traducao(&fila_traducao,")"); }
+	| T_PARENTESE_ESQ {push_traducao(&fila_traducao,"(");} Expr T_PARENTESE_DIR {push_traducao(&fila_traducao,")"); }
 	| Expr T_OPERADOR_DIVISAO_RESTO {push_traducao(&fila_traducao, " % ");}Expr
 	| T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
 	| T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}

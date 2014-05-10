@@ -1,11 +1,19 @@
 %option yylineno
 %{
-#define YYTYPE double
+#define YYSTYPE char*
 #include "hopper.tab.h"
 #include <stdio.h>
+#include <string.h>
 
 #define ERRO -1
-
+void limpar(char *s){
+	int i;
+	for(i=0;i<strlen(s);i++){
+		if(s[i]!='0' && s[i]!='1' && s[i]!='2' && s[i]!='3' && s[i]!='4' && s[i]!='5' && s[i]!='6' && s[i]!='7' && s[i]!='8' && s[i]!='9' && s[i]!='.'){
+			s[i] = ' ';
+		}
+	}
+}
 %}
 
 T_ABS			(A|a)(B|b)(S|s)
@@ -205,8 +213,8 @@ T_BRANCO		[ \t\r]+
 "<-"                	return T_OPERADOR_ATRIBUICAO;
 ","			return T_IDENT_SEPARADOR;
 ":"			return T_TIPO_ATRIBUIDOR;
-{T_NUMERO_INTEIRO}	return T_NUMERO_INTEIRO;
-{T_NUMERO_REAL}	return T_NUMERO_REAL;
+{T_NUMERO_INTEIRO}	yylval = yytext;return T_NUMERO_INTEIRO;
+{T_NUMERO_REAL}		yylval = yytext;return T_NUMERO_REAL;
 {T_E}			return T_OP_LOGICO_E;
 {T_XOU}			return T_OP_LOGICO_XOU;
 {T_NAO}			return T_OP_LOGICO_NAO;

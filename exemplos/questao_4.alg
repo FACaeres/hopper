@@ -18,7 +18,7 @@ inicio
       
       //Calculo para obtenção da média
       media <- (n1+n2+n3+n4)/4
-      
+
       escreval("Média do aluno: ", media)
 
 fimalgoritmo
