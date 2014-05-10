@@ -20,7 +20,7 @@ clean:
 	@ echo Cleaning...
 	@ rm -rf *.o
 	@ rm -rf *.tab.h
-	@ rm -rf *.c
+	@ rm -rf *.py
 	@ rm -rf *.*~ 
 	@ rm -rf *~
 	@ rm -rf *.swp
