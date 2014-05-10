@@ -29,7 +29,6 @@ char leiaVariaveis[256];
 void cadastrar_variavel(char var_tipo[50])
 {
 	elementofila_var *elemento_fila_var;
-	push_traducao(&fila_traducao,var_tipo);
 	while(pop_var(&fila_variavel, &elemento_fila_var) == 1)
 	{
 		if(hash_consultar(elemento_fila_var->token, var_escopo) == 0)
@@ -43,11 +42,11 @@ void cadastrar_variavel(char var_tipo[50])
 			strcat(elemento_fila_var->token, var_escopo);				
 			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);		
 		}
-		push_traducao(&fila_traducao,elemento_fila_var->token);
-		if(elemento_fila_var->prox!=NULL)
-		  push_traducao(&fila_traducao,",");
+//		push_traducao(&fila_traducao,elemento_fila_var->token);
+//		if(elemento_fila_var->prox!=NULL)
+//		  push_traducao(&fila_traducao,",");
 	}
-	push_traducao(&fila_traducao,";");
+//	push_traducao(&fila_traducao,";");
 	
 }
 
@@ -125,7 +124,7 @@ QuebraComando:
 ;
 
 FimComando:
-	T_FIM_COMANDO {printf("\n");}
+	T_FIM_COMANDO
 	| FimComando T_FIM_COMANDO
 ;
 
@@ -146,7 +145,8 @@ BlocoCabecalho:
 ;
 
 T_Algoritmo:
-	T_ALGORITMO {push_traducao(&fila_traducao, "import sys\n");
+	T_ALGORITMO {push_traducao(&fila_traducao,"# -*- coding: utf-8 -*-\n");
+		     push_traducao(&fila_traducao, "import sys\n");
 		     push_traducao(&fila_traducao, "import math\n\n");}
 	| error {erros++; yyerror("Esperava ALGORITMO, encontrado: ", yylineno, yytext);}
 ;
@@ -238,23 +238,25 @@ Comando:
 ;
 
 Leia:
-	T_LEIA {push_traducao(&fila_traducao,"scanf");} T_PARENTESE_ESQ {push_traducao(&fila_traducao,"(");} ListaLeia T_PARENTESE_DIR {push_traducao(&fila_traducao,")");}
+	T_LEIA T_PARENTESE_ESQ ListaLeia T_PARENTESE_DIR
 ;
 
 ListaLeia:
-	T_Identificador {verificar_variavel(strdup($1));} {push_traducao(&fila_traducao,strdup($1));}
+	T_Identificador {verificar_variavel(strdup($1));} {char s[50];sprintf(s,"%s = raw_input()\n",strdup($1));push_traducao(&fila_traducao,s);}
 	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
 ;
 
 Escreva:
-	T_Escreva T_PARENTESE_ESQ {push_traducao(&fila_traducao,"(");} ConteudoEscreva T_PARENTESE_DIR {push_traducao(&fila_traducao,")");}
+	T_Escreva T_PARENTESE_ESQ{push_traducao(&fila_traducao," ");} ConteudoEscreva T_PARENTESE_DIR {push_traducao(&fila_traducao,"\n");}
 ;
 
 ConteudoEscreva:
-	Expr OpcaoCasasDecimais
-	| ConteudoEscreva T_IDENT_SEPARADOR Expr OpcaoCasasDecimais
+	Expr
+	| Expr T_IDENT_SEPARADOR {push_traducao(&fila_traducao,",");} Expr
 ;
 
+
+/*
 OpcaoCasasDecimais:
 	
 	| T_Tipo_Atribuidor T_NUMERO_INTEIRO
@@ -262,7 +264,7 @@ OpcaoCasasDecimais:
 	| error {erros++; yyerror("Formatacao de casas decimais inválidas", yylineno, yytext);}
 
 ;
-
+*/
 BlocoSe:
 	T_Se Expr T_Entao FimComando Comandos T_FimSe
 	| T_Se Expr T_Entao FimComando Comandos T_SENAO FimComando Comandos T_FimSe
@@ -318,7 +320,7 @@ Atribuicao:
 ;
 
 Expr:
-	T_Identificador {verificar_variavel(strdup($1));}
+	T_Identificador {verificar_variavel(strdup($1));push_traducao(&fila_traducao, $1);}
 	| T_NUMERO_INTEIRO {push_traducao(&fila_traducao,"scanf");}
 	| T_NUMERO_REAL
 	| T_PI
