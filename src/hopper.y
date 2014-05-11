@@ -13,7 +13,7 @@
 fila_var fila_variavel;
 filaError fila_erros;
 filaTraducao fila_traducao;
-
+int tab = 0;
 int erros;
 extern int yylineno;
 extern char *yytext;
@@ -26,6 +26,11 @@ char *tipo;
 char leiaTipos[256];
 char leiaVariaveis[256];
 
+void tabear(){
+	int i;
+	for(i=0;i<tab;i++)
+		push_traducao(&fila_traducao, "    ");
+}
 void cadastrar_variavel(char var_tipo[50])
 {
 	elementofila_var *elemento_fila_var;
@@ -262,7 +267,7 @@ OpcaoCasasDecimais:
 */
 BlocoSe:
 	T_Se Expr T_Entao FimComando Comandos T_FimSe
-	| T_Se Expr T_Entao FimComando Comandos T_SENAO FimComando Comandos T_FimSe
+	| T_Se Expr T_Entao FimComando Comandos T_Senao FimComando Comandos T_FimSe
 ;
 
 T_Se:
@@ -270,15 +275,18 @@ T_Se:
 ;
 
 T_FimSe:
-	T_FIMSE {push_traducao(&fila_traducao,"}");}
-	| error {erros++; yyerror("Esperava FIMSE, encontrado: ", yylineno, yytext);}
+	T_FIMSE {tab--;}
+	| error {erros++; yyerror("Esperava FIMSE encontrado: ", yylineno, yytext);}
 ;
 
 T_Entao:
-	T_ENTAO {push_traducao(&fila_traducao,"{");}
+	T_ENTAO {push_traducao(&fila_traducao,":\n");tab++;tabear();}
 	| error {erros++; yyerror("Esperava ENTAO, encontrado: ", yylineno, yytext);}
 ;
 
+T_Senao:
+	T_SENAO {push_traducao(&fila_traducao, "else:\n");tabear();}
+;
 BlocoEscolha:
 	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_FIMESCOLHA
 ;
@@ -311,8 +319,7 @@ BlocoRepita:
 ;
 
 Atribuicao:
-	T_Identificador {verificar_variavel(strdup($1));push_traducao(&fila_traducao, $1);} T_OPERADOR_ATRIBUICAO {push_traducao(&fila_traducao, " = ");}Expr
-{push_traducao(&fila_traducao, "\n");}
+	T_Identificador {verificar_variavel(strdup($1));tabear();push_traducao(&fila_traducao, $1);} T_OPERADOR_ATRIBUICAO {push_traducao(&fila_traducao, " = ");}Expr {push_traducao(&fila_traducao, "\n");}
 ;
 
 Expr:
@@ -359,8 +366,8 @@ T_Identificador:
 ;
 
 T_Escreva:
-	T_ESCREVA {push_traducao(&fila_traducao,"print");}
-	| T_ESCREVAL {push_traducao(&fila_traducao,"print");}
+	T_ESCREVA {tabear();push_traducao(&fila_traducao,"print");}
+	| T_ESCREVAL {tabear();push_traducao(&fila_traducao,"print");}
 ;
 
 %%
