@@ -39,15 +39,10 @@ void cadastrar_variavel(char var_tipo[50])
 		{
 			erros++;
 			strcat(elemento_fila_var->token, " ");
-			strcat(elemento_fila_var->token, var_escopo);				
+			strcat(elemento_fila_var->token, var_escopo);		
 			yyerror("Variável já declarada: ", yylineno, elemento_fila_var->token);		
 		}
-//		push_traducao(&fila_traducao,elemento_fila_var->token);
-//		if(elemento_fila_var->prox!=NULL)
-//		  push_traducao(&fila_traducao,",");
 	}
-//	push_traducao(&fila_traducao,";");
-	
 }
 
 void verificar_variavel(char variavel[50])
@@ -332,7 +327,10 @@ Expr:
 	| T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
 	| T_NUMERO_REAL  {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_SOMA {push_traducao(&fila_traducao, " + float( ");}Expr {push_traducao(&fila_traducao," )");}
 	| Expr T_OPERADOR_SUBTRACAO {push_traducao(&fila_traducao, " - ");}Expr 
-	| Expr T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * ");}Expr
+
+	| T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_REAL  {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
 	| Expr T_OPERADOR_DIVISAO {push_traducao(&fila_traducao, " / ");} Expr
 	| Expr T_OP_LOGICO_E {push_traducao(&fila_traducao, " and ");} Expr
 	| Expr T_OP_LOGICO_OU {push_traducao(&fila_traducao, " or ");} Expr
