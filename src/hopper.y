@@ -14,7 +14,9 @@ fila_var fila_variavel;
 filaError fila_erros;
 filaTraducao fila_traducao;
 int tab = 0;
+int cont_caso = 0;
 int erros;
+char variavel_escolha[50];
 extern int yylineno;
 extern char *yytext;
 
@@ -31,6 +33,13 @@ void tabear(){
 	for(i=0;i<tab;i++)
 		push_traducao(&fila_traducao, "    ");
 }
+
+void tabear_especial(){ //serve para tabear o palavras como o "else" por exemplo
+	int i;
+        for(i=0;i<tab-1;i++)
+                push_traducao(&fila_traducao, "    ");
+}
+
 void cadastrar_variavel(char var_tipo[50])
 {
 	elementofila_var *elemento_fila_var;
@@ -271,7 +280,7 @@ BlocoSe:
 ;
 
 T_Se:
-      T_SE {push_traducao(&fila_traducao,"if");}
+      T_SE {tabear();push_traducao(&fila_traducao,"if");}
 ;
 
 T_FimSe:
@@ -280,15 +289,15 @@ T_FimSe:
 ;
 
 T_Entao:
-	T_ENTAO {push_traducao(&fila_traducao,":\n");tab++;tabear();}
+	T_ENTAO {push_traducao(&fila_traducao,":\n");tab++;}
 	| error {erros++; yyerror("Esperava ENTAO, encontrado: ", yylineno, yytext);}
 ;
 
 T_Senao:
-	T_SENAO {push_traducao(&fila_traducao, "else:\n");tabear();}
+	T_SENAO {push_traducao(&fila_traducao, "else:\n");}
 ;
 BlocoEscolha:
-	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));} FimComando ListaCasos OutroCaso T_FIMESCOLHA
+	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));sprintf(variavel_escolha, "if %s == ",$2);tab++;} FimComando ListaCasos OutroCaso T_FIMESCOLHA {tab--;cont_caso = 0;}
 ;
 
 ListaCasos:
@@ -297,12 +306,12 @@ ListaCasos:
 ;
 
 Caso:
-	T_CASO Expr FimComando Comandos
+	T_CASO {tabear_especial();if(cont_caso>0){push_traducao(&fila_traducao, "el");}push_traducao(&fila_traducao, variavel_escolha);cont_caso++;} Expr {push_traducao(&fila_traducao, ":\n");} FimComando Comandos
 ;
 
 OutroCaso:
 	
-	| T_OUTROCASO FimComando Comandos	
+	| T_OUTROCASO {tabear_especial();push_traducao(&fila_traducao, "else:\n");}FimComando Comandos	
 ;
 
 BlocoPara:
