@@ -322,7 +322,7 @@ BlocoEnquanto:
 ;
 
 BlocoRepita:
-	T_REPITA FimComando Comandos T_ATE Expr
+	T_REPITA {tabear();push_traducao(&fila_traducao, "while true:\n");tab++;} FimComando Comandos T_ATE{tabear();push_traducao(&fila_traducao, "if not ");tab++;} Expr {push_traducao(&fila_traducao, ":\n");tabear();push_traducao(&fila_traducao, "break\n");tab = tab - 2;}
 ;
 
 Atribuicao:
