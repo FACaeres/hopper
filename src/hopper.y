@@ -332,8 +332,8 @@ Expr:
 
 	| T_PI {push_traducao(&fila_traducao, "math.pi");}T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
 	| T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
-        | T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
-        | T_NUMERO_REAL  {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_INTEIRO {char s[50];sprintf(s,"%i", atoi(yylval));push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_REAL {char s[50];sprintf(s,"%f", atof(yylval));push_traducao(&fila_traducao, s);} T_OPERADOR_MULTIPLICACAO {push_traducao(&fila_traducao, " * float( ");}Expr {push_traducao(&fila_traducao," )");}
 	
 	| Expr T_OPERADOR_DIVISAO {push_traducao(&fila_traducao, " / ");} Expr
 	| Expr T_OP_LOGICO_E {push_traducao(&fila_traducao, " and ");} Expr
@@ -350,8 +350,8 @@ Expr:
 	
 	| T_PI {push_traducao(&fila_traducao, "math.pi");}T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
         | T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
-        | T_NUMERO_INTEIRO {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
-        | T_NUMERO_REAL  {char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);} T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_INTEIRO {char s[50];sprintf(s,"%i", atoi(yylval));push_traducao(&fila_traducao, s);} T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
+        | T_NUMERO_REAL {char s[50];sprintf(s,"%f", atof(yylval));push_traducao(&fila_traducao, s);} T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** float( ");}Expr {push_traducao(&fila_traducao," )");}
 
 
 	| T_RAIZQ T_PARENTESE_ESQ Expr T_PARENTESE_DIR
