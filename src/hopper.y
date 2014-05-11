@@ -260,12 +260,10 @@ Escreva:
 ;
 
 ConteudoEscreva:
-	Expr
-	| Expr T_IDENT_SEPARADOR {push_traducao(&fila_traducao,", ");} Expr
+	Expr OpcaoCasasDecimais
+	| Expr T_IDENT_SEPARADOR {push_traducao(&fila_traducao,", ");} Expr OpcaoCasasDecimais
 ;
 
-
-/*
 OpcaoCasasDecimais:
 	
 	| T_Tipo_Atribuidor T_NUMERO_INTEIRO
@@ -273,14 +271,14 @@ OpcaoCasasDecimais:
 	| error {erros++; yyerror("Formatacao de casas decimais inválidas", yylineno, yytext);}
 
 ;
-*/
+
 BlocoSe:
 	T_Se Expr T_Entao FimComando Comandos T_FimSe
 	| T_Se Expr T_Entao FimComando Comandos T_Senao FimComando Comandos T_FimSe
 ;
 
 T_Se:
-      T_SE {tabear();push_traducao(&fila_traducao,"if");}
+      T_SE {tabear();push_traducao(&fila_traducao,"if ");}
 ;
 
 T_FimSe:
@@ -294,7 +292,7 @@ T_Entao:
 ;
 
 T_Senao:
-	T_SENAO {push_traducao(&fila_traducao, "else:\n");}
+	T_SENAO {tabear_especial();push_traducao(&fila_traducao, "else:\n");}
 ;
 BlocoEscolha:
 	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));sprintf(variavel_escolha, "if %s == ",$2);tab++;} FimComando ListaCasos OutroCaso T_FIMESCOLHA {tab--;cont_caso = 0;}
