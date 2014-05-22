@@ -28,6 +28,8 @@ char *tipo;
 char leiaTipos[256];
 char leiaVariaveis[256];
 
+int flag_escreval = 0;
+item *temp;
 void tabear(){
 	int i;
 	for(i=0;i<tab;i++)
@@ -191,11 +193,11 @@ T_Ident_Separador:
 	| error {erros++; yyerror("Esperava VIRGULA, encontrado: ", yylineno, yytext);}
 ;
 
-
+//falta operador logico
 TipoVariavel:
 	T_REAL {cadastrar_variavel("float");}
 	| T_INTEIRO {cadastrar_variavel("int");}
-	| T_CARACTERE {cadastrar_variavel("char *");}
+	| T_CARACTERE {cadastrar_variavel("string");}
 	| error {erros++; yyerror("Tipo de variavel desconhecido: ", yylineno, yytext);}
 ;
 
@@ -251,12 +253,32 @@ Leia:
 ;
 
 ListaLeia:
-	T_Identificador {verificar_variavel(strdup($1));} {tabear();char s[50];sprintf(s,"%s = raw_input()\n",strdup($1));push_traducao(&fila_traducao,s);}
+	T_Identificador {
+		verificar_variavel(strdup($1));
+		hash_consultar2(strdup($1),var_escopo,&temp);
+		char *tipo_string;
+		char s[250];
+		tipo_string = temp->tipo;
+		printf(": %s %s %s\n",temp->key.nome, temp->key.escopo, tipo_string);
+		if(strcmp(tipo_string,"string")==0){
+			sprintf(s,"%s = input()\n",strdup($1));
+		}else{
+			sprintf(s,"%s = %s(input())\n",strdup($1),tipo_string);
+		}
+		tabear();
+		push_traducao(&fila_traducao,s);
+	}
 	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
+	//falta fazer o leia para varias variaveis.
 ;
 
 Escreva:
-	T_Escreva T_PARENTESE_ESQ{push_traducao(&fila_traducao," ");} ConteudoEscreva T_PARENTESE_DIR {push_traducao(&fila_traducao,"\n");}
+	T_Escreva T_PARENTESE_ESQ ConteudoEscreva T_PARENTESE_DIR {
+			if(flag_escreval == 1){
+				push_traducao(&fila_traducao,",end='\\n')\n");
+				flag_escreval = 0;
+			}else{
+			push_traducao(&fila_traducao,",end='')\n");}}
 ;
 
 ConteudoEscreva:
@@ -330,7 +352,7 @@ Atribuicao:
 ;
 
 Expr:
-	T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"float( %s )", $1);push_traducao(&fila_traducao, s);}
+	T_Identificador {verificar_variavel(strdup($1));char s[50];sprintf(s,"%s", $1);push_traducao(&fila_traducao, s);}
 	| T_NUMERO_INTEIRO {char s[50];sprintf(s,"%i", atoi(yylval));push_traducao(&fila_traducao, s);}
 	| T_NUMERO_REAL {char s[50];sprintf(s,"%f", atof(yylval));push_traducao(&fila_traducao, s);}
 	| T_PI {push_traducao(&fila_traducao, "math.pi");}
@@ -373,8 +395,8 @@ T_Identificador:
 ;
 
 T_Escreva:
-	T_ESCREVA {tabear();push_traducao(&fila_traducao,"print");}
-	| T_ESCREVAL {tabear();push_traducao(&fila_traducao,"print");}
+	T_ESCREVA {tabear();push_traducao(&fila_traducao,"print(");}
+	| T_ESCREVAL {tabear();flag_escreval=1;push_traducao(&fila_traducao,"print(");}
 ;
 
 %%

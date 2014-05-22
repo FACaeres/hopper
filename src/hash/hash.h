@@ -27,7 +27,7 @@ void hash_inserir(char *nome, char *escopo, char *tipo)
     strcpy(r->key.nome, nome);
     strcpy(r->key.escopo, escopo);
     strcpy(r->tipo, tipo);
-//    printf("adicionado: %s %s %s\n",r->key.nome, r->key.escopo, r->tipo);    
+    printf("adicionado: %s %s %s\n",r->key.nome, r->key.escopo, r->tipo);    
     HASH_ADD(hh, records, key, sizeof(item_key), r); 
 }
 
@@ -41,7 +41,7 @@ int hash_consultar(char *nome, char *escopo)
         
     if (p) 
     {	
-//	    printf("encontrado: %s %s %s\n",p->key.nome, p->key.escopo, p->tipo);
+	    printf("encontrado: %s %s %s\n",p->key.nome, p->key.escopo, p->tipo);
 		return 1;
     }
     else
@@ -50,5 +50,23 @@ int hash_consultar(char *nome, char *escopo)
     	return 0;
     }
 }
-
+int hash_consultar2(char *nome, char *escopo,item **item_p)
+{  
+    item *p = malloc(sizeof(*p));;
+    memset(&l, 0, sizeof(item));
+    strcpy(l.key.nome, nome);
+    strcpy(l.key.escopo, escopo);
+    HASH_FIND(hh, records, &l.key, sizeof(item_key), p);
+    *item_p = p;
+    if (p) 
+    {   
+        printf("encontrado: %s %s %s\n",p->key.nome, p->key.escopo, p->tipo);
+        return 1;
+    }
+    else
+    {
+  //        printf("não encontrado encontrado: %s %s\n",nome, escopo);
+        return 0;
+    }
+}
 
