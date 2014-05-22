@@ -251,7 +251,7 @@ Leia:
 ;
 
 ListaLeia:
-	T_Identificador {verificar_variavel(strdup($1));} {char s[50];sprintf(s,"%s = raw_input()\n",strdup($1));push_traducao(&fila_traducao,s);}
+	T_Identificador {verificar_variavel(strdup($1));} {tabear();char s[50];sprintf(s,"%s = raw_input()\n",strdup($1));push_traducao(&fila_traducao,s);}
 	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
 ;
 
@@ -318,7 +318,7 @@ BlocoPara:
 ;
 
 BlocoEnquanto:
-	T_ENQUANTO Expr T_FACA FimComando Comandos T_FIMENQUANTO
+	T_ENQUANTO {tabear();push_traducao(&fila_traducao, "while ");tab++;} Expr{push_traducao(&fila_traducao, ":\n");} T_FACA FimComando Comandos T_FIMENQUANTO 
 ;
 
 BlocoRepita:
