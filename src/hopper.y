@@ -344,7 +344,7 @@ BlocoEnquanto:
 ;
 
 BlocoRepita:
-	T_REPITA {tabear();push_traducao(&fila_traducao, "while true:\n");tab++;} FimComando Comandos T_ATE{tabear();push_traducao(&fila_traducao, "if not ");tab++;} Expr {push_traducao(&fila_traducao, ":\n");tabear();push_traducao(&fila_traducao, "break\n");tab = tab - 2;}
+	T_REPITA {tabear();push_traducao(&fila_traducao, "while True:\n");tab++;} FimComando Comandos T_ATE{tabear();push_traducao(&fila_traducao, "if ");tab++;} Expr {push_traducao(&fila_traducao, ":\n");tabear();push_traducao(&fila_traducao, "break\n");tab = tab - 2;}
 ;
 
 Atribuicao:
