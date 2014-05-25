@@ -3,7 +3,7 @@ var
 cont, num, atual, ant : inteiro
 inicio
       cont <- 0
-      escreval ("Gerando série Fibonacci até valor maior que 500...")
+      escreval ("Gerando sÃ©rie Fibonacci atÃ© valor maior que 500...")
       escreval ("")
       escreva ("0 1")
       atual <- 1
@@ -17,5 +17,5 @@ inicio
       ate (atual > 500)
       escreval ("")
       escreval ("")
-      escreval ("Maior número foi", atual)
+      escreval ("Maior nÃºmero foi", atual)
 fimalgoritmo
