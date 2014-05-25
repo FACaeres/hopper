@@ -268,7 +268,21 @@ ListaLeia:
 		tabear();
 		push_traducao(&fila_traducao,s);
 	}
-	| ListaLeia T_Ident_Separador T_Identificador {verificar_variavel(strdup($3));} 
+	| ListaLeia T_Ident_Separador T_Identificador {
+		verificar_variavel(strdup($3));
+		hash_consultar2(strdup($3),var_escopo,&temp);
+		char *tipo_string;
+		char s[250];
+		tipo_string = temp->tipo;
+		printf(": %s %s %s\n",temp->key.nome, temp->key.escopo, tipo_string);
+		if(strcmp(tipo_string,"string")==0){
+			sprintf(s,"%s = input()\n",strdup($3));
+		}else{
+			sprintf(s,"%s = %s(input())\n",strdup($3),tipo_string);
+		}
+		tabear();
+		push_traducao(&fila_traducao,s);
+	} 
 	//falta fazer o leia para varias variaveis.
 ;
 
@@ -317,7 +331,7 @@ T_Senao:
 	T_SENAO {tabear_especial();push_traducao(&fila_traducao, "else:\n");}
 ;
 BlocoEscolha:
-	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));sprintf(variavel_escolha, "if %s == ",$2);tab++;} FimComando ListaCasos OutroCaso T_FIMESCOLHA {tab--;cont_caso = 0;}
+	T_ESCOLHA T_Identificador {verificar_variavel(strdup($2));sprintf(variavel_escolha, "if %s.lower() == ",$2);tab++;} FimComando ListaCasos OutroCaso T_FIMESCOLHA {tab--;cont_caso = 0;}
 ;
 
 ListaCasos:
@@ -326,7 +340,7 @@ ListaCasos:
 ;
 
 Caso:
-	T_CASO {tabear_especial();if(cont_caso>0){push_traducao(&fila_traducao, "el");}push_traducao(&fila_traducao, variavel_escolha);cont_caso++;} Expr {push_traducao(&fila_traducao, ":\n");} FimComando Comandos
+	T_CASO {tabear_especial();if(cont_caso>0){push_traducao(&fila_traducao, "el");}push_traducao(&fila_traducao, variavel_escolha);cont_caso++;} Expr {push_traducao(&fila_traducao, ".lower():\n");} FimComando Comandos
 ;
 
 OutroCaso:

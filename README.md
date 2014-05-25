@@ -16,16 +16,16 @@ questao8 - OK
 questao9 - OK
 questao10 - OK
 questao11 - OK
-questao12 - ? corrijir exemplo
-questao13 - Falta implementar no case sencitive
-questao14 - verificar caracteres especiais
+questao12 - 
+questao13 - OK - ESCOLHA para numeros verificar?
+questao14 - OK 
 questao15 - OK
 questao16 - OK
 questao17 - OK
 questao18 - OK
-questao19 - FAIL
-questao20 - FAIL WHILE TRUE
-questao21 - FAIL
+questao19 - OK
+questao20 - OK
+questao21 - OK
 
 Git
 =====

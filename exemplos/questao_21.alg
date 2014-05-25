@@ -5,12 +5,12 @@ inicio
       cont <- 0
       escreval ("Gerando série Fibonacci até valor maior que 500...")
       escreval ("")
-      escreva ("0 1")
+      escreval ("0\n1")
       atual <- 1
       ant <- 0
       repita
             num <- atual + ant
-            escreva (num)
+            escreval (num)
             ant <- atual
             atual <- num
             cont <- cont + 1
