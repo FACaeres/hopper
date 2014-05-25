@@ -19,6 +19,13 @@ questao11 - OK
 questao12 - ? corrijir exemplo
 questao13 - Falta implementar no case sencitive
 questao14 - verificar caracteres especiais
+questao15 - OK
+questao16 - OK
+questao17 - OK
+questao18 - OK
+questao19 - FAIL
+questao20 - FAIL WHILE TRUE
+questao21 - FAIL
 
 Git
 =====
