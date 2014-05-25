@@ -335,7 +335,7 @@ OutroCaso:
 ;
 
 BlocoPara:
-	T_PARA Expr T_DE Expr T_ATE Expr T_FACA FimComando Comandos T_FIMPARA
+	T_PARA {tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE{push_traducao(&fila_traducao, "in range(");} Expr T_ATE {push_traducao(&fila_traducao, ",(");} Expr  {push_traducao(&fila_traducao, "+1)): ");} T_FACA FimComando Comandos T_FIMPARA  {tab--;}
 	| T_PARA Expr T_DE Expr T_ATE Expr T_PASSO Expr T_FACA FimComando Comandos T_FIMPARA
 ;
 
