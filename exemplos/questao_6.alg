@@ -1,17 +1,17 @@
 algoritmo "06_area_circulo"
-// FunÁ„o :  Recebe o raio do cÌrculo informada pelo usu·rio,calcula
-//           e mostra sua ·rea.
-// Autor :   Williams Ara˙jo
+// Fun√ß√£o :  Recebe o raio do c√≠rculo informada pelo usu√°rio,calcula
+//           e mostra sua √°rea.
+// Autor :   Williams Ara√∫jo
 // Data :    7/5/2013
 var
    raio, area: real
 inicio
-      escreval("Informe o raio do cÌrculo: ")
+      escreval("Informe o raio do c√≠rculo: ")
       leia(raio)
       
-      //O portugol j· possui uma constante chamada pi
+      //O portugol j√° possui uma constante chamada pi
       area <- pi*(raio^2)
       
-      escreval("A ·rea do cÌrculo È: ", area)
+      escreval("A √°rea do c√≠rculo √©: ", area)
 
 fimalgoritmo

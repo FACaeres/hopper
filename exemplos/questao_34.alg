@@ -1,5 +1,5 @@
 algoritmo "nome_na_vertical_escada_inv"
-// Função : Programa que solicita o nome do usuario e o imprime na vertical
+// FunÃ§Ã£o : Programa que solicita o nome do usuario e o imprime na vertical
 //          em forma de escada invertida.
 // Autor :  Darlisson Jesus
 // Data : 6/6/2013

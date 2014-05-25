@@ -1,7 +1,7 @@
 algoritmo "questao_05"
 
 // Descricao : Programa faz a leitura de duas notas parciais de um aluno e
-//             calcula e mostra a média alcançada pelo aluno.
+//             calcula e mostra a mÃ©dia alcanÃ§ada pelo aluno.
 // Autor : Darlisson Jesus
 // Data : 5/7/2013
 

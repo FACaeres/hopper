@@ -8,7 +8,7 @@ inicio
       soma <- 0
 
       enquanto num >= 0 faca
-               escreva("Insira um número (numero negativo encerra): ")
+               escreva("Insira um nÃºmero (numero negativo encerra): ")
                leia(num)
 
                se num < 0 entao

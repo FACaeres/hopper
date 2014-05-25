@@ -1,22 +1,22 @@
 algoritmo "Retorna_Salario"
-// Função :Faça um Programa que pergunte quanto você
-//         ganha por hora e o número de horas trabalhadas no mês
-//         Calcule e mostre o total do seu salário no referido mês.
+// FunÃ§Ã£o :FaÃ§a um Programa que pergunte quanto vocÃª
+//         ganha por hora e o nÃºmero de horas trabalhadas no mÃªs
+//         Calcule e mostre o total do seu salÃ¡rio no referido mÃªs.
 // Autor : Iasmim Cunha
 // Data : 5/8/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
 salario_hora : real
 horas_mes :real
 salario_base : real
 inicio
-// Seção de Comandos 
-escreval("Quanto você ganha por hora?")
+// SeÃ§Ã£o de Comandos 
+escreval("Quanto vocÃª ganha por hora?")
 leia(salario_hora)
-escreval("Quantas horas você trabalho em um mês?")
+escreval("Quantas horas vocÃª trabalho em um mÃªs?")
 leia(horas_mes)
 
 salario_base <- salario_hora*horas_mes
 
-escreval("Você ganha em torno de :",salario_base," por mês")
+escreval("VocÃª ganha em torno de :",salario_base," por mÃªs")
 fimalgoritmo

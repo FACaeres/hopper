@@ -1,5 +1,5 @@
 algoritmo "nome_maiusc"
-// Função : Programa que permita ao usuario digitar
+// FunÃ§Ã£o : Programa que permita ao usuario digitar
 //          o seu nome e em seguida mostra o nome do usuario
 //          de tras para frente utilizando somente letras
 //          maiusculas.

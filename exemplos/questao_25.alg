@@ -1,17 +1,17 @@
 algoritmo "Fatorial de numeros inteiros positivos menores ou iguais a 16"
-// Função : Fatorial de numeros inteiros positivos menores ou iguais a 16
+// FunÃ§Ã£o : Fatorial de numeros inteiros positivos menores ou iguais a 16
 // Autor :  Daniel Aquino
 // Data : 7/5/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
 num, i, fatorial: inteiro
 inicio
-// Seção de Comandos 
+// SeÃ§Ã£o de Comandos 
    repita
-         escreva("Digite um número inteiro positivo menor ou igual a 16: ")
+         escreva("Digite um nÃºmero inteiro positivo menor ou igual a 16: ")
          leia(num)
 
-         //inicio da fatoração
+         //inicio da fatoraÃ§Ã£o
          fatorial <- 1
 
          //calcula e imprime resultado se o numero do fatorial for inteiro positivo menor ou igual a 16

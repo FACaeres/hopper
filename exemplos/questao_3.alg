@@ -1,18 +1,18 @@
 algoritmo "03_soma"
-// Função : Imprime a soma de dois números informados pelo usuário.
-// Autor : Williams Araújo
+// FunÃ§Ã£o : Imprime a soma de dois nÃºmeros informados pelo usuÃ¡rio.
+// Autor : Williams AraÃºjo
 // Data : 7/5/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
    a, b, soma : real
 inicio
-      //Faz a leitura de dois números informados pelo usuário
+      //Faz a leitura de dois nÃºmeros informados pelo usuÃ¡rio
       escreval("Digite o primeiro numero: ")
       leia(a)
       escreval("Digite o segundo numero: ")
       leia(b)
       
-      //Efetua o cálculo para a obtenção da soma
+      //Efetua o cÃ¡lculo para a obtenÃ§Ã£o da soma
       soma <- a+b
-      escreva("A soma é: ", soma)
+      escreva("A soma Ã©: ", soma)
 fimalgoritmo

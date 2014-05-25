@@ -8,7 +8,7 @@ inicio
       soma <- 0
 
       enquanto ((num > 0) e (num < 1000)) faca
-               escreva("Insira um n˙mero (<=0 ou >=1000 encerra): ")
+               escreva("Insira um n√∫mero (<=0 ou >=1000 encerra): ")
                leia(num)
                se (num <= 0) ou (num >=1000) entao
                   escreval("Encerrando!")

@@ -1,22 +1,22 @@
 algoritmo "Negativo_ou_positivo"
-// Função : Faça um Programa que peça um valor
-//          e mostre na tela se o valor é positivo ou negativo.
+// FunÃ§Ã£o : FaÃ§a um Programa que peÃ§a um valor
+//          e mostre na tela se o valor Ã© positivo ou negativo.
 // Autor : Iasmim Cunha
 // Data : 5/8/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
   valor : real
   primeiro, segundo: inteiro
 inicio
-// Seção de Comandos
+// SeÃ§Ã£o de Comandos
 escreval("Entre com o primeiro valor...")
 leia(primeiro)
 escreval("Entre com o segundo valor...")
 leia(segundo)
 
    se(primeiro > segundo) entao
-       escreval("O maior valor entre os números é:",primeiro)
+       escreval("O maior valor entre os nÃºmeros Ã©:",primeiro)
    senao
-       escreval("O maior valor entre os números é:",segundo)
+       escreval("O maior valor entre os nÃºmeros Ã©:",segundo)
    fimse
 fimalgoritmo

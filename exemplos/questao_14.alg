@@ -1,6 +1,6 @@
 algoritmo "questao_04"
 
-// Descricao: Programa que verifica se uma letra digitada é vogal ou consoante.
+// Descricao: Programa que verifica se uma letra digitada Ã© vogal ou consoante.
 // Autor : Darlisson Jesus
 // Data : 5/7/2013
 

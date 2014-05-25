@@ -1,7 +1,7 @@
 algoritmo "05_metros_centimetros"
-// Função :  Converte um valor em metros informado pelo usuário
-//           para centímetros.
-// Autor :   Williams Araújo
+// FunÃ§Ã£o :  Converte um valor em metros informado pelo usuÃ¡rio
+//           para centÃ­metros.
+// Autor :   Williams AraÃºjo
 // Data :    7/5/2013
 var
    metro, centimetro : real
@@ -9,8 +9,8 @@ inicio
       escreval("Digite um valor em metros: ")
       leia(metro)
       
-      //Calculo para a obtenção do valor equivalente em centímetro
+      //Calculo para a obtenÃ§Ã£o do valor equivalente em centÃ­metro
       centimetro <- metro * 100
       
-      escreval("O valor em centímetros é: ", centimetro)
+      escreval("O valor em centÃ­metros Ã©: ", centimetro)
 fimalgoritmo

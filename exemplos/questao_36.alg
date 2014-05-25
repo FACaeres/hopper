@@ -14,6 +14,6 @@ inicio
       escreva("Informa o valor do custo da compra: ")
       leia(custo)
       somaImposto(taxa, custo)
-      escreva("O valor de custo da sua compra + impostos é: ", custo)
+      escreva("O valor de custo da sua compra + impostos Ã©: ", custo)
 
 fimalgoritmo

@@ -8,7 +8,7 @@ escreval ("Digite um numero maior que zero!")
 leia (n)
 
 se n <=0 entao
-   escreval ("Numero Inválido!!!")
+   escreval ("Numero InvÃ¡lido!!!")
 senao
    se (n=1) entao
       escreval ("")

@@ -1,8 +1,8 @@
 algoritmo "04_media"
-// Função : Calcula a Média de 4 notas bimestrais informadas pelo usuario
-// Autor : Williams Araújo
+// FunÃ§Ã£o : Calcula a MÃ©dia de 4 notas bimestrais informadas pelo usuario
+// Autor : Williams AraÃºjo
 // Data : 7/5/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
    n1, n2, n3, n4, media : real
 inicio
@@ -16,9 +16,9 @@ inicio
       escreval("Digite a nota do 4 bimestre: ")
       leia(n4)
       
-      //Calculo para obtenção da média
+      //Calculo para obtenÃ§Ã£o da mÃ©dia
       media <- (n1+n2+n3+n4)/4
 
-      escreval("Média do aluno: ", media)
+      escreval("MÃ©dia do aluno: ", media)
 
 fimalgoritmo

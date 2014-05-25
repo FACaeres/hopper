@@ -1,6 +1,6 @@
 algoritmo "compara_strings"
 
-// Função : Programa que ler 2 strings e informa o
+// FunÃ§Ã£o : Programa que ler 2 strings e informa o
 //          conteudo delas seguido do seu comprimento.
 //          Informa tambem se as duas strings possuem o
 //          mesmo comprimento e se sao iguais ou diferentes no conteudo.

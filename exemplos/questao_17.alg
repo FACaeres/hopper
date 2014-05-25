@@ -1,6 +1,6 @@
 algoritmo "questao_07"
 
-// Descricao : Programa que le três números e mostra o maior e o menor deles.
+// Descricao : Programa que le trÃªs nÃºmeros e mostra o maior e o menor deles.
 // Autor : Darlisson Jesus
 // Data : 5/7/2013
 

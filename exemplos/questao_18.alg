@@ -1,8 +1,8 @@
 algoritmo "questao_08"
 
-// Descrição : Programa que pergunta o preço de três produtos e
-//             informe qual produto você deve comprar, sabendo
-//             que a decisão é sempre pelo mais barato.
+// DescriÃ§Ã£o : Programa que pergunta o preÃ§o de trÃªs produtos e
+//             informe qual produto vocÃª deve comprar, sabendo
+//             que a decisÃ£o Ã© sempre pelo mais barato.
 // Autor : Darlisson Jesus
 // Data : 5/7/2013
 

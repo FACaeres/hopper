@@ -1,8 +1,8 @@
-algoritmo "Média de idade"
-// Função : Calcula a média de idade
+algoritmo "MÃ©dia de idade"
+// FunÃ§Ã£o : Calcula a mÃ©dia de idade
 // Autor : Daniel Aquino
 // Data : 8/5/2013
-// Seção de Declarações
+// SeÃ§Ã£o de DeclaraÃ§Ãµes
 var
 idade, total, soma, num, i: inteiro
 media: real
@@ -24,16 +24,16 @@ inicio
             total <- total + 1
       fimpara
 
-      //calculo da média
+      //calculo da mÃ©dia
       media <- soma / total
-      //imprime se a turma é jovem, adulta ou idosa
+      //imprime se a turma Ã© jovem, adulta ou idosa
       se (media < 26) entao
-         escreval("A turma é jovem")
+         escreval("A turma Ã© jovem")
       senao
          se (media < 61) entao
-               escreval("A turma é adulta")
+               escreval("A turma Ã© adulta")
          senao
-           escreval("A turma é idosa")
+           escreval("A turma Ã© idosa")
          fimse
       fimse
 fimalgoritmo

@@ -1,15 +1,15 @@
 algoritmo "Transforma_cf"
-// Função :Faça um Programa que peça
+// FunÃ§Ã£o :FaÃ§a um Programa que peÃ§a
 //         a temperatura em graus Celsius
 //         , transforme e mostre em graus Farenheit
 // Autor : Iasmim Cunha
 // Data : 5/8/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
 celsius : real
 farenheit : real
 inicio
-// Seção de Comandos
+// SeÃ§Ã£o de Comandos
 escreval("Entre com o valor da temperatura em Graus Celsius")
 leia(celsius)
 farenheit <- (celsius*9/5) +32

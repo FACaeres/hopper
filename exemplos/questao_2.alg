@@ -1,10 +1,10 @@
 algoritmo "02_numero_informado"
-// Função : Recebe um número informado pelo usuário
-//          e então mostre a mensagem O número informado
-//          foi [número].
-// Autor :  Williams Araújo
+// FunÃ§Ã£o : Recebe um nÃºmero informado pelo usuÃ¡rio
+//          e entÃ£o mostre a mensagem O nÃºmero informado
+//          foi [nÃºmero].
+// Autor :  Williams AraÃºjo
 // Data : 7/5/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
    _n_ : real
 inicio

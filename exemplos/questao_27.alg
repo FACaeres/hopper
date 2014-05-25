@@ -1,13 +1,13 @@
 algoritmo "Numero primo"
-// Função : Determinar se número é o não é primo.
-//          Se não primo, mostrar todos os seus divisiveis.
+// FunÃ§Ã£o : Determinar se nÃºmero Ã© o nÃ£o Ã© primo.
+//          Se nÃ£o primo, mostrar todos os seus divisiveis.
 // Autor : Daniel
 // Data : 7/5/2013
-// Seção de Declarações
+// SeÃ§Ã£o de DeclaraÃ§Ãµes
 var
    num, i, j: inteiro
 inicio
-   // Seção de Comandos
+   // SeÃ§Ã£o de Comandos
    repita
       escreva("Escreva um numero inteiro positivo: ")
       leia(num)
@@ -18,21 +18,21 @@ inicio
         se((num mod i) = 0) entao
                 j <- j + 1
         fimse
-		  //o número não é primo
+		  //o nÃºmero nÃ£o Ã© primo
         se j > 2 entao
            interrompa
         fimse
    fimpara
-	//imprime se número é primo ou não
+	//imprime se nÃºmero Ã© primo ou nÃ£o
    se j > 2 entao
-        escreval("O número não é primo")
-		  //se não primo, imprive os seus divisíveis        
+        escreval("O nÃºmero nÃ£o Ã© primo")
+		  //se nÃ£o primo, imprive os seus divisÃ­veis        
 		  para i de 1 ate num faca
            se((num mod i) = 0) entao
                    escreval(i)
            fimse
       fimpara
    senao
-        escreva("O número é primo")
+        escreva("O nÃºmero Ã© primo")
    fimse
 fimalgoritmo

@@ -1,6 +1,6 @@
 algoritmo "questao_06"
 
-// Descricao : Programa que le três números inteiros e mostra o maior deles.
+// Descricao : Programa que le trÃªs nÃºmeros inteiros e mostra o maior deles.
 // Autor : Darlisson Jesus
 // Data : 5/7/2013
 

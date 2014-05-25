@@ -1,11 +1,11 @@
 algoritmo "01_Alo Mundo"
-// Função :       Mostrar a Mensagem "Alo Mundo" na tela
-// Autor :        Williams Araújo
+// FunÃ§Ã£o :       Mostrar a Mensagem "Alo Mundo" na tela
+// Autor :        Williams AraÃºjo
 // Data : 7/5/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 inicio
 	
-      //Imprime na tela "Alo Mundo!"
+      //Imprime na tela "AlÃ³ Mundo!"
 	
       escreval("Alo Mundo!")
 	

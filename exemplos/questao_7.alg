@@ -1,17 +1,17 @@
 algoritmo "Dobro_quadrado"
-// Função :Faça um Programa que calcule a área de um quadrado
-//        , em seguida mostre o dobro desta área para o usuário.
+// FunÃ§Ã£o :FaÃ§a um Programa que calcule a Ã¡rea de um quadrado
+//        , em seguida mostre o dobro desta Ã¡rea para o usuÃ¡rio.
 // Autor : Iasmim Cunha
 // Data : 5/8/2013
-// Seção de Declarações 
+// SeÃ§Ã£o de DeclaraÃ§Ãµes 
 var
 lado :real
 area :real
 inicio
-// Seção de Comandos 
+// SeÃ§Ã£o de Comandos 
 escreval("Entre com o valor da lado do quadrado")
 leia(lado)
 area <- lado * lado
-escreval("O Dobro da área do quadrado é",2*area)
+escreval("O Dobro da Ã¡rea do quadrado Ã©",2*area)
 
 fimalgoritmo
