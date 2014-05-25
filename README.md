@@ -2,6 +2,24 @@ Log History
 =====
 1.0 - Versão Inicial
 
+Exercicios Concluidos
+=====
+
+questao1 - OK
+questao2 - Ok
+questao3 - OK
+questao4 - OK
+questao5 - OK
+questao6 - OK
+questao7 - OK
+questao8 - OK
+questao9 - OK
+questao10 - OK
+questao11 - OK
+questao12 - ? corrijir exemplo
+questao13 - Falta implementar no case sencitive
+questao14 - verificar caracteres especiais
+
 Git
 =====
 Boa galera, to fazendo esse pequeno tutorial para quem ainda não meche com o git como repositorio.

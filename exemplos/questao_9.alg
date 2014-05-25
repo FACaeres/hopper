@@ -13,5 +13,5 @@ inicio
 escreval("Entre com o valor da temperatura em Graus Farenheit")
 leia(farenheit)
 celsius <- (5 * (farenheit-32) / 9)
-escreval("O valor  ",Farenheit," em Farenheit,equivale a ",celsius," em graus Celsius ")
+escreval("O valor  ",farenheit," em Farenheit,equivale a ",celsius," em graus Celsius ")
 fimalgoritmo

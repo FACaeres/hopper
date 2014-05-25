@@ -10,7 +10,7 @@ var
 
 inicio
 	// Faz a leitura da letra.
-    escreva("Informe seu sexo, F para feminino ou M para masculino: ")
+    escreval("Informe seu sexo, F para feminino ou M para masculino: ")
     leia(sexo_letra)
  
 	// Faz a decisao da mensagem a ser mostrada. 
@@ -18,11 +18,11 @@ inicio
 	
     escolha sexo_letra
     caso "M"
-        escreva("Seu sexo = M - masculino")
+        escreval("Seu sexo = M - masculino")
     caso "F"
-	    escreva("Seu sexo = F - feminino")
+	    escreval("Seu sexo = F - feminino")
     outrocaso
-        escreva("Sexo invalido")
+        escreval("Sexo invalido")
     fimescolha
 
 fimalgoritmo
