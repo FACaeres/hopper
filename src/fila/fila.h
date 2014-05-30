@@ -37,6 +37,6 @@ void pop_all_error(filaError *_fila);
 void cria_fila_traducao(filaTraducao *_fila);
 int fila_vazia_traducao(filaTraducao *_fila);
 int push_traducao(filaTraducao *_fila,  char *_dado);
-
+int remove_traducao(filaTraducao * _fila);
 
 #endif

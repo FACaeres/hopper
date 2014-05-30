@@ -83,7 +83,29 @@ int push_traducao(filaTraducao *_fila, char *_dado){
     _fila->tamanho++;
     return 1;
 }
+int remove_traducao(filaTraducao *_fila){
 
+    if(fila_vazia_traducao(_fila)){
+        return 0;
+    }
+    else
+    {
+        elementoFilaTraducao *elemento;
+        elemento = _fila->inicio;
+        do
+        {
+            elemento = elemento->prox;
+        }while(elemento->prox != _fila->final);
+        
+        elementoFilaTraducao *elemento_excluido;
+        elemento_excluido = _fila->final;
+        free(elemento_excluido); 
+         elemento->prox = NULL;
+        _fila->final = elemento;
+        _fila->tamanho--;
+    return 1;
+    }
+}
 void cria_arquivo(filaTraducao *fila,FILE *file_traducao){
   elementoFilaTraducao *elemento_traducao;
   int i;

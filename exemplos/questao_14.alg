@@ -20,22 +20,16 @@ inicio
    
     caso "a"
         escreva("A letra <" ,letra_digitada,"> eh uma vogal")
-        interrompa
     caso "e"
         escreva("A letra <" ,letra_digitada,"> eh uma vogal")
-        interrompa
     caso "i"
         escreva("A letra <" ,letra_digitada,"> eh uma vogal")
-        interrompa
 	caso "o"
         escreva("A letra <" ,letra_digitada,"> eh uma vogal")
-        interrompa
 	caso "u"
         escreva("A letra <" ,letra_digitada,"> eh uma vogal")
-        interrompa
     outrocaso
         escreva("A letra <" ,letra_digitada,"> eh uma consoante")
-        interrompa
     fimescolha
 
 fimalgoritmo
