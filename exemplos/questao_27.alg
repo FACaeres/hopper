@@ -24,7 +24,7 @@ inicio
         fimse
    fimpara
 	//imprime se número é primo ou não
-   se j > 2 entao
+   se j >= 2 entao
         escreval("O número não é primo")
 		  //se não primo, imprive os seus divisíveis        
 		  para i de 1 ate num faca
@@ -33,6 +33,6 @@ inicio
            fimse
       fimpara
    senao
-        escreva("O número é primo")
+        escreval("O número é primo")
    fimse
 fimalgoritmo

@@ -26,6 +26,13 @@ questao18 - OK
 questao19 - OK
 questao20 - OK
 questao21 - OK
+questao22 - OK
+questao23 - OK
+questao24 - OK
+questao25 - OK
+questao26 - OK
+questao27 - OK
+questao28 - OK
 
 Git
 =====

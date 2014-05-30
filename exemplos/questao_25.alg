@@ -18,7 +18,7 @@ inicio
          se(num > 0) e (num < 17) entao
                 //calculo da fatoracao
                 para i de num ate 1 passo -1 faca
-                     fatorial <- fatorial * num
+                     fatorial <- fatorial * i
                 fimpara
                 escreval(fatorial)
          fimse

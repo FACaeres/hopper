@@ -244,7 +244,7 @@ Comando:
 	| BlocoRepita FimComando
 	| T_Identificador T_PARENTESE_ESQ List_Expr T_PARENTESE_DIR FimComando
 	| T_RETORNE Expr FimComando
-	| T_INTERROMPA FimComando
+	| T_INTERROMPA FimComando {tabear();push_traducao(&fila_traducao,"break\n");}
 	| error {erros++; yyerror("Comando inválido: ", yylineno, yytext);}
 ;
 
