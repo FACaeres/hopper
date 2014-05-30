@@ -8,11 +8,9 @@ inicio
       escreval ("")
       escreval ("O fatorial de ", num, " é: 1")
    senao
-        mult <- num * (num-1)
+        mult <- 1
         para cont de num ate 2 passo -1 faca
-             se (cont < num) e (cont <> 1)  entao
-                mult <- mult * (cont - 1)
-             fimse
+          mult <- mult * cont
         fimpara
         escreval ("")
         escreval ("O fatorial de ", num, " é: ", mult)

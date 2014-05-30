@@ -158,7 +158,7 @@ BlocoCabecalho:
 T_Algoritmo:
 	T_ALGORITMO {push_traducao(&fila_traducao,"# -*- coding: utf-8 -*-\n");
 		     push_traducao(&fila_traducao, "import sys\n");
-		     push_traducao(&fila_traducao, "import math\n\n");}
+		     push_traducao(&fila_traducao, "import math\ndef frange(start, stop, step):\n    i=start\n    if(step > 0):\n        while i <= stop:\n            yield i\n            i += step\n    else:\n        while i >= stop:\n            yield i\n            i += step\n\n");}
 	| error {erros++; yyerror("Esperava ALGORITMO, encontrado: ", yylineno, yytext);}
 ;
 
@@ -349,12 +349,12 @@ OutroCaso:
 ;
 
 InicioPara:
-	T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr 
+	T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in frange(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr 
 ;
 
 MeioPara:
 	T_PASSO{push_traducao(&fila_traducao, ",");} Expr T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
-	| T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
+	| T_FACA{push_traducao(&fila_traducao, ",1):\n");} FimComando
 ;
 
 BlocoPara:

@@ -1,8 +1,8 @@
-algoritmo "Média de idade"
-// Função : Calcula a média de notas
+algoritmo "MÃ©dia de idade"
+// FunÃ§Ã£o : Calcula a mÃ©dia de notas
 // Autor : Daniel Aquino
 // Data : 8/5/2013
-// Seção de Declarações
+// SeÃ§Ã£o de DeclaraÃ§Ãµes
 var
 nota, total, soma, num, i: inteiro
 media: real
@@ -24,9 +24,9 @@ inicio
             total <- total + 1
       fimpara
       
-      //calculo da média
+      //calculo da mÃ©dia
       media <- soma / total
-      //imprime média da turma
-      escreval("Média da turma: ", media:1:2)
+      //imprime mÃ©dia da turma
+      escreval("MÃ©dia da turma: ", media:1:2)
 
 fimalgoritmo
