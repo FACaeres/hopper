@@ -348,15 +348,6 @@ OutroCaso:
 	| T_OUTROCASO {tabear_especial();push_traducao(&fila_traducao, "else:\n");}FimComando Comandos	
 ;
 
-//--------------------------------------------------------------------------------------------------------------------------------------
-
-/*BlocoPara:
-	//T_PARA  Expr T_DE  Expr  T_ATE Expr  T_PASSO Expr  T_FACA FimComando Comandos T_FIMPARA
-	T_PARA {tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, ",");} T_PASSO Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando Comandos T_FIMPARA	
-	| T_PARA {tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando Comandos T_FIMPARA    
-;*/
-
-
 InicioPara:
 	T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr 
 ;
@@ -365,19 +356,13 @@ MeioPara:
 	T_PASSO{push_traducao(&fila_traducao, ",");} Expr T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
 	| T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
 ;
-/*
-T_PASSO Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando
-	| T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando	
-;
-*/
-
 
 BlocoPara:
-	InicioPara MeioPara Comandos T_FIMPARA 
+	InicioPara MeioPara Comandos T_FIMPARA {tab--;}
 ;
 
 BlocoEnquanto:
-	T_ENQUANTO {tabear();push_traducao(&fila_traducao, "while ");tab++;} Expr{push_traducao(&fila_traducao, ":\n");} T_FACA FimComando Comandos T_FIMENQUANTO 
+	T_ENQUANTO {tabear();push_traducao(&fila_traducao, "while ");tab++;} Expr{push_traducao(&fila_traducao, ":\n");} T_FACA FimComando Comandos T_FIMENQUANTO{tab--;} 
 ;
 
 BlocoRepita:
@@ -409,7 +394,7 @@ Expr:
 	| Expr T_OPERADOR_MAIOR {push_traducao(&fila_traducao, " > ");}Expr
 	| Expr T_OPERADOR_MENOR_IGUAL {push_traducao(&fila_traducao, " <= ");}Expr
 	| Expr T_OPERADOR_MAIOR_IGUAL {push_traducao(&fila_traducao, " >= ");}Expr
-	| T_OPERADOR_SUBTRACAO Expr %prec NEG
+	| T_OPERADOR_SUBTRACAO{push_traducao(&fila_traducao, " -");} Expr %prec NEG 
 	| T_OP_LOGICO_NAO Expr
 	
 	| Expr T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** ");}Expr
