@@ -33,6 +33,8 @@ questao25 - OK
 questao26 - OK
 questao27 - OK
 questao28 - OK
+questao29 - OK
+questao30 - OK
 
 Git
 =====
