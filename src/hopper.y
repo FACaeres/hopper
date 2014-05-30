@@ -348,9 +348,32 @@ OutroCaso:
 	| T_OUTROCASO {tabear_especial();push_traducao(&fila_traducao, "else:\n");}FimComando Comandos	
 ;
 
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+/*BlocoPara:
+	//T_PARA  Expr T_DE  Expr  T_ATE Expr  T_PASSO Expr  T_FACA FimComando Comandos T_FIMPARA
+	T_PARA {tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, ",");} T_PASSO Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando Comandos T_FIMPARA	
+	| T_PARA {tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando Comandos T_FIMPARA    
+;*/
+
+
+InicioPara:
+	T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr 
+;
+
+MeioPara:
+	T_PASSO{push_traducao(&fila_traducao, ",");} Expr T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
+	| T_FACA{push_traducao(&fila_traducao, "):\n");} FimComando
+;
+/*
+T_PASSO Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando
+	| T_PARA{tabear();push_traducao(&fila_traducao, "for ");tab++;} Expr T_DE {push_traducao(&fila_traducao, " in range(");} Expr {push_traducao(&fila_traducao, ",");} T_ATE Expr {push_traducao(&fila_traducao, "):\n");} T_FACA FimComando	
+;
+*/
+
+
 BlocoPara:
-	T_PARA Expr T_DE Expr T_ATE Expr T_FACA FimComando Comandos T_FIMPARA
-	| T_PARA Expr T_DE Expr T_ATE Expr T_PASSO Expr T_FACA FimComando Comandos T_FIMPARA
+	InicioPara MeioPara Comandos T_FIMPARA 
 ;
 
 BlocoEnquanto:
