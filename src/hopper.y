@@ -395,7 +395,7 @@ Expr:
 	| Expr T_OPERADOR_MENOR_IGUAL {push_traducao(&fila_traducao, " <= ");}Expr
 	| Expr T_OPERADOR_MAIOR_IGUAL {push_traducao(&fila_traducao, " >= ");}Expr
 	| T_OPERADOR_SUBTRACAO{push_traducao(&fila_traducao, " -");} Expr %prec NEG 
-	| T_OP_LOGICO_NAO Expr
+	| T_OP_LOGICO_NAO {push_traducao(&fila_traducao, " not");}Expr
 	
 	| Expr T_OPERADOR_EXPONENCIACAO {push_traducao(&fila_traducao, " ** ");}Expr
 	
